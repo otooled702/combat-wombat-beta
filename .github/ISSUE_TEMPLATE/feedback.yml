@@ -1,0 +1,14 @@
+name: Idea or feedback
+description: Something that could be better, or a feature you'd like.
+labels: [feedback, beta]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: Your idea or feedback
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: What would it help you do at the table?

@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Combat Wombat beta</title>
+<meta name="description" content="Public beta of Combat Wombat, a combat tracker for 5e tabletop games.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9A%94%EF%B8%8F%3C/text%3E%3C/svg%3E">
+<style>
+:root{--bg:#F3E7C6;--panel:#FBF4DF;--panel2:#EFE0B5;--line:#D2BC82;--text:#2A2012;--muted:#6F5E3A;--gold:#D4A017;--gold-ink:#2A1D00;--link:#24669C;--ok:#23734E}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 -apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,"Segoe UI",system-ui,sans-serif}
+a{color:var(--link)}a:hover{color:var(--text)}
+a:focus-visible,.btn:focus-visible{outline:3px solid var(--link);outline-offset:2px}
+.wrap{max-width:980px;margin:0 auto;padding:32px 16px 48px;display:flex;flex-direction:column;gap:28px}
+header{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+header svg{height:48px;width:auto}
+.word{font-weight:800;font-size:26px;letter-spacing:-.01em}
+.tag{padding:3px 10px;border-radius:99px;background:var(--text);color:var(--panel);font-weight:700;font-size:12px;letter-spacing:.05em;text-transform:uppercase}
+.ver{margin-left:auto;color:var(--muted);font-size:14px}
+h1{margin:0;font-size:clamp(30px,5vw,44px);line-height:1.1;letter-spacing:-.02em}
+h2{margin:0 0 12px;font-size:22px}
+.lead{margin:12px 0 0;font-size:18px;max-width:62ch}
+.btns{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 22px;border-radius:12px;font-weight:600;text-decoration:none;border:1px solid var(--line);background:var(--panel);color:var(--text)}
+.btn.primary{background:var(--gold);border-color:var(--gold);color:var(--gold-ink)}
+.btn:hover{filter:brightness(.97);color:inherit}
+section.card{background:var(--panel);border-radius:22px;padding:24px;box-shadow:0 1px 2px rgba(42,32,18,.10),0 14px 36px rgba(42,32,18,.10)}
+.table{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:620px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+code{background:var(--panel2);padding:1px 6px;border-radius:6px;font-size:.92em}
+.note{color:var(--muted);font-size:14px;margin:12px 0 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+ul.check{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px}
+footer{color:var(--muted);font-size:13px;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>{{LOGO}}<span class="word">combat wombat</span><span class="tag">Beta</span><span class="ver">Version {{VERSION}}</span></header>
+
+<main style="display:flex;flex-direction:column;gap:28px">
+<div>
+<h1>Help us test Combat Wombat</h1>
+<p class="lead">A fast combat tracker for 5e tabletop games: initiative, hit points, conditions, spells, a Combat Monitor for the TV and a view for players' phones. This is the public beta, so expect rough edges and tell us what you find.</p>
+<div class="btns">
+<a class="btn primary" href="app.html">Open the beta app</a>
+<a class="btn" href="demo.html">Try the public demo</a>
+<a class="btn" href="https://github.com/{{REPO}}/issues/new/choose">Report a bug</a>
+</div>
+</div>
+
+<section class="card" aria-labelledby="acc">
+<h2 id="acc">Test accounts</h2>
+<p style="margin:0 0 14px">The beta app starts on a sign-in screen. Pick one of these; there are no passwords. Real sign-in comes later.</p>
+<div class="table"><table>
+<thead><tr><th scope="col">Account</th><th scope="col">Plan</th><th scope="col">Use it to test</th></tr></thead>
+<tbody>
+<tr><td><b>Sam Rivera</b><br><code>sam.yearly@example.com</code></td><td>Yearly ($50/year)</td><td>A campaign under way: party, two saved encounters, starred creatures. Saving works.</td></tr>
+<tr><td><b>Riley Chen</b><br><code>riley.monthly@example.com</code></td><td>Monthly ($5.99/month)</td><td>A brand-new account: set up a party and a fight from scratch.</td></tr>
+<tr><td><b>Casey Moreno</b><br><code>casey.free@example.com</code></td><td>No subscription</td><td>The demo experience: the tour, nothing saved, and the Subscribe window when you try to save.</td></tr>
+</tbody></table></div>
+<p class="note">Test accounts are saved only in your browser and anyone can use them: don't put anything private in them. Use <b>Reset this account</b> in the account menu (bottom of the left menu) to start over, or <b>Switch account</b> to try another.</p>
+</section>
+
+<div class="grid">
+<section class="card" aria-labelledby="what">
+<h2 id="what">What to try</h2>
+<ul class="check">
+<li>Run a few rounds: Start combat, Next turn, damage, healing and Undo.</li>
+<li>The Target window: a Fireball on the goblins, with saves.</li>
+<li>Conditions, concentration and death saves.</li>
+<li>Open the Combat Monitor in a second window, or on a TV.</li>
+<li>Show “Roll for initiative” before combat.</li>
+<li>The Library: add creatures, NPCs and spells.</li>
+<li>Different skins in Settings.</li>
+<li>On a phone or tablet, as well as a computer.</li>
+</ul>
+</section>
+<section class="card" aria-labelledby="limits">
+<h2 id="limits">Known limits in this beta</h2>
+<ul class="check">
+<li>No real sign-in or syncing yet: everything stays in this browser.</li>
+<li>Players' phones only connect to a table open in the same browser, so test them in a second tab or window for now.</li>
+<li>Subscribe doesn't take payments yet.</li>
+<li>Least tested on Safari and iPhone: reports from there are especially welcome.</li>
+</ul>
+</section>
+</div>
+
+<section class="card" aria-labelledby="report">
+<h2 id="report">Found something?</h2>
+<p style="margin:0">Open an issue on <a href="https://github.com/{{REPO}}/issues/new/choose">GitHub</a> with what you did, what you expected and what happened. Mention the version ({{VERSION}}), the test account, and your browser and device. A screenshot helps a lot.</p>
+</section>
+</main>
+
+<footer>
+<p style="margin:0">Creature and spell data from the System Reference Document 5.2 © Wizards of the Coast LLC, licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Combat Wombat is not affiliated with or endorsed by Wizards of the Coast.</p>
+<p style="margin:6px 0 0">Source and releases: <a href="https://github.com/{{REPO}}">github.com/{{REPO}}</a> · <a href="https://github.com/{{REPO}}/releases">Pre-releases</a></p>
+</footer>
+</div>
+</body>
+</html>

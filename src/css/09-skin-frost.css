@@ -1,0 +1,26 @@
+/* ---- Frost: icy, snowy, light. Frosted-glass cards on a pale blue sky with drifting snow ---- */
+:root[data-skin="frost"]{
+  --page:#CFE3F2; --bg:#E8F3FB; --field:#FFFFFF; --panel:#FFFFFF; --panel2:#EEF6FC; --line:#B3CCE0;
+  --text:#0F2A40; --muted:#55738A; --page-text:#0F2A40; --rule:#7FA6C4;
+  --now:#6C5CE7; --now-ink:#FFFFFF; --now-text:#5547C9; --next:#F2C14E; --next-ink:#3A2A00;
+  --pc:#2B7BBF; --npc:#D6384F; --npcnow:#D6384F; --npcnow-ink:#FFFFFF; --neutral:#7C93A6; --wound:#7FBF5A;
+  --danger:#C62F47; --chip:#E1EEF8; --ok:#2E9E6E; --mid:#D98E04; --crit:#C62F47;
+  --inv:#0F2A40; --inv-ink:#EAF5FD; --timer-bg:#0F2A40; --timer-fg:#9FE7FF; --accent:#3D7FD9; --accent-ink:#FFFFFF;
+  --fd:"Outfit","Inter",system-ui,sans-serif; --fb:"Outfit","Inter",system-ui,sans-serif;
+  --ice:repeating-linear-gradient(104deg,rgba(255,255,255,0) 0 37px,rgba(255,255,255,.30) 37px 39px,rgba(255,255,255,0) 39px 89px),repeating-linear-gradient(113deg,rgba(255,255,255,0) 0 23px,rgba(255,255,255,.16) 23px 24px,rgba(255,255,255,0) 24px 59px);
+  --page-img:var(--ice),linear-gradient(118deg,rgba(255,255,255,.5) 0%,rgba(255,255,255,0) 34%,rgba(140,188,228,.30) 62%,rgba(255,255,255,.40) 100%),linear-gradient(180deg,#B3D2EA 0%,#D8E9F6 45%,#F2F9FE 100%);
+}
+:root[data-skin="frost"] body{background-attachment:fixed}
+:root[data-skin="frost"] :is(.row,.lnav,.dock,.ctl,.pcard,.ph-row,.mem,.sheet,.cpanel,.qrmodal,.drawer,.rowmenu,.aoerow,.clopt){background-color:rgba(255,255,255,.74);background-image:linear-gradient(112deg,rgba(255,255,255,.55),rgba(255,255,255,0) 42%,rgba(176,212,240,.26)),repeating-linear-gradient(106deg,rgba(255,255,255,0) 0 31px,rgba(255,255,255,.30) 31px 32px,rgba(255,255,255,0) 32px 71px);backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);border:1px solid rgba(255,255,255,.95);box-shadow:inset 0 1px 0 #fff,0 10px 30px rgba(70,120,170,.20)}
+:root[data-skin="frost"] :is(.pcard.npc:not(.now),.ph-row.npc){background-color:color-mix(in srgb,var(--npc) 11%,rgba(255,255,255,.80));border-color:color-mix(in srgb,var(--npc) 45%,#fff)}
+:root[data-skin="frost"] .row{box-shadow:inset 6px 0 0 var(--pc),0 10px 30px rgba(70,120,170,.20)}
+:root[data-skin="frost"] .row.npc{box-shadow:inset 6px 0 0 var(--npc),0 10px 30px rgba(70,120,170,.20)}
+:root[data-skin="frost"] .row.neutral{box-shadow:inset 6px 0 0 var(--neutral-side),0 10px 30px rgba(70,120,170,.20)}
+:root[data-skin="frost"] .row.now{background-color:color-mix(in srgb,var(--side) 8%,rgba(255,255,255,.82));box-shadow:inset 6px 0 0 var(--now),0 0 0 3px var(--now),0 12px 34px color-mix(in srgb,var(--now) 40%,transparent);animation:none}
+:root[data-skin="frost"] .row.now.npc{box-shadow:inset 6px 0 0 var(--npc),0 0 0 3px var(--npcnow),0 12px 34px color-mix(in srgb,var(--npcnow) 40%,transparent)}
+:root[data-skin="frost"] .row::before{display:none}
+:root[data-skin="frost"] .pcard.now{box-shadow:0 0 0 .08em #fff,0 .5em 1.4em color-mix(in srgb,var(--now) 45%,transparent)}
+:root[data-skin="frost"] .brand{color:#0F2A40;letter-spacing:.02em}
+:root[data-skin="frost"] :is(.nm,.pcard h3){font-weight:600}
+:root[data-skin="frost"] .bar{background:#DCEAF5;border:0}
+

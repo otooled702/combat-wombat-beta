@@ -1,0 +1,42 @@
+/* Contrast: every text at least 4.5:1 (3:1 for large text) in every skin, measured in the browser.
+   Loads last on purpose: these override the softer tints set earlier. Test: t_contrast_all_skins. */
+
+/* tinted action buttons: the text leans further toward the body text colour */
+body.dm .btn.dmg{color:color-mix(in srgb,var(--danger) 58%,var(--text))}
+body.dm .btn.heal{color:color-mix(in srgb,var(--ok) 50%,var(--text))}
+body.dm .btn.temp{color:color-mix(in srgb,var(--pc) 50%,var(--text))}
+body.dm .btn.cond{color:color-mix(in srgb,var(--next) 22%,var(--text))}
+body.dm .rxbtn{color:color-mix(in srgb,var(--ok) 50%,var(--text))}
+body.dm .dispchip.d-enemy{color:color-mix(in srgb,var(--danger) 50%,var(--text))}
+
+/* "24 / 24": the slash is muted, not faded */
+body.dm .hpnums>span:not(.hpicon):not(.plus){opacity:1}
+
+/* Combat Monitor: "Reaction ready", the ×3 group count and the View button */
+.rxpip.ready{color:color-mix(in srgb,var(--ok) 50%,var(--text))}
+.gx{color:color-mix(in srgb,var(--muted) 45%,var(--text))}
+.viewbtn{opacity:.8}
+
+/* the Cards switch (Focus / Full): the unselected side was too faint */
+body.dm .seg button:not([aria-checked="true"]){color:color-mix(in srgb,var(--muted) 55%,var(--text))}
+
+/* white text on a coloured fill: a deeper fill where it was too light */
+:root[data-skin^="spark"] :is(.btn.primary,.seg button[aria-checked="true"]){background:#3F62E8}
+:root[data-skin="frost"] .btn.primary{background:color-mix(in srgb,var(--accent) 80%,#000)}
+:root:is([data-skin="light"],[data-skin="daylight"],[data-skin="slate"],[data-skin="feywild"]) :is(.stat.now.foe small,.ph-sn.now.foe small){background:color-mix(in srgb,var(--npcnow) 78%,#000)}
+:root[data-skin="watercolor"]{--next:#336F8C}
+
+/* single skins */
+:root[data-skin="frost"]{--muted:#4A687F}
+:root[data-skin="medieval"] .rn{color:color-mix(in srgb,currentColor 80%,#000)}
+:root[data-skin="sparkd"] .icon.xbtn{color:color-mix(in srgb,#C9344C 65%,#fff)}
+
+/* player phone: the same fixes */
+.ph-rx{color:color-mix(in srgb,var(--ok) 50%,var(--text))}
+.ph-rx.r1{color:var(--muted)}
+.ph-rx.r2{color:var(--now-text)}
+.ph-btn.dmg{color:color-mix(in srgb,var(--crit) 40%,var(--text))}
+.ph-btn.heal{color:color-mix(in srgb,var(--ok) 50%,var(--text))}
+/* Use reaction: a green tint with green text, like the DM's button, instead of dark text on solid green */
+.ph-btn.use{background:color-mix(in srgb,var(--ok) 16%,var(--panel));color:color-mix(in srgb,var(--ok) 50%,var(--text));border-color:var(--ok)}
+:root[data-skin^="spark"] .ph-tag.now{background:color-mix(in srgb,var(--now) 75%,#000)}

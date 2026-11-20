@@ -1,0 +1,91 @@
+/* ============================================================
+   Shared components
+   Switches, segmented controls, chips, bars, toasts, the settings drawer and QR dialog.
+   ============================================================ */
+
+.btn{background:var(--panel2);border:1px solid var(--line);border-radius:7px;padding:7px 13px;font-weight:600}
+.btn:hover:not(:disabled){border-color:var(--muted)}
+.btn.primary{background:var(--now);color:var(--now-ink);border-color:transparent;font-weight:700}
+.btn.small{padding:3px 9px;font-size:13px;border-radius:6px}
+.btn.ghost{background:transparent}
+.muted{color:var(--muted)}
+.tag{display:inline-block;font-size:12px;font-weight:700;border-radius:99px;padding:1px 9px;background:var(--chip);color:var(--muted);margin-left:6px;vertical-align:middle}
+.tag.now{background:var(--now);color:var(--now-ink)}
+.tag.nxt{background:var(--next);color:var(--next-ink)}
+.icon{background:transparent;border:1px solid var(--line);border-radius:6px;padding:3px 8px;font-size:13px}
+.icon:hover:not(:disabled){border-color:var(--muted)}
+.icon.danger{color:var(--danger)}
+.help{font-size:13px;color:var(--muted);margin:6px 0 0}
+.help code{background:var(--chip);border-radius:4px;padding:0 5px}
+.bar{height:9px;border-radius:99px;background:var(--panel2);overflow:hidden;border:1px solid var(--line)}
+.bar i{display:block;height:100%;background:var(--ok)}
+.bar.mid i{background:var(--mid)}
+.bar.crit i,.bar.zero i{background:var(--crit)}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--chip);border-radius:9px;padding:3px 4px 3px 9px}
+.chip b{font-weight:700}
+.chip small{display:block;font-size:11.5px;color:var(--muted);line-height:1.15}
+.chip button{background:transparent;border:0;font-size:17px;line-height:1;padding:2px 6px;color:var(--muted)}
+.chip button:hover{color:var(--danger)}
+.empty{padding:40px 16px;text-align:center;color:var(--page-text,var(--muted));border:1px dashed var(--line);border-radius:14px}
+/* above the windows (they go up to 95), so a toast's Undo button can be clicked while a window is open */
+.toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--inv);color:var(--inv-ink);padding:9px 16px;border-radius:99px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .2s;max-width:90vw;z-index:96}
+.toast.show{opacity:1}
+.pips{font-size:18px;letter-spacing:.12em;color:var(--now-text)}
+.pips.ok{color:var(--ok)}
+.pips.bad{color:var(--crit)}
+.bar.wound i{background:var(--wound)}
+.toast.act{pointer-events:auto}
+.toastbtn{margin-left:10px;border:0;border-radius:99px;padding:3px 12px;font-weight:700;background:var(--now);color:var(--now-ink);cursor:pointer}
+.seg{display:inline-flex;flex-wrap:nowrap;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--panel2);vertical-align:middle}
+.seg button{border:0;background:transparent;padding:5px 11px;font-weight:600;font-size:13px;border-right:1px solid var(--line);color:var(--text);white-space:nowrap}
+.seg button:last-child{border-right:0}
+.seg button:hover{background:color-mix(in srgb,var(--now) 18%,transparent)}
+.seg button[aria-checked="true"]{background:var(--now);color:var(--now-ink)}
+.seg.sm button{padding:2px 8px;font-size:12px}
+.swbtn{display:inline-flex;align-items:center;gap:8px;background:transparent;border:0;padding:2px 0;font-size:13px;color:var(--text);cursor:pointer}
+.swtrack{position:relative;width:36px;height:20px;border-radius:99px;background:var(--panel2);border:1px solid var(--line);flex:none;transition:background .15s}
+.swtrack i{position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:var(--muted);transition:transform .15s,background .15s}
+.swbtn.on .swtrack{background:var(--ok);border-color:transparent}
+.swbtn.on .swtrack i{transform:translateX(16px);background:#fff}
+.swbtn:disabled{opacity:.5;cursor:not-allowed}
+.tgl{appearance:none;-webkit-appearance:none;position:relative;width:36px!important;height:20px;border-radius:99px;background:var(--panel2);border:1px solid var(--line);flex:none;cursor:pointer;padding:0!important;transition:background .15s}
+.tgl::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:var(--muted);transition:transform .15s,background .15s}
+.tgl:checked{background:var(--ok);border-color:transparent}
+.tgl:checked::after{transform:translateX(16px);background:#fff}
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:70;display:none}
+.scrim.open{display:block}
+.drawer{position:fixed;top:0;left:0;bottom:0;width:min(430px,100vw);background:var(--panel);color:var(--text);border-right:1px solid var(--line);box-shadow:12px 0 36px rgba(0,0,0,.4);z-index:71;display:flex;flex-direction:column;transform:translateX(-104%);transition:transform .22s ease;visibility:hidden}
+.drawer.open{transform:none;visibility:visible}
+.dhead{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--line)}
+.dhead h2{margin:0;font:700 22px var(--fd)}
+.dsec{padding:12px 0 6px}
+.dsec h3{margin:0 0 4px;font:700 13px var(--fb);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.setrow{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:10px 0;border-top:1px solid var(--line)}
+.setrow.stack{flex-direction:column;align-items:stretch;gap:8px}
+.setrow.stack .setctl{display:flex}
+.setrow.stack .seg{width:100%}
+.setrow.stack .seg button{flex:1;padding-left:4px;padding-right:4px}
+.setlab b{display:block;font-weight:600}
+.setlab small{display:block;color:var(--muted);font-size:12.5px;line-height:1.3;margin-top:1px}
+.skins{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:6px 0 10px}
+.skinbtn{display:flex;align-items:center;gap:10px;border:2px solid var(--line);border-radius:10px;background:var(--panel2);padding:8px 10px;font-weight:600;text-align:left;color:var(--text);cursor:pointer}
+.skinbtn[aria-checked="true"]{border-color:var(--now);box-shadow:0 0 0 2px color-mix(in srgb,var(--now) 40%,transparent)}
+.skincol{display:grid;gap:8px;align-content:start}
+.skincol h4{margin:0 0 2px;font:600 11px var(--fb);letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.sw5{display:inline-flex;border-radius:6px;overflow:hidden;border:1px solid rgba(128,128,128,.4);flex:none}
+.sw5 i{width:12px;height:26px;display:block}
+.bar.lg{height:14px;margin:8px 0}
+.qrmodal{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:min(780px,94vw);max-height:92vh;overflow:auto;background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:16px;z-index:73;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.qrbody{padding:6px 18px 18px}
+.qrlink{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted);margin:8px 0}
+.qrgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin:12px 0}
+.qrcard{margin:0;text-align:center}
+.qrbox{background:#fff;padding:14px;border-radius:14px;display:grid;place-items:center;min-height:180px}
+.qrbox svg{width:100%;height:auto;max-width:320px;display:block}
+.qrcard figcaption{display:grid;gap:2px;margin-top:8px}
+.qrcard figcaption small{color:var(--muted);word-break:break-all;font-size:12px}
+.sfxprev{display:flex;flex-wrap:wrap;gap:6px}
+.cb .bar.wound i{background-image:repeating-linear-gradient(45deg,rgba(0,0,0,.4) 0 .2em,transparent .2em .55em)}
+.cb .bar.mid i{background-image:repeating-linear-gradient(45deg,rgba(0,0,0,.5) 0 .22em,transparent .22em .42em)}
+.cb .bar.crit i,.cb .bar.zero i{background-image:repeating-linear-gradient(45deg,rgba(0,0,0,.65) 0 .2em,transparent .2em .38em),repeating-linear-gradient(-45deg,rgba(0,0,0,.65) 0 .2em,transparent .2em .38em)}
+

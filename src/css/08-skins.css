@@ -1,0 +1,194 @@
+/* ============================================================
+   Skins
+   One block per skin: variables first, then component tweaks.
+   ============================================================ */
+
+:root[data-skin="medieval"]{
+  --page:#2A1912; --bg:#F1E4C3; --field:#FBF3DC; --panel:#EDDDB3; --panel2:#E0CB93; --line:#7A5A2E;
+  --text:#1E120A; --muted:#58401F; --page-text:#E2CFA0; --rule:#EAD9A6;
+  --now:#7B3FBF; --now-ink:#F8F0FF; --now-text:#5E2C9A; --next:#F5B800; --next-ink:#1E120A;
+  --pc:#24508F; --npc:#8E1B24; --npcnow:#B3202A; --npcnow-ink:#FFF7E8; --neutral:#7B6A48; --wound:#5E7F1E;
+  --danger:#8E1B24; --chip:#D8C28A; --ok:#2F6B2B; --mid:#9A6F00; --crit:#9E1C22;
+  --inv:#F1E4C3; --inv-ink:#1E120A; --timer-bg:#1E120A; --timer-fg:#D9B8FF;
+  --fd:"Cinzel",Georgia,serif; --fb:"Alegreya",Georgia,serif;
+  --page-img:radial-gradient(ellipse at 50% -10%,rgba(255,170,80,.14),transparent 60%),repeating-linear-gradient(90deg,rgba(0,0,0,.09) 0 2px,transparent 2px 9px);
+  --tex:radial-gradient(ellipse at 25% 15%,rgba(255,255,255,.25),transparent 55%),radial-gradient(ellipse at 85% 95%,rgba(110,60,15,.10),transparent 60%);
+}
+:root[data-skin="medieval"] *{font-synthesis:none;font-variant-numeric:lining-nums}
+:root[data-skin="medieval"] body{font-size:16px;font-weight:500}
+:root[data-skin="medieval"] :is(.pcard,.row:not(.nextpc),.lnav,.dock,.ctl,.drawer){background-image:var(--tex)}
+:root[data-skin="medieval"] :is(.row,.lnav,.dock,.ctl){border-style:double;border-width:4px;border-radius:6px}
+:root[data-skin="medieval"] .row{border-left:9px solid var(--pc)}
+:root[data-skin="medieval"] .row.npc{border-left-color:var(--npc)}
+:root[data-skin="medieval"] .pcard{border-style:double;border-width:.3em;border-radius:.6em}
+:root[data-skin="medieval"] .pcard:not(.cur){filter:brightness(.93)}
+:root[data-skin="medieval"] .pcard.now{border:.3em solid #1E120A;background-color:color-mix(in srgb,var(--now) 9%,var(--bg));outline:.26em solid var(--now);outline-offset:0}
+:root[data-skin="medieval"] .pcard.next::after{filter:drop-shadow(.09em 0 0 #1E120A) drop-shadow(-.09em 0 0 #1E120A) drop-shadow(0 .09em 0 #1E120A)}
+:root[data-skin="medieval"] .btn,:root[data-skin="medieval"] .icon{border-radius:3px}
+:root[data-skin="medieval"] .pcard h3{font-weight:800;letter-spacing:.02em}
+:root[data-skin="medieval"] .pcard .player,:root[data-skin="medieval"] .php .nums span{font-weight:700}
+:root[data-skin="medieval"] :is(.php .nums,.pconds b){font-weight:800}
+:root[data-skin="medieval"] .hpact input{width:92px}
+:root[data-skin="medieval"] .hpnums .tmpin{width:72px}
+:root[data-skin="medieval"] .rdiv .rflag{border:2px solid #1E120A}
+:root[data-skin="medieval"] .pcard .flag{border:2px solid #1E120A}
+:root[data-skin="water"]{
+  --page:#052B4A; --bg:#073A5E; --field:#0B4C7B; --panel:#0C4770; --panel2:#115A8C; --line:#4A9AD6;
+  --text:#E8F4FF; --muted:#9CC9EE; --page-text:#A9D3F2; --rule:#C2E0F8;
+  --now:#FFD84D; --now-ink:#2A1E00; --now-text:#FFE47A; --next:#A6E3FF; --next-ink:#06284A;
+  --pc:#5EE6D2; --npc:#FF6F8E; --npcnow:#FF4E73; --npcnow-ink:#2A0510; --neutral:#93BEE8; --wound:#B5F26C;
+  --danger:#FF8FA3; --chip:#14609A; --ok:#6CF2B7; --mid:#FFD35E; --crit:#FF7A8F;
+  --inv:#E8F4FF; --inv-ink:#052B4A; --timer-bg:#2A1200; --timer-fg:#FFE47A;
+  --fd:"Fredoka","Nunito",sans-serif; --fb:"Nunito",sans-serif;
+  --page-img:radial-gradient(circle at 12% 82%,rgba(255,255,255,.10) 0 9px,transparent 10px),radial-gradient(circle at 18% 70%,rgba(255,255,255,.08) 0 6px,transparent 7px),radial-gradient(circle at 78% 88%,rgba(255,255,255,.09) 0 8px,transparent 9px),radial-gradient(circle at 88% 64%,rgba(255,255,255,.07) 0 5px,transparent 6px),radial-gradient(circle at 46% 78%,rgba(255,255,255,.06) 0 4px,transparent 5px),radial-gradient(ellipse at 50% -20%,rgba(110,190,255,.30),transparent 60%),linear-gradient(180deg,#0A5287 0%,#052B4A 48%,#02152B 100%);
+}
+:root[data-skin="water"] :is(.row,.lnav,.dock,.ctl){border-radius:18px}
+:root[data-skin="water"] .pcard{border-radius:1.3em;box-shadow:inset 0 .12em 0 rgba(255,255,255,.14)}
+:root[data-skin="water"] .btn,:root[data-skin="water"] .icon{border-radius:99px}
+:root[data-skin="water"] .pcard h3{font-weight:600}
+:root[data-skin="forest"]{
+  --page:#14261A; --bg:#1B3323; --field:#23402D; --panel:#1F3A28; --panel2:#2A4A34; --line:#6E9B73;
+  --text:#F0EBD8; --muted:#A9C2A5; --page-text:#A9C2A5; --rule:#E3DCC0;
+  --now:#7CC4FF; --now-ink:#08202F; --now-text:#9DD3FF; --next:#F2E05A; --next-ink:#262000;
+  --pc:#8FD694; --npc:#E5775F; --npcnow:#FF5A47; --npcnow-ink:#2A0A05; --neutral:#B3A98A; --wound:#C8E36A;
+  --danger:#F08C78; --chip:#34553D; --ok:#8FE39A; --mid:#F2C14E; --crit:#F07C6A;
+  --inv:#F0EBD8; --inv-ink:#14261A; --timer-bg:#08202F; --timer-fg:#9DD3FF;
+  --fd:"Fraunces",Georgia,serif; --fb:"Nunito Sans",system-ui,sans-serif;
+  --page-img:radial-gradient(ellipse at 18% -10%,rgba(190,255,150,.16),transparent 55%),radial-gradient(ellipse at 100% 100%,rgba(0,0,0,.4),transparent 60%),repeating-linear-gradient(98deg,rgba(0,0,0,.10) 0 3px,transparent 3px 15px);
+}
+:root[data-skin="forest"] :is(.row,.lnav,.dock,.ctl){border-radius:18px 5px 18px 5px}
+:root[data-skin="forest"] .pcard{border-radius:1.3em .35em 1.3em .35em;box-shadow:inset 0 .15em .45em rgba(0,0,0,.25)}
+:root[data-skin="forest"] .pcard h3{font-weight:700}
+:root[data-skin="mountain"]{
+  --page:#1C2126; --bg:#232A31; --field:#2C353D; --panel:#29323A; --panel2:#35414B; --line:#8FA3B3;
+  --text:#F2F6F9; --muted:#A9B8C4; --page-text:#A9B8C4; --rule:#E6EEF4;
+  --now:#F4F8FB; --now-ink:#1B242B; --now-text:#F4F8FB; --next:#FFE15A; --next-ink:#262000;
+  --pc:#8FD3FF; --npc:#FF7C7C; --npcnow:#FF5A5A; --npcnow-ink:#2A0808; --neutral:#A9B8C4; --wound:#C5E36C;
+  --danger:#FF8F8F; --chip:#3C4A56; --ok:#7CE0B0; --mid:#FFD35E; --crit:#FF7C7C;
+  --inv:#F2F6F9; --inv-ink:#1C2126; --timer-bg:#0F151A; --timer-fg:#F4F8FB;
+  --fd:"Archivo",system-ui,sans-serif; --fb:"Inter",system-ui,sans-serif;
+  --page-img:linear-gradient(115deg,transparent 0 58%,rgba(255,255,255,.04) 58% 80%,transparent 80%),linear-gradient(180deg,#323C46 0%,#1C2126 60%);
+}
+:root[data-skin="mountain"] :is(.row,.lnav,.dock,.ctl){border-radius:4px}
+:root[data-skin="mountain"] .pcard{border-radius:.3em}
+:root[data-skin="mountain"] .pcard:not(.now){box-shadow:inset 0 .32em 0 rgba(255,255,255,.88)}
+:root[data-skin="mountain"] .btn,:root[data-skin="mountain"] .icon{border-radius:3px}
+:root[data-skin="mountain"] .pcard h3{font-weight:600;letter-spacing:.01em}
+:root[data-skin="fire"]{
+  --page:#140A08; --bg:#1A0D0A; --field:#2A1410; --panel:#241210; --panel2:#33191A; --line:#C0502B;
+  --text:#FFEFE0; --muted:#E0A585; --page-text:#E0A585; --rule:#FFD2A8;
+  --now:#FFC21A; --now-ink:#2A1A00; --now-text:#FFD24D; --next:#FFF0A0; --next-ink:#2A2400;
+  --pc:#6FB8FF; --npc:#E5214F; --npcnow:#FF2D5C; --npcnow-ink:#2A0510; --neutral:#C9A78F; --wound:#D6E35A;
+  --danger:#FF5C7C; --chip:#4A2318; --ok:#9BE37A; --mid:#FFC14D; --crit:#FF4D74;
+  --inv:#FFEFE0; --inv-ink:#140A08; --timer-bg:#2A1A00; --timer-fg:#FFD24D;
+  --fd:"Exo 2",system-ui,sans-serif; --fb:"Inter",system-ui,sans-serif;
+  --page-img:radial-gradient(ellipse at 50% 125%,rgba(255,110,20,.6),rgba(255,50,0,.18) 42%,transparent 72%),radial-gradient(circle at 22% 78%,rgba(255,190,80,.5) 0 2px,transparent 3px),radial-gradient(circle at 71% 66%,rgba(255,170,60,.45) 0 2px,transparent 3px),radial-gradient(circle at 86% 84%,rgba(255,200,90,.5) 0 1.5px,transparent 2.5px),radial-gradient(circle at 40% 90%,rgba(255,150,40,.5) 0 1.5px,transparent 2.5px);
+}
+:root[data-skin="fire"] body{font-weight:600;font-size:16.5px}
+:root[data-skin="fire"] :is(.row,.lnav,.dock,.ctl){border-radius:8px}
+:root[data-skin="fire"] .pcard{border-radius:.5em;box-shadow:inset 0 -1.2em 1.4em -1em rgba(255,90,20,.4)}
+:root[data-skin="fire"] .pcard h3{font-weight:700;letter-spacing:.01em}
+/* Spark and Spark Dark: inspired by SparkToro's own site. Cream or near-black pages, hairline ink
+   outlines, periwinkle controls, coral for NPCs, chartreuse accents, League Spartan and Jost.
+   --bw is the outline weight; --nudge corrects League Spartan sitting high inside its line box. */
+:root[data-skin="spark"],:root[data-skin="sparkd"]{
+  --accent:#577BFF; --accent-ink:#FFFFFF; --bw:1.5px; --nudge:.13em;
+  --fd:"League Spartan","Jost",system-ui,sans-serif; --fb:"Jost",system-ui,sans-serif;
+  --page-img:none; --tex:none; --next:#B6C82D; --wound:#B6C82D;
+  --sp-dmg-solid:#C9344C; --sp-heal-solid:#6B8B3F;
+}
+:root[data-skin="spark"]{
+  --page:#F8F8F2; --bg:#F8F8F2; --field:#FFFFFF; --panel:#FFFFFF; --panel2:#F1F1E7; --line:#1A1A1A;
+  --text:#1A1A1A; --muted:#646464; --page-text:#1A1A1A; --rule:#1A1A1A;
+  --now:#577BFF; --now-ink:#FFFFFF; --now-text:#2E5BFF; --next-ink:#1A1A1A; --npcnow-ink:#1A1A1A;
+  --pc:#577BFF; --neutral:#7E8493; --danger:#C9344C; --chip:#ECECE0; --ok:#6B8B3F; --mid:#E8A400; --crit:#C9344C;
+  --inv:#1A1A1A; --inv-ink:#F8F8F2; --timer-bg:#1A1A1A; --timer-fg:#B6C82D;
+  --sp-dmg:#FFE3DB; --sp-dmg-ink:#8E1B2E; --sp-heal:#E8F0CF; --sp-heal-ink:#3F5A1E; --sp-temp:#DDE5FF; --sp-temp-ink:#2447C9;
+  --sp-cond:#F6F1C4; --sp-cond-ink:#5C5200; --sp-npc:#FFEFEE; --sp-on:#EEF2FF; --sp-shadow:#1A1A1A;
+  --npc:#EE4B45; --npcnow:#EE4B45;
+}
+:root[data-skin="sparkd"]{
+  --page:#000A08; --bg:#000A08; --field:#0C1210; --panel:#121715; --panel2:#1A211E; --line:#DCDCD2;
+  --text:#F8F8F2; --muted:#9DA39B; --page-text:#F8F8F2; --rule:#F8F8F2;
+  --now:#6B8BFF; --now-ink:#FFFFFF; --now-text:#9DB2FF; --next-ink:#0D120B; --npcnow-ink:#14100E;
+  --pc:#6B8BFF; --neutral:#8E968F; --danger:#FF8294; --chip:#1E2623; --ok:#A5C25A; --mid:#F0B232; --crit:#FF8294;
+  --inv:#F8F8F2; --inv-ink:#0B0F0D; --timer-bg:#B6C82D; --timer-fg:#0D120B;
+  --sp-dmg:#3A1A20; --sp-dmg-ink:#FFA3B1; --sp-heal:#26331A; --sp-heal-ink:#C8DE86; --sp-temp:#1B2750; --sp-temp-ink:#AEBFFF;
+  --sp-cond:#38320F; --sp-cond-ink:#E8DB74; --sp-npc:#2A1313; --sp-on:#16203F; --sp-shadow:rgba(220,220,210,.30);
+  --npc:#FF5C57; --npcnow:#FF5C57;
+}
+:root[data-skin^="spark"] body{font-weight:400}
+:root[data-skin^="spark"] :is(.row,.lnav,.dock,.ctl,.qrmodal,.drawer,.mem,.sheet,.cpanel,.aoerow,.rowmenu,.pcard,.ph-row,.clopt,.skinbtn){border:var(--bw) solid var(--line);border-radius:16px;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+:root[data-skin^="spark"] :is(.lnav,.dock,.ctl){background:var(--panel)}
+:root[data-skin^="spark"] .row{background:var(--panel)}
+:root[data-skin^="spark"] .row::before{display:none}
+:root[data-skin^="spark"] .row>.who{padding-left:6px}
+:root[data-skin^="spark"] .row{--side:var(--pc);box-shadow:inset 10px 0 0 0 var(--side),5px 5px 0 color-mix(in srgb,var(--side) 40%,transparent)}
+:root[data-skin^="spark"] .row.npc{--side:var(--npc)}
+:root[data-skin^="spark"] .row.neutral{--side:var(--neutral-side)}
+:root[data-skin^="spark"] .row.ally{--side:var(--ok)}
+/* the current turn: a full outline all the way round, plus the shadow, both in the side colour */
+:root[data-skin^="spark"] .row.now{background:color-mix(in srgb,var(--side) 8%,var(--panel));animation:none}
+:root[data-skin^="spark"] .row.now::after{border:var(--bw) solid var(--line);top:-17px}
+:root[data-skin^="spark"] :is(.lnav,.dock,.ctl,.qrmodal,.mem,.sheet){box-shadow:4px 4px 0 var(--sp-shadow)}
+:root[data-skin^="spark"] .qrmodal{box-shadow:6px 6px 0 var(--sp-shadow)}
+/* the Combat Monitor and Player screens: the same shadow, enemies shaded red */
+:root[data-skin^="spark"] .pcard{--side:var(--pc);box-shadow:.4em .4em 0 color-mix(in srgb,var(--side) 55%,transparent)}
+:root[data-skin^="spark"] .pcard.npc{--side:var(--npc)}
+:root[data-skin^="spark"] .pcard.neutral{--side:var(--neutral)}
+:root[data-skin^="spark"] .pcard.ally{--side:var(--ok)}
+:root[data-skin^="spark"] .pcard.npc:not(.now){background:color-mix(in srgb,var(--npc) 16%,var(--panel));border-color:var(--npc)}
+:root[data-skin^="spark"] .pcard.now{border-color:var(--now);border-width:.2em;box-shadow:.55em .55em 0 var(--now)}
+:root[data-skin^="spark"] .pcard.npc.now{background:color-mix(in srgb,var(--npc) 11%,var(--panel))}
+:root[data-skin^="spark"] .ph-row{--side:var(--pc);box-shadow:4px 4px 0 color-mix(in srgb,var(--side) 55%,transparent)}
+:root[data-skin^="spark"] .ph-row.npc{--side:var(--npc);background:color-mix(in srgb,var(--npc) 15%,var(--panel));border-color:var(--npc)}
+:root[data-skin^="spark"] .ph-row.neutral{--side:var(--neutral)}
+:root[data-skin^="spark"] .ph-row.now{background:var(--panel);box-shadow:0 0 0 3px var(--now),8px 8px 0 var(--now)}
+:root[data-skin^="spark"] .ph-row.now.npc{background:color-mix(in srgb,var(--npc) 8%,var(--panel));box-shadow:0 0 0 3px var(--npcnow),8px 8px 0 var(--npcnow)}
+:root[data-skin^="spark"] .ph-row.nxt{box-shadow:inset 0 -6px 0 var(--next),4px 4px 0 color-mix(in srgb,var(--side) 55%,transparent)}
+/* buttons: lowercase-free, tracked, nudged to sit dead centre */
+:root[data-skin^="spark"] :is(.btn,.icon){background:var(--panel);border:var(--bw) solid var(--line);border-radius:8px;font-family:var(--fd);font-weight:700;font-size:12.5px;line-height:1.2;letter-spacing:.05em;text-transform:uppercase;color:var(--text);padding:calc(9px + var(--nudge)) 18px calc(9px - var(--nudge))}
+:root[data-skin^="spark"] :is(.btn.small,.icon){padding:calc(6px + var(--nudge)) 13px calc(6px - var(--nudge));font-size:12px}
+:root[data-skin^="spark"] :is(.btn,.icon):hover:not(:disabled){background:var(--next);color:var(--next-ink);border:var(--bw) solid var(--line);transform:translateY(-2px)}
+:root[data-skin^="spark"] .btn.ghost{background:transparent}
+:root[data-skin^="spark"] .btn.primary{background:var(--accent);color:var(--accent-ink)}
+:root[data-skin^="spark"] .btn.primary:hover:not(:disabled){background:color-mix(in srgb,var(--accent) 82%,#000);color:var(--accent-ink)}
+:root[data-skin^="spark"] .btn.dmg,:root[data-skin^="spark"] .btn.dmg:hover:not(:disabled){background:var(--sp-dmg);color:var(--sp-dmg-ink)}
+:root[data-skin^="spark"] .btn.heal,:root[data-skin^="spark"] .btn.heal:hover:not(:disabled){background:var(--sp-heal);color:var(--sp-heal-ink)}
+:root[data-skin^="spark"] .btn.temp,:root[data-skin^="spark"] .btn.temp:hover:not(:disabled){background:var(--sp-temp);color:var(--sp-temp-ink)}
+:root[data-skin^="spark"] .btn.cond,:root[data-skin^="spark"] .btn.cond:hover:not(:disabled){background:var(--sp-cond);color:var(--sp-cond-ink)}
+:root[data-skin^="spark"] .rxbtn{background:var(--sp-heal);color:var(--sp-heal-ink)}
+:root[data-skin^="spark"] .rxbtn.used{background:var(--panel2);color:var(--muted)}
+:root[data-skin^="spark"] .rxbtn.held{background:var(--next);color:var(--next-ink)}
+:root[data-skin^="spark"] .btn.iconbtn{padding:0;border-radius:10px}
+:root[data-skin^="spark"] .bgrp{gap:0}
+:root[data-skin^="spark"] .bgrp .btn.half{margin-left:calc(-1*var(--bw))}
+:root[data-skin^="spark"] .seg{background:var(--panel);border:var(--bw) solid var(--line);border-radius:10px;padding:0;gap:0}
+:root[data-skin^="spark"] .seg button{border-radius:0;font-family:var(--fd);font-weight:700;letter-spacing:.04em;text-transform:uppercase;font-size:11.5px;color:var(--text);padding:calc(6px + var(--nudge)) 12px calc(6px - var(--nudge))}
+:root[data-skin^="spark"] .seg.sm button{padding:calc(4px + var(--nudge)) 9px calc(4px - var(--nudge))}
+:root[data-skin^="spark"] .seg button+button{border-left:var(--bw) solid var(--line)}
+:root[data-skin^="spark"] .seg button[aria-checked="true"]{background:var(--now);color:#fff;box-shadow:none}
+:root[data-skin^="spark"] .kseg button[aria-checked="true"][data-kind="dmg"]{background:var(--sp-dmg-solid);color:#fff}
+:root[data-skin^="spark"] .kseg button[aria-checked="true"][data-kind="heal"]{background:var(--sp-heal-solid);color:#fff}
+:root[data-skin^="spark"] .kseg button[aria-checked="true"][data-kind="temp"]{background:var(--accent);color:#fff}
+:root[data-skin^="spark"] .aoeapply.dmg{background:var(--sp-dmg-solid);color:#fff}
+:root[data-skin^="spark"] .aoeapply.heal{background:var(--sp-heal-solid);color:#fff}
+:root[data-skin^="spark"] .aoeapply.temp{background:var(--accent);color:#fff}
+:root[data-skin^="spark"] :is(input:not([type=checkbox]):not([type=radio]):not([type=file]),select,textarea){background:var(--field);border:var(--bw) solid var(--line);border-radius:8px}
+:root[data-skin^="spark"] :is(input,select,textarea):focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 28%,transparent)}
+/* names carry the screen */
+:root[data-skin^="spark"] .nm{font-weight:800;letter-spacing:.005em;line-height:1.1}
+:root[data-skin^="spark"] .pname b{font-size:17px;font-weight:700}
+:root[data-skin^="spark"] .stat b{font-size:19px;font-weight:700}
+:root[data-skin^="spark"] :is(.dsec h3,.dhead h2,.status .rn,.mgrp>span){text-transform:uppercase;letter-spacing:.04em;font-weight:800}
+:root[data-skin^="spark"] .brand{font-family:var(--fd);font-weight:800;letter-spacing:.07em;text-transform:uppercase}
+:root[data-skin^="spark"] :is(.tag,.chip,.dispchip,.chipbtn,.svchip){border:var(--bw) solid var(--line);color:var(--text)}
+:root[data-skin^="spark"] :is(.tag,.dispchip){padding-top:calc(2px + .10em);padding-bottom:calc(2px - .10em)}
+:root[data-skin^="spark"] .tag.now{background:var(--now);color:#fff}
+:root[data-skin^="spark"] .tag.nxt{background:var(--next);color:var(--next-ink)}
+:root[data-skin^="spark"] .bar{background:var(--panel);border:var(--bw) solid var(--line);height:12px}
+:root[data-skin^="spark"] .aoerow.on{background:var(--sp-on);box-shadow:none;border-color:var(--now)}
+:root[data-skin^="spark"] .scrim{background:rgba(0,0,0,.45);backdrop-filter:none}
+:root[data-skin^="spark"] .pcard{background:var(--panel)}
+:root[data-skin^="spark"] .toast{border-radius:10px}
+:root[data-skin="medieval"] .row::before{display:none}

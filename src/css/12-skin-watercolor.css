@@ -1,0 +1,57 @@
+/* Watercolor: ink outlines, gold frames and soft watercolor washes on warm paper.
+   Palette sampled from the reference art: blue wash #6A9FC1, deep blue #305B6C, red #B82B3C / #E2422C,
+   ink #231C26, gold frame #C9A46B, paper #FBF7EF. */
+:root[data-skin="watercolor"]{
+  --page:#F4EEE2; --bg:#F4EEE2; --field:#FFFDF8; --panel:#FDFAF3; --panel2:#F3EBDC; --line:#C9A46B;
+  --text:#231C26; --muted:#4F433E; --page-text:#231C26; --rule:#C9A46B;
+  --now:#C08A2B; --now-ink:#231C26; --now-text:#8A5E12; --next:#3F87A8; --next-ink:#FFFFFF;
+  --pc:#3F7FB0; --npc:#B82B3C; --npcnow:#B82B3C; --npcnow-ink:#FFFFFF; --neutral:#8C7A6B; --wound:#7FA35A;
+  --danger:#B82B3C; --chip:#EFE5D2; --ok:#3F8A5E; --mid:#C9892B; --crit:#B82B3C;
+  --inv:#231C26; --inv-ink:#FBF7EF; --timer-bg:#231C26; --timer-fg:#F2D49A; --accent:#305B6C; --accent-ink:#FFFDF8;
+  --fd:"Kalam","Patrick Hand",cursive; --fb:"Inter",system-ui,sans-serif;
+  --ink:#231C26; --gold:#C9A46B;
+  /* paper grain and a mottled wash, both drawn with SVG noise */
+  --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .28 0 0 0 0 .2 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
+  --mottle:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='520' height='360'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.008 .014' numOctaves='3' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.3 -.45'/%3E%3C/filter%3E%3Crect width='520' height='360' filter='url(%23m)'/%3E%3C/svg%3E");
+  --pool:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='420'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.006 .011' numOctaves='4' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .16 0 0 0 0 .1 0 0 0 0 .1 .9 0 0 0 -.36'/%3E%3C/filter%3E%3Crect width='600' height='420' filter='url(%23p)'/%3E%3C/svg%3E");
+  --pool-soft:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='420'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.006 .011' numOctaves='4' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .16 0 0 0 0 .1 0 0 0 0 .1 .3 0 0 0 -.15'/%3E%3C/filter%3E%3Crect width='600' height='420' filter='url(%23p)'/%3E%3C/svg%3E");
+  --bloom:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='460' height='340'%3E%3Cfilter id='b'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012 .018' numOctaves='3' seed='11' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1.8 0 0 0 -.4'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='discrete' tableValues='0 0 0 0 0 .1 .2 .32'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='460' height='340' filter='url(%23b)'/%3E%3C/svg%3E");
+  --page-img:var(--grain),radial-gradient(ellipse 60% 45% at 6% 0%,rgba(106,159,193,.30),transparent 70%),radial-gradient(ellipse 55% 45% at 100% 100%,rgba(184,43,60,.16),transparent 70%),linear-gradient(#F6F0E4,#F1E9DA);
+}
+:root[data-skin="watercolor"] body{background:var(--page-img);background-attachment:fixed;color:var(--ink)}
+/* every panel: paper with an ink outline */
+:root[data-skin="watercolor"] :is(.lnav,.top,.ctl,.dock,.row,.qrmodal,.drawer,.rowmenu,.libmodal,.addmodal,.aoemodal,.clopt,.cpanel,.sheet){
+  background-color:var(--panel);background-image:var(--grain);border:1.5px solid var(--ink);box-shadow:3px 4px 0 rgba(35,28,38,.10)}
+/* combatant cards: a watercolor wash in the side colour, ink outline and a thin gold frame inside it */
+:root[data-skin="watercolor"] .row{--wash:#6A9FC1;background-color:color-mix(in srgb,var(--wash) 16%,var(--panel));
+  background-image:var(--bloom),var(--pool-soft),var(--grain);background-size:460px 340px,600px 420px,240px 240px;
+  border:1.5px solid var(--ink);box-shadow:inset 0 0 0 4px var(--panel),inset 0 0 0 5.5px var(--gold),inset 0 0 22px color-mix(in srgb,var(--wash) 16%,transparent),3px 4px 0 rgba(35,28,38,.10)}
+:root[data-skin="watercolor"] .row.npc{--wash:#E2422C}
+:root[data-skin="watercolor"] .row.neutral{--wash:#B9A88F}
+:root[data-skin="watercolor"] .row :is(.pool-none){}
+:root[data-skin="watercolor"] .row::before{display:none}
+:root[data-skin="watercolor"] .row.now{background-image:var(--bloom),var(--pool-soft),var(--grain);background-size:460px 340px,600px 420px,240px 240px;background-color:color-mix(in srgb,var(--wash) 22%,var(--panel));
+  box-shadow:inset 0 0 0 4px var(--panel),inset 0 0 0 7px var(--now),inset 0 0 24px color-mix(in srgb,var(--wash) 20%,transparent),0 0 0 3px color-mix(in srgb,var(--now) 35%,transparent),3px 6px 0 rgba(35,28,38,.14);animation:none}
+:root[data-skin="watercolor"] :is(.nm,.brand,.rn,.rn *,.pcard h3,.dhead b,h1,h2,h3,h4,.row [data-f=name]){font-family:"Kalam",cursive!important;font-weight:700!important;letter-spacing:.01em}
+:root[data-skin="watercolor"] :is(.nm,.row [data-f=name]){font-size:1.25em;color:var(--ink)}
+/* buttons: ink-outlined, flat paper or a wash of colour */
+:root[data-skin="watercolor"] .btn{border:1.5px solid var(--ink);box-shadow:1.5px 2px 0 rgba(35,28,38,.18)}
+:root[data-skin="watercolor"] .btn.primary{background:var(--accent) var(--mottle);color:var(--accent-ink)}
+:root[data-skin="watercolor"] .bar{background:#EFE5D2;border:1px solid var(--ink)}
+/* Combat Monitor: big washes, ink outline, gold frame, hand-lettered names */
+:root[data-skin="watercolor"] .pcard{background-image:var(--bloom),var(--pool-soft),var(--grain)!important;background-size:460px 340px,600px 420px,240px 240px!important;border:2px solid var(--ink)!important;
+  box-shadow:inset 0 0 0 .25em var(--panel),inset 0 0 0 .36em var(--gold),inset 0 0 2em rgba(35,28,38,.10),.15em .2em 0 rgba(35,28,38,.15)}
+:root[data-skin="watercolor"] .pcard.pc:not(.now){background-color:color-mix(in srgb,#6A9FC1 32%,var(--panel))!important}
+:root[data-skin="watercolor"] .pcard.npc:not(.now){background-color:color-mix(in srgb,#E2422C 31%,var(--panel))!important}
+:root[data-skin="watercolor"] .pcard.npc:not(.now) :is(h3,.pstat,.hpword,small){color:#2A0A0E}
+:root[data-skin="watercolor"] .pcard.now{background-color:var(--panel)!important;box-shadow:inset 0 0 0 .25em var(--panel),inset 0 0 0 .5em var(--now),0 0 0 .3em color-mix(in srgb,var(--now) 30%,transparent),.2em .3em 0 rgba(35,28,38,.18)}
+:root[data-skin="watercolor"] .pcard h3{color:var(--ink)}
+:root[data-skin="watercolor"] .pcard.now{background-image:var(--bloom),var(--grain)!important;background-size:460px 340px,240px 240px!important}
+/* text on the strong washes stays dark ink; the words still carry the meaning */
+:root[data-skin="watercolor"] .pcard:not(.now) :is(.php,.player,small,.hpword,.hw,[class*=health],[class*=word],[class*=rx],.pstat,.mut,.muted){color:#231C26!important;border-color:#231C26!important}
+:root[data-skin="watercolor"] .pcard.npc:not(.now) :not(svg):not(svg *):not(.flag){color:#2A0A0E!important}
+:root[data-skin="watercolor"] .pcard.npc:not(.now){box-shadow:inset 0 0 0 .25em var(--panel),inset 0 0 0 .36em var(--gold),inset 0 0 1.2em rgba(184,43,60,.18),.15em .2em 0 rgba(35,28,38,.15)!important}
+:root[data-skin="watercolor"] .pcard.pc:not(.now){box-shadow:inset 0 0 0 .25em var(--panel),inset 0 0 0 .36em var(--gold),inset 0 0 1.2em rgba(48,91,108,.16),.15em .2em 0 rgba(35,28,38,.15)!important}
+:root[data-skin="watercolor"] .pcard.pc:not(.now) :not(svg):not(svg *):not(.flag):not(.rxchip):not([class*=badge]){color:#1C2430!important}
+/* group members sit on the card colour, like a single creature */
+:root[data-skin="watercolor"] .row .mem{background-color:color-mix(in srgb,var(--wash) 16%,var(--panel))}

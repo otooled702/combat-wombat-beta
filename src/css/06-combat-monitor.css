@@ -1,0 +1,163 @@
+/* ============================================================
+   Combat Monitor
+   The read-only table view for the second monitor.
+   ============================================================ */
+
+body.players{overflow:hidden}
+body.players.live{cursor:none}
+.pwrap{--u:min(calc(100vw / 1920), calc(100vh / 720));--gap:calc(var(--u)*28);flex:1;min-height:0;display:flex;flex-direction:column;gap:calc(var(--u)*16);padding:calc(var(--u)*18) calc(var(--u)*28)}
+.phead{display:flex;align-items:center;height:calc(var(--u)*44);flex:none}
+.rndbadge{display:inline-flex;align-items:center;gap:calc(var(--u)*10);height:100%;padding:0 calc(var(--u)*22);border-radius:99px;background:var(--panel);border:calc(var(--u)*2) solid var(--line);font-size:calc(var(--u)*22);font-weight:600;color:var(--muted)}
+.rndbadge b{font-family:var(--fd);font-weight:800;font-size:1.5em;line-height:1;color:var(--now)}
+.pgrid{flex:1;min-height:0;display:flex;gap:var(--gap);justify-content:center;font-size:calc(var(--u)*var(--fs)*var(--fscale,1))}
+.pcard{position:relative;display:flex;flex-direction:column;gap:.35em;padding:.7em .85em .8em;border-radius:1em;background:var(--panel);
+  border:.14em solid var(--line);min-width:0;min-height:0;flex:var(--w,1) 1 0;max-width:calc(var(--u)*340*var(--w,1));height:auto}
+.pcard.now{z-index:2;border-color:var(--now);border-width:.2em;
+  background:color-mix(in srgb,var(--now) 9%,var(--panel));animation:pulse 2.8s ease-in-out infinite}
+.pcard.next::after{content:"";position:absolute;left:-.34em;right:-.34em;bottom:-.34em;top:50%;border:.34em solid var(--next);border-top:0;border-radius:0 0 1.2em 1.2em;pointer-events:none}
+.rflag{position:absolute;z-index:3;font-weight:700;font-size:1em;line-height:1;padding:.45em .85em;border-radius:99px;background:var(--inv);color:var(--inv-ink);white-space:nowrap}
+.pcard.now.npc{--now:var(--npcnow);--now-ink:var(--npcnow-ink)}
+.pcard.now.npc .ptimer{background:rgba(0,0,0,.45);color:#fff}
+.pcard.npc:not(.now){background:color-mix(in srgb,var(--npc) 17%,var(--panel));border-color:color-mix(in srgb,var(--npc) 40%,var(--line))}
+.pcard.down{filter:saturate(.35);opacity:.6}
+.ptop{display:flex;flex-wrap:wrap;align-items:center;gap:.4em .5em;min-height:1.8em}
+.ptop .grow{flex:1}
+.flag{font-weight:700;font-size:.85em;border-radius:99px;padding:.1em .75em}
+.flag.now{background:var(--now);color:var(--now-ink)}
+.flag.nxt{background:var(--next);color:var(--next-ink)}
+.ptimer{font-family:var(--fb);font-weight:700;font-size:1.25em;font-variant-numeric:tabular-nums;line-height:1;
+  background:var(--timer-bg);color:var(--timer-fg);border-radius:99px;padding:.15em .6em}
+.ptimer.low,.ptimer.over{background:var(--danger);color:#fff}
+.ptimer.paused{opacity:.55}
+.pcard h3{margin:0;font-family:var(--fd);font-weight:800;font-size:1.7em;line-height:1.05;overflow-wrap:anywhere;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pcard .player{margin:0;font-size:1em;color:var(--muted);font-weight:500}
+.php{display:grid;gap:.25em;margin-top:.15em}
+.php .nums{font-weight:700;font-size:1.25em;line-height:1}
+.php .nums em{font-style:normal;font-size:.62em;font-weight:700;color:var(--pc);background:color-mix(in srgb,var(--pc) 22%,transparent);border-radius:99px;padding:.1em .55em;margin-left:.3em;white-space:nowrap}
+.php .nums span{color:var(--muted);font-weight:500;font-size:.8em}
+/* health words sit on a chip in the card's base colour, so they read on any card colour; the health colour is the dot */
+.php .state,.mems .ms,.ph-word{display:inline-flex;align-items:center;gap:.4em;width:max-content;font-weight:700;color:var(--text);background:var(--panel);border-radius:99px;padding:.1em .6em .1em .45em;box-shadow:0 0 0 1px color-mix(in srgb,var(--text) 18%,transparent)}
+.php .state{font-size:1.1em}
+.php .state::before,.mems .ms::before,.ph-word::before{content:"";flex:none;width:.62em;height:.62em;border-radius:50%;background:var(--ok);box-shadow:0 0 0 1px color-mix(in srgb,var(--text) 35%,transparent)}
+:is(.php .state,.mems .ms,.ph-word).mid::before{background:var(--mid)}
+:is(.php .state,.mems .ms,.ph-word):is(.crit,.zero)::before{background:var(--crit)}
+.pcard .bar{height:.55em}
+.pconds{padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:.3em;min-height:0}
+.pconds li{background:var(--chip);border-radius:.55em;padding:.12em .55em;font-size:.88em;line-height:1.15}
+.pconds b{font-weight:700}
+.pconds small{display:block;color:var(--muted);font-size:.74em}
+.pcard.cur{height:auto;font-size:1.2em}
+.rnd{font-size:.8em;font-weight:600;color:var(--muted)}
+.cgroup{display:flex;flex-direction:column;justify-content:center;gap:var(--gap);flex:.75 1 0;min-width:0;max-width:calc(var(--u)*260);height:auto}
+.pcard.small{flex:1 1 0;height:auto;max-height:calc((100% - var(--gap)) / 2);max-width:none;font-size:.8em;padding:.5em .65em}
+.pcard.small .pconds small{display:none}
+.cgroup .pcard.small:only-child{max-height:none}
+.rdiv{flex:0 0 0;align-self:stretch;position:relative}
+.rdiv::before{content:"";position:absolute;top:0;bottom:0;left:-.1em;border-left:.2em dashed var(--rule)}
+.rdiv .rflag{top:50%;left:0;transform:translate(-50%,-50%);writing-mode:vertical-rl;padding:.85em .45em}
+.pempty{flex:1;place-items:center;color:var(--page-text,var(--muted));font-family:var(--fd);font-size:calc(var(--u)*34)}
+.rdychip{background:var(--next);color:var(--next-ink)}
+.rdychip small{color:inherit;opacity:.8}
+.gx{font-size:.6em;font-weight:700;color:var(--muted);margin-left:.35em;white-space:nowrap}
+.mems{display:grid;gap:.3em;margin-top:.2em;min-height:0;overflow:hidden}
+.mems.chips{display:flex;flex-wrap:wrap}
+.mems .m{display:flex;align-items:center;gap:.5em}
+.mems .mn{min-width:1.6em;height:1.6em;display:inline-grid;place-items:center;border-radius:99px;background:var(--panel2);font-weight:700;font-size:.85em}
+.mems .bar{flex:1;height:.55em}
+.mems .mv{font-weight:700;font-size:.95em;min-width:1.6em;text-align:right}
+.mems .mv em{font-style:normal;font-size:.75em;color:var(--pc);margin-left:.2em}
+.mems .ms{font-size:.9em}
+.mems .m.dead{opacity:.45}
+.mems .m.dead .mn{text-decoration:line-through}
+.prx{margin-top:.05em}
+.rxpip{display:inline-block;font-size:.8em;font-weight:700;border-radius:99px;padding:.05em .7em;border:.12em solid currentColor}
+.rxpip.ready{color:var(--ok)}
+.rxpip.used{color:var(--muted);text-decoration:line-through}
+.rxpip.held{color:var(--now-text)}
+.rdy{margin-top:.25em;background:var(--inv);color:var(--inv-ink);border-radius:.5em;padding:.2em .6em;font-size:.88em;font-weight:700;line-height:1.2}
+.dsv{display:flex;align-items:center;gap:.5em;flex-wrap:wrap;font-weight:700;font-size:.95em;margin-top:.2em}
+.dsv .pips{font-size:1.25em;letter-spacing:.1em}
+.dsv .dlab.ok{color:var(--ok)}
+.dsv .dlab.bad{color:var(--crit)}
+.pcard.dying:not(.now){border-color:var(--crit)}
+.pcard.neutral{border-color:color-mix(in srgb,var(--neutral) 70%,var(--line))}
+.dsv.big{flex-direction:column;align-items:flex-start;gap:.1em;font-size:1.3em;padding:.4em .55em;border-radius:.6em;background:color-mix(in srgb,var(--crit) 22%,transparent);border:.12em solid var(--crit)}
+.dsv.big .pips{font-size:2em;line-height:1.1}
+.pac{position:relative;width:2.1em;height:2.45em;display:inline-grid;place-items:center;align-content:center;clip-path:polygon(0 0,100% 0,100% 62%,50% 100%,0 62%);background:var(--text);flex:none}
+.pac::before{content:"";position:absolute;inset:.1em;clip-path:polygon(0 0,100% 0,100% 62%,50% 100%,0 62%);background:var(--panel)}
+.pac.modded{background:var(--now)}
+.pac b,.pac small{position:relative;z-index:1;line-height:1}
+.pac b{font-family:var(--fd);font-weight:800;font-size:1em;margin-top:-.15em}
+.pac small{font-size:.5em;font-weight:700;color:var(--muted);margin-top:.1em}
+:is(.php .state,.mems .ms,.ph-word).wound::before{background:var(--wound)}
+.pcard .flag{position:absolute;top:0;left:50%;transform:translate(-50%,-55%);z-index:6;font-size:1.05em;padding:.24em 1.15em;box-shadow:0 .15em .5em rgba(0,0,0,.45);white-space:nowrap;letter-spacing:.02em}
+.pcard:not(.cur){transform:scale(.9)}
+.pimg{flex:1 1 0;margin-top:.3em;border-radius:.6em;overflow:hidden;background:var(--panel2)}
+.pimg img{display:block;width:100%;height:100%;object-fit:cover}
+.shine{position:absolute;inset:0;overflow:hidden;border-radius:inherit;pointer-events:none;z-index:4}
+.shine::after{content:"";position:absolute;top:-10%;bottom:-10%;width:36%;left:-50%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.65),transparent);transform:skewX(-18deg);animation:shineSweep .95s .08s ease-out forwards}
+@keyframes shineSweep{to{left:140%}}
+.pconds li.ended{background:color-mix(in srgb,var(--ok) 26%,var(--chip));border:.1em dashed var(--ok)}
+.pconds li.ended small{color:var(--ok);font-weight:700;font-size:.8em}
+.pconds li.ended.fresh{animation:endPop 1.4s cubic-bezier(.2,1.2,.3,1)}
+@keyframes endPop{0%{transform:scale(1.5);opacity:0;box-shadow:0 0 0 0 var(--ok)}30%{opacity:1;transform:scale(1.12);box-shadow:0 0 1em .25em var(--ok)}100%{transform:scale(1);box-shadow:0 0 0 0 transparent}}
+.endbanner{position:fixed;left:50%;bottom:calc(var(--u)*28);transform:translateX(-50%);z-index:30;max-width:92vw;background:var(--inv);color:var(--inv-ink);border:calc(var(--u)*4) solid var(--ok);padding:.35em 1.1em;border-radius:99px;font-family:var(--fb);font-weight:700;font-size:calc(var(--u)*28);box-shadow:0 .4em 1.6em rgba(0,0,0,.55);animation:bannerIn .55s cubic-bezier(.2,1.2,.3,1)}
+.endbanner b{color:var(--ok);margin-right:.25em}
+@keyframes bannerIn{from{opacity:0;transform:translate(-50%,40px)}to{opacity:1;transform:translate(-50%,0)}}
+@media (prefers-reduced-motion:reduce){.pconds li.ended.fresh,.endbanner{animation:none}}
+.tvqr{position:fixed;right:calc(var(--u)*22);bottom:calc(var(--u)*22);z-index:25;background:#fff;color:#111;border-radius:calc(var(--u)*12);padding:calc(var(--u)*8);text-align:center;font:700 calc(var(--u)*15) var(--fb);box-shadow:0 .4em 1.2em rgba(0,0,0,.5)}
+.tvqr svg{width:calc(var(--u)*118);height:calc(var(--u)*118);display:block}
+.fx{position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:7}
+.fx.hit{background:radial-gradient(ellipse at center,rgba(255,60,60,.7),rgba(255,60,60,.28) 58%,transparent 80%);animation:fxFade .65s ease-out forwards}
+.fx.heal{background:radial-gradient(ellipse at center,rgba(70,255,170,.6),rgba(70,255,170,.22) 58%,transparent 80%);animation:fxFade .8s ease-out forwards}
+@keyframes fxFade{from{opacity:1}to{opacity:0}}
+.fxnum{position:absolute;left:50%;top:34%;z-index:8;pointer-events:none;font-family:var(--fd);font-weight:800;font-size:2.2em;text-shadow:0 .08em .25em rgba(0,0,0,.7);animation:fxRise 1.2s ease-out forwards}
+.fxnum.hit{color:#ff6b6b}
+.fxnum.heal{color:#6bffb0}
+@keyframes fxRise{0%{opacity:0;transform:translate(-50%,.4em) scale(.7)}15%{opacity:1;transform:translate(-50%,0) scale(1.15)}100%{opacity:0;transform:translate(-50%,-1.6em) scale(1)}}
+.sfxpill{position:fixed;left:calc(var(--u)*22);bottom:calc(var(--u)*22);z-index:26;cursor:pointer;background:var(--inv);color:var(--inv-ink);border:0;border-radius:99px;padding:calc(var(--u)*9) calc(var(--u)*18);font:700 calc(var(--u)*18) var(--fb);box-shadow:0 .3em 1em rgba(0,0,0,.5)}
+.rolemark{font-size:.66em;font-weight:700;padding:.1em .6em;border:.12em solid currentColor;border-radius:99px;white-space:nowrap;color:var(--muted)}
+.cb .flag{border:.12em solid currentColor}
+.viewbtn{position:fixed;top:calc(8px + env(safe-area-inset-top,0px));right:10px;z-index:60;opacity:.35;background:var(--inv);color:var(--inv-ink);border:0;border-radius:99px;min-height:40px;padding:0 18px;font:700 15px var(--fb);cursor:pointer}
+.viewbtn:hover,.viewbtn:focus-visible{opacity:1}
+.viewmenu{position:fixed;top:calc(54px + env(safe-area-inset-top,0px));right:12px;z-index:61;display:grid;gap:4px;padding:8px;background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+.viewmenu button{border:0;background:transparent;color:inherit;font:600 16px var(--fb);text-align:left;padding:8px 14px;border-radius:8px;cursor:pointer}
+.viewmenu button:hover,.viewmenu button[aria-current]{background:var(--panel2)}
+.cloudbtns{display:grid;gap:10px;margin:16px 0 8px}
+
+/* Cards size to their content, with a capped height; conditions sit directly under the player info.
+   (Creature art, when set, takes the spare room between the two.) */
+.pgrid{align-items:center}
+.pcard{align-self:center;min-height:min(100%,calc(var(--u)*290));max-height:80%}
+.pcard.cur{max-height:88%}
+.pconds{margin:.6em 0 0}
+.cgroup{align-self:center;max-height:88%}
+.pconds{overflow:visible}
+.pimg{min-height:calc(var(--u)*150)}
+.pcard.small{min-height:0;align-self:stretch}
+
+/* Phones and small tablets: a wrapped grid with larger text, instead of a shrunken TV layout.
+   The current turn leads, full width on a portrait phone. */
+@media (max-width:1000px) and (min-height:561px){
+  body.players{height:100dvh}
+  .pwrap{--u:calc(100vw / 1500);--gap:calc(var(--u)*22);padding:calc(var(--u)*22) calc(var(--u)*22) 0}
+  .pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(calc(var(--u)*330),1fr));gap:calc(var(--u)*46) var(--gap);grid-auto-rows:max-content;align-content:start;align-items:start;justify-content:stretch;overflow-y:auto;overflow-x:hidden;font-size:calc(var(--u)*30);padding:calc(var(--u)*50) calc(var(--u)*8) calc(var(--u)*110)}
+  .pcard,.pcard.small,.pcard.cur{max-width:none;max-height:none;min-height:auto;align-self:start;font-size:1em;padding:.7em .85em .8em}
+  .pcard.cur{font-size:1.1em}
+  .pcard:not(.cur){transform:none}
+  .pcard.small .pconds small{display:block}
+  .cgroup{display:contents}
+  .rdiv{grid-column:1/-1;flex:none;align-self:auto;height:calc(var(--u)*40)}
+  .rdiv::before{top:50%;bottom:auto;left:0;right:0;border-left:0;border-top:.15em dashed var(--rule)}
+  .rdiv .rflag{writing-mode:horizontal-tb;padding:.25em 1em;left:50%;top:50%}
+  .tvqr{display:none}
+  .viewbtn{top:auto;bottom:calc(12px + env(safe-area-inset-bottom,0px));right:12px}
+  .sfxpill{bottom:calc(12px + env(safe-area-inset-bottom,0px));left:12px}
+}
+@media (max-width:640px) and (min-height:561px){
+  .pwrap{--u:calc(100vw / 640)}
+  .pgrid{grid-template-columns:1fr;row-gap:calc(var(--u)*50)}
+  .pcard.cur{font-size:1.15em}
+}
+

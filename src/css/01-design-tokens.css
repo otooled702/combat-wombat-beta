@@ -1,0 +1,39 @@
+
+
+/* ============================================================
+   Design tokens
+   Colour and type variables. Skins (last section) override these.
+   ============================================================ */
+
+:root{
+  --bg:#E3E9EB; --panel:#F4F7F8; --panel2:#E8EEF0; --line:#BFCCD2;
+  --text:#16232B; --muted:#586A73;
+  --now:#6A4FD6; --now-ink:#FFFFFF; --now-text:#5B3FC4;
+  --next:#E9B800; --next-ink:#2A2000;
+  --pc:#1F7DBD; --npc:#B8334A; --danger:#B93A25;
+  --chip:#D3DEE3; --ok:#2B9A6B; --mid:#C98A0B; --crit:#C8472F; --neutral:#7B8890; --wound:#8DBA3C;
+  --fd:Alegreya,Georgia,serif; --fb:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --accent:#4468E8; --accent-ink:#FFFFFF;
+  --npcnow:#E8485A; --npcnow-ink:#fff; --inv:var(--text); --inv-ink:var(--bg);
+  --timer-bg:var(--now-ink); --timer-fg:var(--now); --rule:color-mix(in srgb,var(--text) 60%,transparent); --field:var(--bg);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1A21; --panel:#16252E; --panel2:#1D303A; --line:#2B414D;
+    --text:#EAE5D8; --muted:#8FA3AD;
+    --now:#A78BFA; --now-ink:#150B33; --now-text:#BBA5FF;
+    --next:#FFD43B; --next-ink:#2A2000;
+    --pc:#5BB8EC; --npc:#E4566C; --danger:#E8735C;
+    --chip:#243A46; --ok:#4FC3A1; --mid:#F2B134; --crit:#E0624A;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1A21; --panel:#16252E; --panel2:#1D303A; --line:#2B414D;
+  --text:#EAE5D8; --muted:#8FA3AD;
+  --now:#A78BFA; --now-ink:#150B33; --now-text:#BBA5FF;
+  --next:#FFD43B; --next-ink:#2A2000;
+  --pc:#5BB8EC; --npc:#E4566C; --danger:#E8735C;
+  --chip:#243A46; --ok:#4FC3A1; --mid:#F2B134; --crit:#E0624A;
+}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+

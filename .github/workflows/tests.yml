@@ -1,0 +1,26 @@
+# Browser tests on every push and pull request.
+name: Tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Playwright
+        run: |
+          python3 -m pip install playwright pillow
+          python3 -m playwright install --with-deps chromium
+      - name: Build
+        run: python3 build.py --check
+      - name: Full test suite
+        run: python3 tests/run_tests.py --jobs 3
+      - name: Self-test
+        run: python3 tools/selftest.py

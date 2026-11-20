@@ -1,0 +1,52 @@
+name: Bug report
+description: Something in the beta didn't work as expected.
+labels: [bug, beta]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What you saw, and what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: The clicks that lead to it, one per line.
+      placeholder: |
+        Example:
+        1. Signed in as Sam
+        2. Opened the Target window and picked Fireball
+        3. ...
+    validations:
+      required: true
+  - type: dropdown
+    id: account
+    attributes:
+      label: Test account
+      options:
+        - Sam Rivera (yearly)
+        - Riley Chen (monthly, new)
+        - Casey Moreno (no subscription)
+        - The public demo
+        - Not signed in
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Browser and device
+      description: For example Safari on iPhone 15, or Chrome on Windows.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Shown in the account menu, at the bottom of the left menu.
+  - type: textarea
+    id: shots
+    attributes:
+      label: Screenshots
+      description: Drag images here if you have them.

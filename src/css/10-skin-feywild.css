@@ -1,0 +1,52 @@
+/* ---- Feywild: wildly coloured. Violet night, neon pink, cyan and lime, everything glowing ---- */
+:root[data-skin="feywild"]{
+  --page:#12062B; --bg:#1B0B3D; --field:#22104D; --panel:#2A1360; --panel2:#371A7A; --line:#8A5CFF;
+  --text:#FFF1FF; --muted:#CDB2FF; --page-text:#FFF1FF; --rule:#FF7BE5;
+  --now:#C8FF3D; --now-ink:#1A0B3A; --now-text:#D8FF73; --next:#FFB020; --next-ink:#2A1600;
+  --pc:#33DDFF; --npc:#FF3D6E; --npcnow:#FF3D6E; --npcnow-ink:#FFFFFF; --neutral:#B79CFF; --wound:#7CFFB2;
+  --danger:#FF6B8E; --chip:#3A1D85; --ok:#4DFFA6; --mid:#FFC53D; --crit:#FF4F7B;
+  --inv:#FFF1FF; --inv-ink:#1B0B3D; --timer-bg:#C8FF3D; --timer-fg:#1A0B3A; --accent:#B14DFF; --accent-ink:#FFFFFF;
+  --fd:"Baloo 2","Quicksand",system-ui,sans-serif; --fb:"Quicksand","Inter",system-ui,sans-serif;
+  --page-img:radial-gradient(60% 50% at 12% 8%,rgba(255,61,219,.40),transparent 70%),radial-gradient(50% 45% at 92% 18%,rgba(51,221,255,.32),transparent 70%),radial-gradient(55% 55% at 78% 100%,rgba(200,255,61,.22),transparent 70%),radial-gradient(45% 40% at 5% 95%,rgba(255,176,32,.22),transparent 70%);
+}
+:root[data-skin="feywild"] body{background-attachment:fixed}
+:root[data-skin="feywild"] :is(.lnav,.dock,.ctl,.row,.pcard,.ph-row,.mem,.sheet,.qrmodal,.drawer,.rowmenu,.aoerow){border:1.5px solid color-mix(in srgb,#FF3DDB 55%,var(--line));box-shadow:0 0 0 1px rgba(51,221,255,.18),0 0 26px rgba(138,92,255,.32)}
+:root[data-skin="feywild"] .row{--side:var(--pc);box-shadow:inset 7px 0 0 var(--side),0 0 22px color-mix(in srgb,var(--side) 38%,transparent)}
+:root[data-skin="feywild"] .row.npc{--side:var(--npc)}
+:root[data-skin="feywild"] .row.neutral{--side:var(--neutral-side)}
+:root[data-skin="feywild"] .row.ally{--side:var(--ok)}
+:root[data-skin="feywild"] .row.now{background:color-mix(in srgb,var(--side) 8%,var(--panel));animation:none;box-shadow:inset 7px 0 0 var(--side),0 0 0 3px var(--now),0 0 38px color-mix(in srgb,var(--now) 60%,transparent)}
+:root[data-skin="feywild"] .row::before{display:none}
+:root[data-skin="feywild"] .pcard.now{box-shadow:0 0 0 .06em var(--now),0 0 1.6em color-mix(in srgb,var(--now) 65%,transparent)}
+:root[data-skin="feywild"] .brand{font-weight:800;letter-spacing:.01em}
+:root[data-skin="feywild"] .bword{background:linear-gradient(90deg,#FF3DDB,#FFB020,#C8FF3D,#33DDFF);-webkit-background-clip:text;background-clip:text;color:transparent}
+:root[data-skin="feywild"] .btn.primary{background:linear-gradient(135deg,#FF3DDB,#7C4DFF 55%,#33DDFF);color:#fff;box-shadow:0 0 18px rgba(255,61,219,.45)}
+:root[data-skin="feywild"] .btn.dmg{background:rgba(255,61,110,.22);color:#FFB3C6}
+:root[data-skin="feywild"] .btn.heal{background:rgba(77,255,166,.18);color:#A6FFD2}
+:root[data-skin="feywild"] .btn.temp{background:rgba(51,221,255,.18);color:#A6EEFF}
+:root[data-skin="feywild"] .btn.cond{background:rgba(255,176,32,.20);color:#FFD98A}
+:root[data-skin="feywild"] .seg button[aria-checked="true"]{background:linear-gradient(135deg,#FF3DDB,#7C4DFF);color:#fff}
+:root[data-skin="feywild"] :is(.nm,.pcard h3){font-weight:700}
+:root[data-skin="feywild"] .bar i{box-shadow:0 0 10px currentColor}
+:root[data-skin^="spark"] .kseg button{padding-left:4px;padding-right:4px;letter-spacing:.02em;font-size:11px}
+:root[data-skin^="spark"] .aoeapply.cond{background:var(--accent);color:#fff}
+:root[data-skin^="spark"] .nm{font-size:25px}
+:root[data-skin^="spark"] .brand{font-size:19px}
+:root[data-skin^="spark"] .row{box-shadow:inset 8px 0 0 0 var(--side),4px 4px 0 color-mix(in srgb,var(--side) 40%,transparent)}
+:root[data-skin^="spark"] .row.now{box-shadow:inset 8px 0 0 0 var(--side),0 0 0 4px var(--now),9px 9px 0 0 var(--now)}
+:root[data-skin^="spark"] :is(.hp .hpact .btn,.hp .bgrp .btn){padding-top:calc(6px + var(--nudge) + .04em);padding-bottom:calc(6px - var(--nudge) - .04em)}
+:root[data-skin^="spark"] :is(.prow .icon,.lhead .icon){padding-top:calc(6px + var(--nudge) + .07em);padding-bottom:calc(6px - var(--nudge) - .07em)}
+:root[data-skin^="spark"] :is(.ctl .targetbtn,.libbrowse){padding-top:7px;padding-bottom:7px}
+:root[data-skin^="spark"] .acts :is(.eyebtn,.colbtn){padding:0}
+:root[data-skin^="spark"] .btn.targetbtn{background:var(--sp-dmg-solid);color:#fff}
+:root[data-skin^="spark"] .btn.targetbtn:hover:not(:disabled){background:color-mix(in srgb,var(--sp-dmg-solid) 82%,#000);color:#fff}
+:root[data-skin^="spark"] .icon.xbtn{color:var(--sp-dmg-solid)}
+/* Combat Monitor (TV): cards not up are one size; the Now card is the same shape, 1.2x bigger */
+@media (min-width:1001px){
+  .pgrid>.pcard{box-sizing:border-box;flex:0 1 calc(var(--u)*330);max-width:none;min-height:0;max-height:none;height:auto;aspect-ratio:340/430;align-self:center;transform:none}
+  .pgrid>.pcard.cur{flex-basis:calc(var(--u)*330*1.2);aspect-ratio:340/430;font-size:1.2em}
+  .pgrid>.cgroup{box-sizing:border-box;flex:0 1 calc(var(--u)*330);max-width:none;max-height:none;aspect-ratio:340/430;align-self:center}
+  .pgrid>.cgroup>.pcard.small{aspect-ratio:auto;flex:1 1 0;min-height:0}
+}
+:root[data-skin^="spark"] :is(.btn.small,.icon){line-height:14px}
+
