@@ -1,10 +1,14 @@
-# Push a tag like v0.9.0-beta.1 to publish a release with the built files.
-# Tags with a hyphen (beta, rc) are marked as pre-releases. Notes come from docs/releases/<tag>.md.
+# Publishes the built files with a release.
+# Either push a tag like v0.9.0-beta.1 (the workflow creates the release), or create the release on
+# GitHub (website or API) and the workflow attaches the files to it. Tags with a hyphen (beta, rc) are
+# pre-releases. Notes come from docs/releases/<tag>.md.
 name: Publish release
 
 on:
   push:
     tags: ['v*']
+  release:
+    types: [published]
 
 permissions:
   contents: write
@@ -14,24 +18,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'release' && github.event.release.tag_name || github.ref }}
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - name: Build
         run: python3 build.py --check
       - name: Check the tag matches the app version
+        env:
+          TAG: ${{ github.event_name == 'release' && github.event.release.tag_name || github.ref_name }}
         run: |
           v=$(grep -oP "var APP_VERSION='\K[^']+" src/js/01-constants-and-static-data.js)
-          test "v$v" = "$GITHUB_REF_NAME" || { echo "Tag $GITHUB_REF_NAME does not match APP_VERSION $v"; exit 1; }
-      - name: Create the release
+          test "v$v" = "$TAG" || { echo "Tag $TAG does not match APP_VERSION $v"; exit 1; }
+      - name: Create the release, or add the files to it
         env:
           GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.event_name == 'release' && github.event.release.tag_name || github.ref_name }}
         run: |
-          tag="$GITHUB_REF_NAME"
-          notes="docs/releases/$tag.md"; [ -f "$notes" ] || notes=/dev/null
-          pre=""; case "$tag" in *-*) pre="--prerelease";; esac
-          cp dist/beta.html "combat-wombat-$tag-beta.html"
-          cp dist/demo.html "combat-wombat-$tag-demo.html"
-          cp dist/initiative-tracker.html "combat-wombat-$tag.html"
-          gh release create "$tag" $pre --title "Combat Wombat $tag" --notes-file "$notes" \
-            "combat-wombat-$tag-beta.html" "combat-wombat-$tag-demo.html" "combat-wombat-$tag.html"
+          cp dist/beta.html "combat-wombat-$TAG-beta.html"
+          cp dist/demo.html "combat-wombat-$TAG-demo.html"
+          cp dist/initiative-tracker.html "combat-wombat-$TAG.html"
+          files="combat-wombat-$TAG-beta.html combat-wombat-$TAG-demo.html combat-wombat-$TAG.html"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" $files --clobber
+          else
+            notes="docs/releases/$TAG.md"; [ -f "$notes" ] || notes=/dev/null
+            pre=""; case "$TAG" in *-*) pre="--prerelease";; esac
+            gh release create "$TAG" $pre --title "Combat Wombat $TAG" --notes-file "$notes" $files
+          fi
