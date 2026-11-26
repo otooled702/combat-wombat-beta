@@ -277,7 +277,7 @@ def t_privacy(b):
 def t_skins_and_settings(b):
     ctx = b.new_context(viewport={'width': 1440, 'height': 900}, reduced_motion='reduce'); dm = basic_table(ctx); nxt(dm)
     tv = page(ctx, size=(1920, 720)); tv.goto(URL + '#monitor')
-    for sk in qs(['slate', 'light', 'medieval', 'watercolor', 'water', 'forest', 'mountain', 'fire', 'spark', 'sparkd', 'frost', 'feywild']):
+    for sk in qs(['slate', 'light', 'medieval', 'water', 'forest', 'mountain', 'fire', 'spark', 'sparkd', 'frost', 'feywild']):
         sopen(dm, 'skin'); dm.click('[data-key=skin][data-val=%s]' % sk); tv.wait_for_timeout(250)
         check('skin %s applies to DM and display' % sk, dm.evaluate("document.documentElement.dataset.skin") == sk and tv.evaluate("document.documentElement.dataset.skin") == sk)
         dm.click('#drawerClose')
@@ -718,7 +718,7 @@ def t_spark(b):
     var = lambda v: dm.evaluate("v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim().toLowerCase()", v)
     sopen(dm, 'skin'); check('both Spark skins are offered', dm.locator('[data-key=skin][data-val=spark]').count() == 1 and dm.locator('[data-key=skin][data-val=sparkd]').count() == 1)
     col = lambda n: dm.eval_on_selector_all('.skincol:nth-child(%d) .skinbtn' % n, "els=>els.map(e=>e.textContent.trim())")
-    check('light skins sit on the left, dark on the right', col(1) == ['Color Spray', 'Moonlight', 'Daylight', 'Watercolor', 'Arcane', 'Frost'] and col(2) == ['Dancing Lights', 'Underdark', 'Underwater', 'Woodland', 'Mountain', 'Fire', 'Feywild'], (col(1), col(2)))
+    check('light skins sit on the left, dark on the right', col(1) == ['Color Spray', 'Moonlight', 'Daylight', 'Arcane', 'Frost'] and col(2) == ['Dancing Lights', 'Underdark', 'Underwater', 'Woodland', 'Mountain', 'Fire', 'Feywild'], (col(1), col(2)))
     check('the old names are gone', not any(x in dm.inner_text('.skins') for x in ('Spark', 'Slate', 'Medieval', 'Forest')))
     dm.click('#drawerClose')
     # the single border weight, both skins
@@ -748,7 +748,7 @@ def t_spark(b):
 
 def t_top_bar(b):
     ctx = b.new_context(viewport={'width': 1440, 'height': 900}, reduced_motion='reduce'); dm = basic_table(ctx); nxt(dm)
-    for sk in qs(('spark', 'sparkd', 'slate', 'light', 'daylight', 'medieval', 'watercolor', 'water', 'forest', 'mountain', 'fire', 'frost', 'feywild')):
+    for sk in qs(('spark', 'sparkd', 'slate', 'light', 'daylight', 'medieval', 'water', 'forest', 'mountain', 'fire', 'frost', 'feywild')):
         set_skin(dm, sk)
         boxes = dm.eval_on_selector_all('.ctl .btn:not(.hambtn)', "els=>els.map(e=>{const r=e.getBoundingClientRect(); return [Math.round(r.width), Math.round(r.height)]})")
         check('%s: combat bar buttons are a sensible size' % sk, len(boxes) == 2 and all(24 <= h <= 56 and 30 <= w <= 220 for w, h in boxes), boxes)
@@ -772,7 +772,7 @@ def hue(hexs):
 def t_palettes_and_shadows(b):
     ctx = b.new_context(viewport={'width': 1440, 'height': 900}, reduced_motion='reduce'); dm = basic_table(ctx); nxt(dm)
     var = lambda v: dm.evaluate("v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim()", v)
-    for sk in qs(('spark', 'sparkd', 'slate', 'light', 'daylight', 'medieval', 'frost', 'watercolor', 'water', 'forest', 'mountain', 'fire', 'feywild')):
+    for sk in qs(('spark', 'sparkd', 'slate', 'light', 'daylight', 'medieval', 'frost', 'water', 'forest', 'mountain', 'fire', 'feywild')):
         set_skin(dm, sk); hn, hr = hue(var('--now')), hue(var('--npc'))
         gap = 180 if hn is None else min(abs(hn - hr), 360 - abs(hn - hr))
         check('%s: the current-turn colour is clearly not the enemy red' % sk, gap >= 35, (var('--now'), var('--npc'), round(gap)))
@@ -1134,7 +1134,7 @@ def t_neutral_distinct(b):
     ctx = b.new_context(viewport={'width': 1440, 'height': 900}, reduced_motion='reduce'); dm = basic_table(ctx)
     add_npc(dm, 'Sphinx', 20, 60, disp='neutral'); add_npc(dm, 'Troll', 13, 40, qty=3, group=True); nxt(dm)      # the neutral Sphinx is up
     bg = lambda loc: rgbp(loc.evaluate("e=>getComputedStyle(e).backgroundColor"))
-    for sk in qs(('spark', 'sparkd', 'slate', 'light', 'medieval', 'frost', 'feywild', 'watercolor', 'mountain', 'fire')):
+    for sk in qs(('spark', 'sparkd', 'slate', 'light', 'medieval', 'frost', 'feywild', 'mountain', 'fire')):
         set_skin(dm, sk)
         n = bg(row(dm, 'Sphinx')); m = bg(dm.locator('.row.group .mem').first); plain = bg(row(dm, 'Alric'))
         dist = sum(abs(x - y) for x, y in zip(n, m))
@@ -1861,11 +1861,11 @@ def t_monitor_round3(b):
         pts = [im.getpixel((int(w * fx), int(h * fy))) for fx in (.3, .5, .7) for fy in (.82, .9)]
         return tuple(sum(p[i] for p in pts) // len(pts) for i in range(3))
     worst = []
-    for sk in qs(('spark', 'light', 'daylight', 'medieval', 'frost', 'sparkd', 'slate', 'watercolor', 'water', 'forest', 'mountain', 'fire', 'feywild')):
+    for sk in qs(('spark', 'light', 'daylight', 'medieval', 'frost', 'sparkd', 'slate', 'water', 'forest', 'mountain', 'fire', 'feywild')):
         set_skin(dm, sk); mon.wait_for_timeout(450)
         d = math.dist(px(mon.locator('.pcard.pc:not(.now)').first), px(mon.locator('.pcard.npc:not(.now)').first))
         if d < 50: worst.append((sk, round(d)))
-    check('player and enemy cards are clearly different colours in all 13 skins', not worst, worst)
+    check('player and enemy cards are clearly different colours in all 12 skins', not worst, worst)
     # --- Arcane's current card is calmer
     set_skin(dm, 'medieval'); mon.wait_for_timeout(500)
     r, g, bl = px(mon.locator('.pcard.now').first)
@@ -1880,7 +1880,7 @@ def t_skins_round3(b):
     check('Daylight sits with the light skins, after Moonlight', names_.index('Daylight') == names_.index('Moonlight') + 1 and 'Daylight' in [t.strip() for t in dm.locator('.skincol').first.locator('.skinbtn').all_text_contents()])
     check('the saved skin ids are unchanged', dm.locator('[data-key=skin][data-val=spark]').count() == 1 and dm.locator('[data-key=skin][data-val=sparkd]').count() == 1 and dm.locator('[data-key=skin][data-val=daylight]').count() == 1)
     pics = dm.eval_on_selector_all('.skinbtn .swp', "els=>els.map(e=>getComputedStyle(e).backgroundImage+'|'+getComputedStyle(e).backgroundColor)")
-    check('each skin has its own picture, and they are all different', len(pics) == 13 and len(set(pics)) == 13, len(set(pics)))
+    check('each skin has its own picture, and they are all different', len(pics) == 12 and len(set(pics)) == 12, len(set(pics)))
     check('a picture shows a player card, an enemy card and the Now colour', dm.eval_on_selector('.skinbtn .swp', "e=>e.querySelectorAll('i').length === 2 && e.querySelectorAll('b').length === 1"))
     # the picture's colours are the skin's own
     exp = dm.evaluate("()=>{const out={}; for(const k of SKINS){ out[k.id]=k.pv.now; } return out}") if False else None
@@ -3151,7 +3151,7 @@ CONTRAST_JS = r"""window.__contrast = function(root){
 """
 
 def t_round13(b):
-    """Canvas round: Roll for initiative, healing spells, Watercolor, Combat Wombat name, QR library bundled."""
+    """Canvas round: Roll for initiative, healing spells, skins, Combat Wombat name, QR library bundled."""
     ctx = b.new_context(viewport={'width': 1440, 'height': 900}, reduced_motion='reduce'); dm = basic_table(ctx)
     st = lambda: json.loads(dm.evaluate("localStorage.getItem('initiative-tracker-v1')"))
     cmb = lambda nm: [c for c in st()['combatants'] if c['name'] == nm][0]
@@ -3193,16 +3193,17 @@ def t_round13(b):
     check('combat healing spells start in combat, Prayer of Healing (10 minutes) does not', all(on(n) for n in ('Cure Wounds', 'Healing Word', 'Mass Cure Wounds', 'Mass Healing Word', 'Heal', 'Mass Heal', 'Power Word Heal')) and not on('Prayer of Healing'))
     check('the Library says healing spells count', 'heal' in dm.inner_text('.spintro'))
     lib_close(dm)
-    # ---- skins: Watercolor in, Chalkboard out (a saved Chalkboard becomes Underdark)
-    sopen(dm, 'skin'); check('Watercolor is offered and Chalkboard is gone', dm.locator('[data-key=skin][data-val=watercolor]').count() == 1 and dm.locator('[data-key=skin][data-val=chalk]').count() == 0)
-    dm.click('[data-key=skin][data-val=watercolor]'); dm.click('#drawerClose'); dm.wait_for_timeout(400)
-    check('Watercolor uses ink, paper and the hand-lettered font', dm.evaluate("getComputedStyle(document.documentElement).getPropertyValue('--ink').trim()") == '#231C26' and 'Kalam' in dm.evaluate("getComputedStyle(document.querySelector('.row .nm, .row [data-f=name]')).fontFamily"))
-    dm.evaluate("()=>{const s=JSON.parse(localStorage.getItem('initiative-tracker-v1')); s.settings.skin='chalk'; localStorage.setItem('initiative-tracker-v1', JSON.stringify(s));}")
-    dm.reload(); dm.wait_for_timeout(700); check('a saved Chalkboard skin opens as Underdark', dm.get_attribute('html', 'data-skin') == 'slate', dm.get_attribute('html', 'data-skin'))
+    # ---- skins: Watercolor and Chalkboard are gone; tables saved with them open in the closest skin
+    sopen(dm, 'skin'); check('Watercolor and Chalkboard are gone; Color Spray, Daylight and Frost remain', dm.locator('[data-key=skin][data-val=watercolor]').count() == 0 and dm.locator('[data-key=skin][data-val=chalk]').count() == 0 and all(dm.locator('[data-key=skin][data-val=%s]' % k).count() == 1 for k in ('spark', 'daylight', 'frost')))
+    check('there are 12 skins', dm.locator('[data-key=skin]').count() == 12, dm.locator('[data-key=skin]').count())
+    dm.click('#drawerClose'); dm.wait_for_timeout(200)
+    for old, new in (('chalk', 'slate'), ('watercolor', 'daylight')):
+        dm.evaluate("sk=>{const s=JSON.parse(localStorage.getItem('initiative-tracker-v1')); s.settings.skin=sk; localStorage.setItem('initiative-tracker-v1', JSON.stringify(s));}", old)
+        dm.reload(); dm.wait_for_timeout(700); check('a saved %s skin opens as %s' % (old, new), dm.get_attribute('html', 'data-skin') == new, dm.get_attribute('html', 'data-skin'))
     # ---- the name, and the wordmark fits next to the header buttons in every skin
     check('the page is called Combat Wombat', dm.title() == '⚔️ Combat Wombat', dm.title())
     bad = []
-    for sk in qs(('spark', 'sparkd', 'slate', 'daylight', 'watercolor', 'medieval', 'frost', 'water', 'forest', 'mountain', 'fire', 'feywild')):
+    for sk in qs(('spark', 'sparkd', 'slate', 'daylight', 'medieval', 'frost', 'water', 'forest', 'mountain', 'fire', 'feywild')):
         dm.evaluate("sk=>{const s=JSON.parse(localStorage.getItem('initiative-tracker-v1')); s.settings.skin=sk; localStorage.setItem('initiative-tracker-v1', JSON.stringify(s));}", sk)
         dm.reload(); dm.wait_for_timeout(500)
         r = dm.evaluate("()=>{const w=document.querySelector('#lnav .bword'), h=w.closest('.nhead'); const a=w.getBoundingClientRect(), c=h.getBoundingClientRect(); return {t:w.textContent, ok:a.right<=c.right-4 && w.scrollWidth<=w.clientWidth+1}}")
@@ -3283,7 +3284,7 @@ def t_round13_canvas(b):
       return [...document.querySelectorAll('.pcard .php .state')].filter(e=>e.offsetParent).map(e=>{const a=lum(rgb(getComputedStyle(e).color)), b=lum(rgb(bgOf(e))); return [e.textContent.trim(), (Math.max(a,b)+.05)/(Math.min(a,b)+.05)];});
     }"""
     low = []
-    for sk in qs(('spark', 'sparkd', 'slate', 'daylight', 'watercolor', 'medieval', 'frost', 'water', 'forest', 'mountain', 'fire', 'feywild')):
+    for sk in qs(('spark', 'sparkd', 'slate', 'daylight', 'medieval', 'frost', 'water', 'forest', 'mountain', 'fire', 'feywild')):
         dm.evaluate("sk=>{const s=JSON.parse(localStorage.getItem('initiative-tracker-v1')); s.settings.skin=sk; localStorage.setItem('initiative-tracker-v1', JSON.stringify(s));}", sk)
         tv.reload(); tv.wait_for_timeout(700)
         r = tv.evaluate(js)
@@ -3302,14 +3303,14 @@ def t_contrast_all_skins(b):
     ph.click('.ph-claimbtn:has-text("Alric")'); ph.wait_for_timeout(900)
     tv = page(ctx, size=(1920, 1080), nolocal=True); tv.goto(URL + '#monitor'); tv.wait_for_timeout(900)
     low = []
-    for sk in qs(('spark', 'light', 'daylight', 'watercolor', 'medieval', 'frost', 'sparkd', 'slate', 'water', 'forest', 'mountain', 'fire', 'feywild')):
+    for sk in qs(('spark', 'light', 'daylight', 'medieval', 'frost', 'sparkd', 'slate', 'water', 'forest', 'mountain', 'fire', 'feywild')):
         set_skin(dm, sk); tv.wait_for_timeout(700); ph.wait_for_timeout(300)
         if ph.locator('[data-pact=popclose]').count(): ph.click('[data-pact=popclose]'); ph.wait_for_timeout(200)
         for nm, pg in (('DM', dm), ('Monitor', tv), ('phone', ph)):
             pg.add_script_tag(content=CONTRAST_JS)
             for r in pg.evaluate("()=>window.__contrast()"):
                 low.append((sk, nm, r['t'], r['cr'], r['path'][:70]))
-    check('every visible text reads at 4.5:1 (large text 3:1) on the DM screen, Monitor and phone, in all 13 skins', not low, low[:12])
+    check('every visible text reads at 4.5:1 (large text 3:1) on the DM screen, Monitor and phone, in all 12 skins', not low, low[:12])
     import collections; agg = collections.defaultdict(list)
     for x in low: agg[(x[1], x[2], x[4])].append('%s %.1f' % (x[0], x[3]))
     for k, v in agg.items(): print('   LOW', k, v)
@@ -3322,6 +3323,7 @@ def t_demo(b):
     dm = page(ctx); dm.goto(durl); dm.wait_for_timeout(1000)
     check('it opens on the sample fight', names(dm) == ['Rowan', 'Mira', 'Goblin Boss', 'Goblins', 'Alric', 'Worg', 'Thorn'], names(dm))
     check('the four goblins are one group card', dm.locator('.row.group .mem').count() == 4)
+    check('the demo is in Color Spray', dm.get_attribute('html', 'data-skin') == 'spark', dm.get_attribute('html', 'data-skin'))
     check('the banner says it is a demo and nothing is saved', dm.locator('#demobar').is_visible() and 'nothing is saved' in dm.inner_text('#demobar').lower())
     # ---- the tour
     pop = dm.locator('.tourpop')
@@ -3379,6 +3381,7 @@ def t_beta_accounts(b):
     check('each account says its plan', [x.strip() for x in dm.locator('.betaplan').all_inner_texts()] == ['Yearly plan', 'Monthly plan', 'No subscription'])
     check('it warns that the accounts are shared and local', 'only in this browser' in dm.inner_text('.betalead') and 'anyone can use them' in dm.inner_text('.betalead'))
     check('the first account has focus', dm.evaluate("document.activeElement.dataset.id") == 'sam')
+    check('the sign-in screen is in Color Spray, outlined with a hard shadow', dm.get_attribute('html', 'data-skin') == 'spark' and dm.eval_on_selector('.betacard', "e=>getComputedStyle(e).boxShadow").endswith('6px 6px 0px 0px') or '6px 6px 0px' in dm.eval_on_selector('.betacard', "e=>getComputedStyle(e).boxShadow"), dm.eval_on_selector('.betacard', "e=>getComputedStyle(e).boxShadow"))
     switch = lambda: (dm.click('#betaacct .betabtn'), dm.click('[data-beta=switch]'), dm.wait_for_timeout(800))
     # Sam: subscriber with a campaign
     dm.click('.betapick[data-id=sam]'); dm.wait_for_timeout(1000)

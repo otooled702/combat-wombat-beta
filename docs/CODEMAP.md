@@ -7,7 +7,7 @@ any function in any JS file can call any other.
 
 ## JavaScript (`src/js/`)
 
-### 01-constants-and-static-data.js  (75 lines, 7 KB)
+### 01-constants-and-static-data.js  (74 lines, 7 KB)
 *1. Constants and static data*
 Constants: `SELF_SRC`, `DEMO`, `BETA`, `APP_VERSION`, `KEY`, `CONDITIONS`, `EXTRA_CONDS`, `SPELL_ROUNDS`, `COND_INFO`, `SKINS`, `SKINS_OK`, `ABIL`, `LIVE_NS`
 Functions: `skinPicHTML`
@@ -20,7 +20,7 @@ Functions: `esc`, `uid`, `clone`, `num`, `fmt`, `cap`, `baseName`, `lsGet`, `lsS
 *3. Runtime handles and UI state*
 Functions: (none at top level)
 
-### 04-state-and-persistence.js  (103 lines, 5 KB)
+### 04-state-and-persistence.js  (104 lines, 5 KB)
 *4. State and persistence*
 Constants: `LIB_OK`, `LIST_FIELDS`
 Functions: `fresh`, `normalise`, `load`, `pruneImages`, `snap`, `readImage`, `persist`, `viewHash`, `currentView`, `isPlayerWindow`, `setView`, `byId`, `cmp`
@@ -148,10 +148,9 @@ Functions: (none at top level)
 - `09-skin-frost.css`: 27 lines, 3 KB. Frost: icy, snowy, light. Frosted-glass cards on a pale blue sky with drifting snow
 - `10-skin-feywild.css`: 53 lines, 4 KB. Feywild: wildly coloured. Violet night, neon pink, cyan and lime, everything glowing
 - `11-left-menu-and-combat-bar.css`: 626 lines, 43 KB. Left menu + combat bar
-- `12-skin-watercolor.css`: 58 lines, 7 KB. 
 - `13-skin-frost-ice.css`: 16 lines, 18 KB. 
-- `14-contrast.css`: 43 lines, 2 KB. 
-- `15-demo.css`: 88 lines, 6 KB. Beta build only: test-account sign-in and the account row (27c-beta-accounts.js)
+- `14-contrast.css`: 42 lines, 2 KB. 
+- `15-demo.css`: 105 lines, 8 KB. Beta build only: test-account sign-in and the account row (27c-beta-accounts.js)
 
 ## Data (`src/data/`)
 

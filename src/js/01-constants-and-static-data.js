@@ -15,7 +15,7 @@ var DEMO=false/*@demo*/;
 /* The beta build (dist/beta.html) adds test accounts that live only in this browser: each has its own
    storage, and the "free" one behaves exactly like the demo. See 27c-beta-accounts.js. */
 var BETA=false/*@beta*/;
-var APP_VERSION='0.9.0-beta.1';
+var APP_VERSION='0.9.0-beta.2';
 var betaAcct=BETA?betaCurrent():null;
 if(betaAcct&&betaAcct.plan==='free')DEMO=true;
 var KEY=BETA?'cw-beta-'+(betaAcct?betaAcct.id:'signed-out'):(DEMO?'combat-wombat-demo':'initiative-tracker-v1');
@@ -52,7 +52,6 @@ var SKINS=[
   {id:'spark',name:'Color Spray',mode:'light',pv:{bg:'#F8F8F2',card:'#FFFFFF',now:'#577BFF',a:'#577BFF',b:'#EE4B45'}},
   {id:'light',name:'Moonlight',mode:'light',pv:{bg:'#E3E9EB',card:'#F4F7F8',now:'#6A4FD6',a:'#1F7DBD',b:'#B8334A'}},
   {id:'daylight',name:'Daylight',mode:'light',pv:{bg:'linear-gradient(160deg,#F7E9BE,#EBD08A)',card:'#FFF8E3',now:'#D4A017',a:'#2A76B5',b:'#B8402F'}},
-  {id:'watercolor',name:'Watercolor',mode:'light',pv:{bg:'radial-gradient(at 10% 0%,rgba(106,159,193,.45),transparent 60%),#F4EEE2',card:'#FDFAF3',now:'#C08A2B',a:'#3F7FB0',b:'#B82B3C'}},
   {id:'medieval',name:'Arcane',mode:'light',pv:{bg:'radial-gradient(at 50% -10%,#5A3A22,#2A1912 70%)',card:'#EDDDB3',now:'#7B3FBF',a:'#24508F',b:'#8E1B24'}},
   {id:'frost',name:'Frost',mode:'light',pv:{bg:'linear-gradient(135deg,#BFD9EE,#E8F3FB)',card:'#FFFFFF',now:'#6C5CE7',a:'#2B7BBF',b:'#D6384F'}},
   {id:'sparkd',name:'Dancing Lights',mode:'dark',pv:{bg:'#000A08',card:'#121715',now:'#6B8BFF',a:'#6B8BFF',b:'#FF5C57'}},

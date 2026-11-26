@@ -5,7 +5,7 @@
 
 A D&D 5e combat tracker in a single HTML file: a DM screen, a Combat Monitor for the TV, and a phone view for players.
 Initiative, turns, conditions, death saves, groups, a Target window (damage, attacks, saves, spells, conditions, healing),
-a library of 331 SRD creatures and 339 SRD spells, a character builder, 13 skins.
+a library of 331 SRD creatures and 339 SRD spells, a character builder, 12 skins.
 
 Creature and spell data come from the System Reference Document 5.2, © Wizards of the Coast LLC, licensed under
 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Keep the credits in the app.

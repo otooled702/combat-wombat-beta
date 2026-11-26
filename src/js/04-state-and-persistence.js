@@ -31,6 +31,7 @@ function load(){
     pruneImages(out);
     if(!(s.settings&&s.settings.skinV)){out.settings.skinV=2; if(!s.settings||!s.settings.skin||s.settings.skin==='slate')out.settings.skin='spark';}   /* Spark replaced Slate as the factory look */
     if(out.settings.skin==='chalk')out.settings.skin='slate';   /* Chalkboard was retired: Underdark is the closest dark skin */
+    if(out.settings.skin==='watercolor')out.settings.skin='daylight';   /* Watercolor was retired: Daylight is the closest light skin */
     if(SKINS_OK.indexOf(out.settings.skin)<0)out.settings.skin='spark';
     return out;
   }catch(e){} }

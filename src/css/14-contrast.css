@@ -24,7 +24,6 @@ body.dm .seg button:not([aria-checked="true"]){color:color-mix(in srgb,var(--mut
 :root[data-skin^="spark"] :is(.btn.primary,.seg button[aria-checked="true"]){background:#3F62E8}
 :root[data-skin="frost"] .btn.primary{background:color-mix(in srgb,var(--accent) 80%,#000)}
 :root:is([data-skin="light"],[data-skin="daylight"],[data-skin="slate"],[data-skin="feywild"]) :is(.stat.now.foe small,.ph-sn.now.foe small){background:color-mix(in srgb,var(--npcnow) 78%,#000)}
-:root[data-skin="watercolor"]{--next:#336F8C}
 
 /* single skins */
 :root[data-skin="frost"]{--muted:#4A687F}

@@ -7,7 +7,7 @@
 
 var Sfx=(function(){
   var ctx=null, master=null, noiseBuf=null, gestured=false, prev=null, pending=[], recent=[], lastTick=-1, buzzed=false;
-  var VOICES={slate:{w:'sine',m:1},light:{w:'sine',m:1},medieval:{w:'triangle',m:.8},watercolor:{w:'triangle',m:1.1},water:{w:'sine',m:1.25},forest:{w:'triangle',m:.9},mountain:{w:'sawtooth',m:.7,lp:1400},fire:{w:'sawtooth',m:.8,lp:2000}};
+  var VOICES={slate:{w:'sine',m:1},light:{w:'sine',m:1},medieval:{w:'triangle',m:.8},water:{w:'sine',m:1.25},forest:{w:'triangle',m:.9},mountain:{w:'sawtooth',m:.7,lp:1400},fire:{w:'sawtooth',m:.8,lp:2000}};
   var CATS={start:'sfxTurn',resolve:'sfxTurn',round:'sfxTurn',turnPc:'sfxTurn',turnFoe:'sfxTurn',hitSmall:'sfxHit',hitBig:'sfxHit',heal:'sfxHit',
             defeat:'sfxEnd',down:'sfxEnd',dsOk:'sfxEnd',dsFail:'sfxEnd',revive:'sfxEnd',nat20:'sfxEnd',dead:'sfxEnd',stable:'sfxEnd',
             condOn:'sfxCond',condOff:'sfxCond',tick:'sfxTimer',buzz:'sfxTimer'};

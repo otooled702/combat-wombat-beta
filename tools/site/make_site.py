@@ -19,8 +19,9 @@ repo = os.environ.get('GITHUB_REPOSITORY') or os.environ.get('REPO') or 'otooled
 consts = open(os.path.join(ROOT, 'src', 'js', '01-constants-and-static-data.js'), encoding='utf-8').read()
 version = re.search(r"var APP_VERSION='([^']+)'", consts).group(1)
 paths = re.search(r"var LOGO_PATHS='(.*?)';", open(os.path.join(ROOT, 'src', 'js', '12-dm-screen.js'), encoding='utf-8').read(), re.S).group(1)
-paths = (paths.replace('class="lg-k"', 'fill="#2A2012"').replace('class="lg-w"', 'fill="#FBF4DF"')
-         .replace('class="lg-g1"', 'fill="#7F7766"').replace('class="lg-g3"', 'fill="#938A76"'))
+# Color Spray colours: ink #1A1A1A on white
+paths = (paths.replace('class="lg-k"', 'fill="#1A1A1A"').replace('class="lg-w"', 'fill="#FFFFFF"')
+         .replace('class="lg-g1"', 'fill="#5E5E5E"').replace('class="lg-g3"', 'fill="#8C8C8C"'))
 logo = '<svg viewBox="0 0 136.33 142.6" role="img" aria-label="Combat Wombat">%s</svg>' % paths
 
 for f in ('beta.html', 'demo.html'):

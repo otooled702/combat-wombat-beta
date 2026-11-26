@@ -85,3 +85,20 @@ body.betasignin{background:var(--page-img,var(--bg));background-color:var(--bg);
 .betamitem:hover,.betamitem:focus-visible{background:color-mix(in srgb,var(--text) 7%,transparent)}
 body.dm.nav-min .lnav:not(.open) .betabtn{justify-content:center;border-color:transparent;padding:6px 0}
 body.dm.nav-min .lnav:not(.open) .betawho{display:none}
+
+/* ---- Color Spray (the look of every public screen): black outlines, hard offset shadows, League Spartan ---- */
+:root[data-skin^="spark"] :is(.betacard,.tourpop){border:var(--bw) solid var(--line);border-radius:16px;box-shadow:6px 6px 0 var(--sp-shadow)}
+:root[data-skin^="spark"] :is(.betacard h1,.tourpop h2,.betabrand .bword,.paymodal .payprice,.payplan b){font-family:var(--fd)}
+:root[data-skin^="spark"] .betacard h1{font-weight:800;letter-spacing:-.01em}
+:root[data-skin^="spark"] .betapick{border:var(--bw) solid var(--line);border-radius:14px;transition:box-shadow .12s,transform .12s}
+:root[data-skin^="spark"] .betapick:hover{background:var(--sp-on);box-shadow:4px 4px 0 var(--sp-shadow);transform:translate(-2px,-2px)}
+:root[data-skin^="spark"] .betaav{background:var(--accent);color:var(--accent-ink)}
+:root[data-skin^="spark"] .betaplan{background:var(--sp-heal);color:var(--sp-heal-ink);border-color:var(--line)}
+:root[data-skin^="spark"] .betaplan.p-free{background:var(--chip);color:var(--text)}
+:root[data-skin^="spark"] .betatag,:root[data-skin^="spark"] .demotag{background:var(--next);color:var(--next-ink)}
+:root[data-skin^="spark"] .demobar{background:var(--sp-on);border:var(--bw) solid var(--line);border-radius:16px;box-shadow:4px 4px 0 var(--sp-shadow)}
+:root[data-skin^="spark"] .tourspot{box-shadow:0 0 0 3px var(--accent),5px 5px 0 3px var(--sp-shadow),0 0 0 9999px rgba(10,12,18,.32)}
+:root[data-skin^="spark"] .payplan{border:var(--bw) solid var(--line)}
+:root[data-skin^="spark"] .payplan[aria-checked="true"]{border:3px solid var(--line);padding:12.5px 14.5px;background:var(--sp-on);box-shadow:4px 4px 0 var(--accent)}
+:root[data-skin^="spark"] .payck{color:var(--sp-heal-ink)}
+@media (prefers-reduced-motion:reduce){:root[data-skin^="spark"] .betapick{transition:none}:root[data-skin^="spark"] .betapick:hover{transform:none}}

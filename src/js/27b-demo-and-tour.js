@@ -120,7 +120,7 @@ var TOUR=[
   {s:'#lnav [data-nav=monitor]',t:'Put it on the TV',x:'Open the Combat Monitor on a second screen. Big, readable cards show the whole table whose turn it is.'},
   {s:'#lnav [data-act=qrOpen]',t:'Players follow on their phones',x:'Players scan a QR code and pick their character. Their phone buzzes when they’re up next and when it’s their turn.'},
   {s:'#lnav [data-act=libOpen]',t:'331 creatures, 339 spells',x:'The full SRD 5.2 bestiary and spell list. Add a creature to the fight in one tap, with its stats.'},
-  {s:'#lnav [data-act=settingsOpen]',t:'Make it yours',x:'Thirteen looks, from Daylight to Watercolor, plus sounds, timers and how much players see.'},
+  {s:'#lnav [data-act=settingsOpen]',t:'Make it yours',x:'Twelve looks, from bright Color Spray to glowing Feywild, plus sounds, timers and how much players see.'},
   {s:'#demobar [data-demo=subscribe]',t:'Keep your table',x:'Subscribe to save your party, encounters and creatures, on every device: '+DEMO_PRICE.month+' a month or '+DEMO_PRICE.year+' a year.'}
 ];
 function tourStart(){ui.tour=0; tourRender(true); try{sessionStorage.setItem(DEMO_TOUR_KEY,'1');}catch(e){}}
