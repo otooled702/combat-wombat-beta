@@ -54,6 +54,8 @@ def main():
     path = a.url.replace('file://', '')
     if a.url.startswith('file://') and not os.path.exists(path):
         print('Page not found: %s\nRun  python3 build.py  first.' % path); return 2
+    from serve import http_url
+    a.url, _srv = http_url(a.url)          # served over http: see tests/serve.py for why
     env = dict(os.environ); env['BM_QUICK'] = '1' if a.quick else ''
     logs = os.path.join(HERE, '.last-run'); os.makedirs(logs, exist_ok=True)
     chunks = [names[i:i + a.chunk] for i in range(0, len(names), a.chunk)]

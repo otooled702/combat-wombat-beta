@@ -114,7 +114,7 @@ function pubC(c){
   }
   if(c.kind==='pc'){o.ab=acBase(c);o.am=c.acMod||0;}
   if(acVisible(c)){o.ac=acTotal(c);o.ax=c.acMod?1:0;}
-  o.cd=c.conditions.map(function(cd){return {i:cd.id,n:cd.name,l:cd.level||0,d:durText(cd,c)};});
+  o.cd=c.conditions.map(function(cd){var o2={i:cd.id,n:cd.name,l:cd.level||0,d:durText(cd,c)}, wn=condMemNums(c,cd); if(wn)o2.w=wn; return o2;});   /* w: which group members have it */
   var en=liveEnded(c); if(en.length)o.en=en.map(function(e){return e.label;});
   if(!grp&&!c.death&&(c.kind==='pc'||state.settings.rxShow==='all'||(state.settings.rxShow==='pc'&&isSide(c))))o.rx=c.ready?2:(c.rx?1:0);
   if(!grp&&c.kind==='pc'&&c.ready)o.rd=c.ready.trigger||'';
@@ -131,7 +131,7 @@ function buildSnapshot(){
     for(var k=1;k<=L.length;k++){var c2=L[(ci+k)%L.length]; if(c2.id!==state.turnId&&!c2.hidden){nx=c2.id;break;}}
   }
   var pz=!!(state.started&&state.paused);
-  return {v:1,t:Date.now(),ep:state.ep,rv:state.rev||0,sk:s.skin,cb:s.cbMarks===true?1:0,rs:s.rxShow||'pc',r:state.started?state.round:0,tid:(state.started&&!pz)?state.turnId:null,nx:pz?null:nx,np:pz?null:nextPcId(),pz:pz?1:0,rfi:(!state.started&&state.rfi)?1:0,tm:(state.started&&!pz&&state.timer.mode!=='off'&&state.timer.showPlayers)?{m:state.timer.mode,s:state.timer.secs,e:Math.floor(timerMs()),r:state.timer.running?1:0}:null,
+  return {v:1,t:Date.now(),ep:state.ep,rv:state.rev||0,sk:s.skin,cb:s.cbMarks===true?1:0,rs:s.rxShow||'pc',r:state.started?state.round:0,tid:(state.started&&!pz)?state.turnId:null,nx:pz?null:nx,np:pz?null:nextPcId(),pz:pz?1:0,rfi:(!state.started&&state.rfi)?1:0,tm:(state.started&&!pz&&state.timer.mode!=='off'&&state.timer.showPlayers)?{m:state.timer.mode,s:timerLen(),sc:timerWhole()?1:0,e:Math.floor(timerMs()),r:state.timer.running?1:0}:null,
     pe:s.phoneEdit===false?0:1,c:pz?[]:vis.map(pubC),
     P:state.party.map(function(p){
       var sh=p.sheet||{}, st={ac:sh.ac||'',sp:sh.speed||'',mh:p.maxHp==null?'':p.maxHp,rs:sh.resist||'',im:sh.immune||'',vu:sh.vuln||'',ab:{}};

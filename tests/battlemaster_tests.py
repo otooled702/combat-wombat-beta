@@ -24,8 +24,11 @@ def check(name, cond, extra=''):
     else: failed.append(name + (' :: ' + str(extra) if extra != '' else ''))
 
 # ---------- helpers ----------
-def page(ctx, owner=True, uid='u_dm', size=(1440, 900), nolocal=False, db=False, editor=False):
+def page(ctx, owner=True, uid='u_dm', size=(1440, 900), nolocal=False, db=False, editor=False, density='full'):
+    # The app now opens in Focus (cards closed until their turn). Most tests were written for Full, so the helper
+    # keeps Full unless a test passes density=None to see the real default.
     pg = ctx.new_page(); pg.set_viewport_size({'width': size[0], 'height': size[1]})
+    if density: pg.add_init_script("try{if(!localStorage.getItem('bm-density'))localStorage.setItem('bm-density','%s')}catch(e){}" % density)
     pg.add_init_script(("%s window.__OWNER__=%s;window.__UID__='%s';" % ((NOLOCAL if nolocal else '') + ('window.__DB__=true;' if db else '') + ('window.__EDITOR__=true;' if editor else ''), 'true' if owner else 'false', uid)) + MOCK)
     pg._errs = []
     pg.on('pageerror', lambda e, p=pg: p._errs.append(str(e)))
@@ -91,7 +94,7 @@ def add_npc(dm, name, init, hp='', qty='1', group=False, disp='enemy', ac='', in
 def names(dm): return dm.eval_on_selector_all('.row [data-f=name]', 'els=>els.map(e=>e.value)')
 def row(dm, name): return dm.locator('.row').nth(names(dm).index(name))
 def nxt(dm, n=1):
-    for _ in range(n): dm.click('[data-act=next]')
+    for _ in range(n): dm.click('#dock [data-act=next]')
 def now(dm): return dm.inner_text('.topstat .stat.now b') if dm.locator('.topstat .stat.now b').count() else None
 def hp(dm, name): return row(dm, name).locator('[data-f=hp]').input_value()
 def dmg(dm, name, n): r = row(dm, name); r.locator('[data-delta]').fill(str(n)); r.locator('[data-act=dmg]').click()
@@ -359,6 +362,7 @@ AUDIO_STUB = """window.__osc=0;window.__noise=0;window.AudioContext=function(){
 def audio_page(ctx, owner=False, size=(1920, 720)):
     pg = ctx.new_page(); pg.set_viewport_size({'width': size[0], 'height': size[1]})
     pg.add_init_script(AUDIO_STUB + "window.__OWNER__=%s;window.__UID__='%s';" % ('true' if owner else 'false', 'u_dm' if owner else 'u_tv') + MOCK)
+    pg.add_init_script("try{if(!localStorage.getItem('bm-density'))localStorage.setItem('bm-density','full')}catch(e){}")   # tests were written for Full cards
     pg._errs = []; pg.on('pageerror', lambda e, p=pg: p._errs.append(str(e))); return pg
 
 def t_effects(b):
@@ -2510,7 +2514,7 @@ def t_editor_access(b):
     check('the owner\u2019s session is saved to the account', 'Rowan' in STORE.get('dm/state', ''))
     # the tester: a different person, shared on the page as an Editor
     ctxE = dbctx(b); E = page(ctxE, owner=False, editor=True, uid='u_tester', db=True); E.add_init_script(spy); E.goto(URL); E.wait_for_timeout(2200)
-    check('an Editor gets the full DM screen, not the Player screen', E.locator('#lnav').is_visible() and E.locator('[data-act=next]').count() == 1 and E.locator('.ph-claim').count() == 0 and E.locator('.ph-wait').count() == 0)
+    check('an Editor gets the full DM screen, not the Player screen', E.locator('#lnav').is_visible() and E.locator('#dock [data-act=next]').count() == 1 and E.locator('.ph-claim').count() == 0 and E.locator('.ph-wait').count() == 0)
     check('and sees the owner\u2019s party and encounter', names(E) == names(A) and len(names(E)) == 3, (names(A), names(E)))
     check('the Library, Add new and Settings are all there', E.locator('#lnav [data-act=libOpen][data-preset=book]').count() == 1 and E.locator('[data-nav=add]').count() == 1 and E.locator('#lnav [data-act=settingsOpen]').count() == 1)
     sopen(E, cat='general'); check('Settings tells them they are an Editor in the owner\u2019s data', 'You are an Editor on this page' in E.inner_text('#drawer') and 'Saved to your Claude account' in E.inner_text('#drawer'))
@@ -3424,8 +3428,109 @@ def t_beta_accounts(b):
     check('the beta never touches the real table', dm.evaluate("localStorage.getItem('initiative-tracker-v1')") is None)
     check('no page errors', not (dm._errs + tv._errs), dm._errs + tv._errs); ctx.close()
 
+def t_round14(b):
+    """Feedback round: Focus default, top bar Start combat and Roll for initiative, timer scope, hover on touch,
+    member conditions, Add one, Saving throw label, even d20."""
+    ctx = b.new_context(viewport={'width': 1440, 'height': 900}, reduced_motion='reduce')
+    dm = page(ctx, density=None); dm.goto(URL); nav(dm, 'add', 'player')
+    add_player(dm, 'Rowan', 'Brian', '24', '17'); add_player(dm, 'Alric', 'Tim', '31', '15'); add_to_fight(dm, [15, 9]); add_npc(dm, 'Ogre', 12, 59)
+    add_npc(dm, 'Goblin', 5, 7, qty='4', group=True)
+    st = lambda: json.loads(dm.evaluate("localStorage.getItem('initiative-tracker-v1')"))
+    collapsed = lambda: [r.get_attribute('class').count('collapsed') > 0 for r in dm.locator('.row').all()]
+    # ---- Focus is the default, and works before combat
+    check('the card view starts on Focus', dm.get_attribute('[data-act=density][data-val=focus]', 'aria-checked') == 'true')
+    check('before combat, Focus keeps every card closed', all(collapsed()), collapsed())
+    dm.locator('.row').first.locator('.who').click(); dm.wait_for_timeout(200)
+    check('tapping a closed card opens just that one', collapsed()[0] is False and all(collapsed()[1:]), collapsed())
+    dm.click('[data-act=density][data-val=full]'); dm.wait_for_timeout(150); check('Full opens them all before combat too', not any(collapsed()))
+    dm.click('[data-act=density][data-val=focus]'); dm.wait_for_timeout(150)
+    # ---- top bar: Start combat and Roll for initiative
+    sb = dm.locator('#ctlmain [data-act=next]')
+    check('before combat the top bar has a Start combat button', sb.count() == 1 and 'start' in sb.inner_text().lower() and sb.get_attribute('aria-label') == 'Start combat')
+    rb = dm.locator('#ctlmain [data-act=rfiToggle]'); w0 = rb.bounding_box()['width']
+    rb.click(); dm.wait_for_timeout(200); rb = dm.locator('#ctlmain [data-act=rfiToggle]')
+    check('Roll for initiative keeps (nearly) its width when switched on: only Show/Hide changes', abs(rb.bounding_box()['width'] - w0) <= 8 and 'hide' in rb.inner_text().lower() and rb.locator('.rfidot:not(.off)').count() == 1, (w0, rb.bounding_box()['width']))
+    rb.click(); dm.wait_for_timeout(200)
+    sb.click(); dm.wait_for_timeout(300)
+    check('Start combat in the top bar starts combat and goes away', st()['started'] is True and dm.locator('#ctlmain [data-act=next]').count() == 0)
+    check('in combat, Focus opens only the card in turn', collapsed()[0] is False and all(collapsed()[1:]), collapsed())
+    # ---- timer: each turn or the whole combat
+    dm.click('[data-act=timerOpen]'); dm.wait_for_timeout(150); dm.click('[data-act=seg][data-grp=tset][data-val=up]'); dm.wait_for_timeout(150)
+    check('the timer offers Each turn or Whole combat', dm.locator('[data-grp=tscope]').count() == 2)
+    dm.click('[data-act=seg][data-grp=tscope][data-val=combat]'); dm.wait_for_timeout(150)
+    dm.wait_for_timeout(1300); e1 = st()['timer']
+    nxt(dm); dm.wait_for_timeout(200); e2 = st()['timer']
+    check('the whole-combat timer keeps counting through a turn change', e2['scope'] == 'combat' and e2['running'] and e2['startedAt'] == e1['startedAt'], (e1, e2))
+    if dm.locator('#tpop').is_hidden(): dm.click('[data-act=timerOpen]'); dm.wait_for_timeout(150)
+    dm.click('[data-act=seg][data-grp=tset][data-val=down]'); dm.wait_for_timeout(150)
+    check('a whole-combat countdown is set in minutes', dm.locator('[data-tset=cmins]').count() == 1 and dm.locator('[data-tset=secs]').count() == 0)
+    dm.click('[data-act=seg][data-grp=tset][data-val=off]'); dm.click('[data-act=timerOpen]'); dm.wait_for_timeout(150)
+    # ---- group: Add one, Saving throw, conditions for some members
+    g = dm.locator('.row.group'); dm.click('[data-act=density][data-val=full]'); dm.wait_for_timeout(150)
+    add = g.locator('[data-act=mAdd]')
+    check('the add-to-group button says Add one, not +1', 'add one' in add.inner_text().lower() and '+1' not in add.inner_text() and add.get_attribute('aria-label') == 'Add another Goblin')
+    check('the saving throw button says Saving throw', row(dm, 'Ogre').locator('[data-act=saveOpen]').inner_text().strip().lower() == 'saving throw')
+    g.locator('[data-act=condOpen]').click(); g.locator('[data-act=condPick][data-name=Prone]').click(); dm.wait_for_timeout(100)
+    check('for a group, the condition panel asks who: All or each one', [x.strip() for x in g.locator('.cwho button').all_inner_texts()] == ['All 4', '1', '2', '3', '4'] and g.locator('.cwho [data-v=all]').get_attribute('aria-pressed') == 'true')
+    g.locator('.cwho .cwnum').nth(1).click(); g.locator('.cwho .cwnum').nth(2).click(); g.locator('[data-act=condApply]').click(); dm.wait_for_timeout(200)
+    grp = lambda: [c for c in st()['combatants'] if c.get('members')][0]
+    check('Prone goes on members 2 and 3 only', [len(cd.get('mem', [])) for cd in grp()['conditions'] if cd['name'] == 'Prone'] == [2] and 'on 2, 3' in g.locator('.conds .chip').first.inner_text())
+    check('each member shows its own conditions', [g.locator('.mem').nth(i).locator('.mcond').count() for i in range(4)] == [0, 1, 1, 0])
+    g.locator('.mem').nth(1).locator('[data-act=condMemRemove]').click(); dm.wait_for_timeout(200)
+    check('the x on a member removes it from that member only', [len(cd.get('mem', [])) for cd in grp()['conditions'] if cd['name'] == 'Prone'] == [1])
+    tv = page(ctx, size=(1920, 1080)); tv.goto(URL + '#monitor'); tv.wait_for_timeout(900)
+    check('the Combat Monitor says which members have it', 'Prone · 3' in tv.inner_text('.pcard:has-text("Goblin")'), tv.inner_text('.pcard:has-text("Goblin")')[:200])
+    g.locator('.mem').nth(2).locator('[data-act=mSplit]').click(); dm.wait_for_timeout(300)
+    s = st(); sp = [c for c in s['combatants'] if c['name'] == 'Goblin 3'][0]
+    check('splitting member 3 off takes its Prone along, and the group no longer has it', [cd['name'] for cd in sp['conditions']] == ['Prone'] and 'mem' not in sp['conditions'][0] and not [cd for cd in grp()['conditions'] if cd['name'] == 'Prone'])
+    g.locator('[data-act=condOpen]').click(); g.locator('[data-act=condPick][data-name=Poisoned]').click(); g.locator('[data-act=condApply]').click(); dm.wait_for_timeout(200)
+    check('All still puts a condition on the whole group (no member list)', [('mem' in cd) for cd in grp()['conditions'] if cd['name'] == 'Poisoned'] == [False])
+    # ---- the d20 has one stroke weight
+    widths = set(dm.evaluate("()=>{const d=document.createElement('div'); d.innerHTML=document.querySelector('#ctlmain .rfibtn')?document.querySelector('#ctlmain .rfibtn').innerHTML:''; return [...document.querySelectorAll('.rfiicon svg path, #ctlmain .rfibtn svg path')].map(p=>getComputedStyle(p).strokeWidth)}") or ['x'])
+    check('the d20 is drawn with one even stroke weight', len(widths) <= 1, widths)
+    check('no page errors', not (dm._errs + tv._errs), dm._errs + tv._errs); ctx.close()
+
+def t_round14_touch(b):
+    """Phones: no sticky hover, no full-screen button where it can't work, two-row amount box, compact Library,
+    Monitor preview as a swipeable strip, Target window Apply pinned and every row reachable."""
+    ctx = b.new_context(viewport={'width': 390, 'height': 844}, is_mobile=True, has_touch=True, reduced_motion='reduce')
+    dm = page(ctx, size=(390, 844)); dm.goto(URL); nav(dm, 'add', 'player')
+    add_player(dm, 'Rowan', 'Brian', '24', '17'); add_player(dm, 'Alric', 'Tim', '31', '15'); add_to_fight(dm, [15, 9]); add_npc(dm, 'Ogre', 12, 59)
+    for n in ('Bat', 'Rat', 'Wolf', 'Boar'): add_npc(dm, n, 3, 5)
+    check('a touch screen does not report hover, so hover styles stay off', dm.evaluate("matchMedia('(hover:hover)').matches") is False)
+    btn = row(dm, 'Rowan').locator('[data-act=condOpen]')
+    before = btn.evaluate("e=>getComputedStyle(e).backgroundColor"); btn.hover(); dm.wait_for_timeout(100)
+    check('touching a button does not leave it highlighted', btn.evaluate("e=>getComputedStyle(e).backgroundColor") == before)
+    check('no Full screen button on a touch phone without full screen', dm.evaluate("(document.documentElement.requestFullscreen&&document.fullscreenEnabled)") or dm.locator('#ctlmain .fsbtn').count() == 0)
+    hp = row(dm, 'Rowan').locator('.hpact'); box = lambda sel: hp.locator(sel).bounding_box()
+    a, d, h = box('[data-delta]'), box('.dgrp'), box('.hgrp')
+    check('the amount box spans the Damage and Heal rows', a['y'] <= d['y'] + 2 and a['y'] + a['height'] >= h['y'] + h['height'] - 2 and a['x'] + a['width'] <= d['x'], (a, d, h))
+    m = dm.locator('#ctlmain')
+    check('the top bar keeps the menu button and the card switch on one row', abs(m.locator('.hambtn').bounding_box()['y'] - m.locator('.densityseg').bounding_box()['y']) < 12)
+    # Monitor preview
+    dm.evaluate("()=>document.querySelector('[data-act=monPreview]').click()"); dm.wait_for_timeout(400)
+    cards = dm.locator('#monmini .pcard'); c0, c1 = cards.nth(0).bounding_box(), cards.nth(1).bounding_box()
+    x = dm.locator('#monmini .mmclose').bounding_box()
+    check('the preview is one row of small cards', abs(c0['y'] - c1['y']) < 2 and c0['width'] <= 160, (c0, c1))
+    check('the preview close button does not sit on a card', x['y'] + x['height'] <= c0['y'] + 1, (x, c0))
+    dm.evaluate("()=>document.querySelector('[data-act=monPreview]').click()"); dm.wait_for_timeout(200)
+    # Library
+    lib_open(dm, 'book'); dm.wait_for_timeout(300)
+    s_box, n_box = dm.locator('[data-mmsearch]').bounding_box(), dm.locator('.mmnew').bounding_box()
+    check('Library: search and + New share a row', abs(s_box['y'] - n_box['y']) < 10, (s_box, n_box))
+    check('Library: the first creature shows in the top half of the window', dm.locator('.mmrow').first.bounding_box()['y'] < 844 * 0.55, dm.locator('.mmrow').first.bounding_box())
+    lib_close(dm)
+    # Target window
+    dm.click('#dock [data-act=targetOpen]'); dm.wait_for_timeout(300)
+    dm.locator('.aoebody').evaluate("e=>e.scrollTop=e.scrollHeight"); dm.wait_for_timeout(150)
+    clear = dm.evaluate("()=>{const r=[...document.querySelectorAll('.aoerow')].pop().getBoundingClientRect(), f=document.querySelector('.aoefoot').getBoundingClientRect(); return r.bottom<=f.top+1}")
+    check('Target: the last creature scrolls clear of the pinned Apply button', clear)
+    check('Target: Apply stays at the bottom of the window', abs(dm.locator('.aoeapply').bounding_box()['y'] + dm.locator('.aoeapply').bounding_box()['height'] - 844) < 40)
+    check('no sideways scrolling', not dm.evaluate('document.documentElement.scrollWidth>innerWidth+1'))
+    check('no page errors', not dm._errs, dm._errs); ctx.close()
+
 SUITE = [t_turn_engine, t_conditions, t_hp_and_death, t_groups, t_reactions_ready_legendary, t_ac_and_display, t_health_display,
-         t_library_clone_undo_images, t_tv, t_privacy, t_skins_and_settings, t_phone, t_phone_stale_tab_and_offline_sheet, t_effects, t_sound, t_colour_blind, t_views_and_names, t_cloud, t_card_and_half, t_rolling, t_clone_dialog, t_aoe, t_studio, t_spark, t_palettes_and_shadows, t_frost_feywild, t_top_bar, t_monitor_layout, t_mobile_dm, t_desktop_unchanged, t_aoe_conditions, t_aoe_conditions_mobile, t_target_attack, t_confirm_end, t_controls_and_labels, t_turn_shading, t_compact_layout, t_neutral_distinct, t_target_list, t_target_layout, t_monster_library, t_library_mobile, t_side_and_screen, t_button_centering, t_builder, t_name_generator, t_builder_mobile, t_card_controls, t_names_setting, t_collapse_cards, t_regroup, t_monitor_sizes, t_open_monitor, t_manage_combat, t_polish_round2, t_menu_width_and_icon, t_monitor_screen, t_monitor_round3, t_skins_round3, t_player_screen, t_round5_dm, t_round5_mobile, t_round5_phone, t_menu_close_x, t_target_round6, t_encounters, t_qr_blur, t_round7, t_campaigns, t_round7_phone_logo, t_library_tabs, t_settings_window, t_rx_hidden_landscape, t_editor_access, t_cards_round8, t_library_round8, t_add_window, t_standard_npcs, t_round9, t_round10, t_round11, t_round12, t_spells, t_lr_not_spent_on_heal, t_round13, t_round13_phone, t_round13_canvas, t_contrast_all_skins, t_demo, t_beta_accounts]
+         t_library_clone_undo_images, t_tv, t_privacy, t_skins_and_settings, t_phone, t_phone_stale_tab_and_offline_sheet, t_effects, t_sound, t_colour_blind, t_views_and_names, t_cloud, t_card_and_half, t_rolling, t_clone_dialog, t_aoe, t_studio, t_spark, t_palettes_and_shadows, t_frost_feywild, t_top_bar, t_monitor_layout, t_mobile_dm, t_desktop_unchanged, t_aoe_conditions, t_aoe_conditions_mobile, t_target_attack, t_confirm_end, t_controls_and_labels, t_turn_shading, t_compact_layout, t_neutral_distinct, t_target_list, t_target_layout, t_monster_library, t_library_mobile, t_side_and_screen, t_button_centering, t_builder, t_name_generator, t_builder_mobile, t_card_controls, t_names_setting, t_collapse_cards, t_regroup, t_monitor_sizes, t_open_monitor, t_manage_combat, t_polish_round2, t_menu_width_and_icon, t_monitor_screen, t_monitor_round3, t_skins_round3, t_player_screen, t_round5_dm, t_round5_mobile, t_round5_phone, t_menu_close_x, t_target_round6, t_encounters, t_qr_blur, t_round7, t_campaigns, t_round7_phone_logo, t_library_tabs, t_settings_window, t_rx_hidden_landscape, t_editor_access, t_cards_round8, t_library_round8, t_add_window, t_standard_npcs, t_round9, t_round10, t_round11, t_round12, t_spells, t_lr_not_spent_on_heal, t_round13, t_round13_phone, t_round13_canvas, t_contrast_all_skins, t_demo, t_beta_accounts, t_round14, t_round14_touch]
 if __name__ == '__main__':
     only = sys.argv[2:] if len(sys.argv) > 2 else None
     with sync_playwright() as p:

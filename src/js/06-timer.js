@@ -1,6 +1,6 @@
 /* ================================================================
    6. Timer
-   Turn timer shared with the display.
+   Turn or whole-combat timer, shared with the display.
    ================================================================ */
 
 function timerMs(){var t=state.timer;return t.elapsed+(t.running&&t.startedAt?Date.now()-t.startedAt:0);}
@@ -10,9 +10,13 @@ function timerRun(on){var t=state.timer; if(on){t.running=true;t.startedAt=Date.
 
 function timerReset(){var t=state.timer;t.elapsed=0;if(state.paused){t.startedAt=null;t.running=false;t.pbc=true;}else{t.startedAt=Date.now();t.running=true;t.pbc=false;}}
 
+/* The timer times each turn (resets every turn) or the whole combat (from Start combat to the end). */
+function timerWhole(){return state.timer.scope==='combat';}
+function timerLen(){var t=state.timer; return timerWhole()?Math.max(1,Math.round(t.cmins||60))*60:t.secs;}
+function timerTurn(){if(!timerWhole())timerReset();}
 function timerInfo(){
   var t=state.timer, e=timerMs()/1000;
-  if(t.mode==='down'){var r=Math.max(0,Math.ceil(t.secs-e)); return {text:fmt(r),low:r>0&&r<=10,over:r===0,paused:!t.running};}
+  if(t.mode==='down'){var r=Math.max(0,Math.ceil(timerLen()-e)); return {text:fmt(r),low:r>0&&r<=(timerWhole()?60:10),over:r===0,paused:!t.running};}
   return {text:fmt(Math.floor(e)),low:false,over:false,paused:!t.running};
 }
 

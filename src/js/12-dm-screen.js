@@ -46,8 +46,9 @@ function narrowNav(){return !!(window.matchMedia&&matchMedia('(max-width:900px)'
 function closeNav(){if(ui.navOpen||ui.navMob){ui.navOpen=null;ui.navMob=false;renderNav();}}
 function navTimerHTML(){
   var t=state.timer;
-  return '<div class="ntimer"><div class="nlabrow"><span class="nlab">Turn timer</span><button type="button" class="btn small iconbtn timereye" data-act="swtimer" aria-pressed="'+(t.showPlayers?'true':'false')+'" aria-label="'+(t.showPlayers?'Showing the timer on the table view. Tap to hide it.':'Timer hidden from the table view. Tap to show it.')+'" title="'+(t.showPlayers?'Shown on the table view':'Hidden from the table view')+'">'+(t.showPlayers?ICONS.eye:ICONS.eyeoff)+'</button></div><span class="tbox">'+segHTML('tset','mode',t.mode,[['off','Off'],['up','Up'],['down','Down']],'sm')+'</span>'+
-    (t.mode==='down'?'<span class="tbox"><input type="number" min="5" step="5" value="'+esc(t.secs)+'" data-tset="secs" aria-label="Countdown length in seconds"> sec</span>':'')+
+  return '<div class="ntimer"><div class="nlabrow"><span class="nlab">Timer</span><button type="button" class="btn small iconbtn timereye" data-act="swtimer" aria-pressed="'+(t.showPlayers?'true':'false')+'" aria-label="'+(t.showPlayers?'Showing the timer on the table view. Tap to hide it.':'Timer hidden from the table view. Tap to show it.')+'" title="'+(t.showPlayers?'Shown on the table view':'Hidden from the table view')+'">'+(t.showPlayers?ICONS.eye:ICONS.eyeoff)+'</button></div><span class="tbox">'+segHTML('tset','mode',t.mode,[['off','Off'],['up','Up'],['down','Down']],'sm')+'</span>'+
+    (t.mode!=='off'?'<span class="tbox">'+segHTML('tscope','scope',t.scope==='combat'?'combat':'turn',[['turn','Each turn'],['combat','Whole combat']],'sm')+'</span>':'')+
+    (t.mode==='down'?(t.scope==='combat'?'<span class="tbox"><input type="number" min="1" step="5" value="'+esc(t.cmins||60)+'" data-tset="cmins" aria-label="Combat countdown length in minutes"> min</span>':'<span class="tbox"><input type="number" min="5" step="5" value="'+esc(t.secs)+'" data-tset="secs" aria-label="Countdown length in seconds"> sec</span>'):'')+
     (t.mode!=='off'&&state.started?'<span class="tbox"><span class="timer" data-timer>0:00</span><button type="button" class="btn small iconbtn" data-act="timerPause" aria-label="'+(t.running?'Pause timer':'Resume timer')+'" title="'+(t.running?'Pause':'Play')+'">'+(t.running?ICONS.pause:ICONS.play)+'</button><button type="button" class="btn small iconbtn" data-act="timerReset" aria-label="Reset timer" title="Reset">'+ICONS.reset+'</button></span>':'')+
     (t.mode!=='off'&&state.paused?'<small class="nhint">Held while combat is paused.</small>':'')+'</div>';
 }
@@ -134,7 +135,7 @@ function renderDrawer(){
   pane.table=setPreviewHTML()+
     group('On each card',row('Player names','Under each character\u2019s name, on the DM screen and the Combat Monitor',sw('swset',s.showNames!==false,'showNames'))+
       row('Images','Creature art at the bottom of each card',sw('swset',s.imgShow!=='off','imgShow'))+
-      row('Turn timer','On the current card',sw('swtimer',t.showPlayers,'showPlayers'))+
+      row('Timer','On the current card',sw('swtimer',t.showPlayers,'showPlayers'))+
       row('Armor class','The first option lets you flip each creature on its own',segHTML('set','acShow',s.acShow,[['default','Players + chosen'],['all','Everyone'],['none','Nobody']]),true)+
       row('Reactions','',segHTML('set','rxShow',s.rxShow,[['pc','Players'],['all','Everyone'],['none','Hidden']])))+
     group('Health shown',row('Player health','',hpTiles('pcHp',s.pcHp,'Player health'),true)+row('Enemy health','Each enemy also has its own Word / Bar / Numbers control',hpTiles('npcHp',s.npcHp,'Enemy health'),true))+
@@ -168,6 +169,13 @@ var LOGO_VB='0 0 884.97 997.17';
 var WORDMARK_PATHS='<path d="M136.58,177.48v36.93c0,44.47-22.24,69.88-65.12,69.88S6.35,258.88,6.35,214.41V69.88C6.35,25.41,28.59,0,71.47,0s65.12,25.41,65.12,69.88v27h-41.29v-29.78c0-19.85-8.73-27.4-22.63-27.4s-22.63,7.54-22.63,27.4v150.08c0,19.85,8.73,27,22.63,27s22.63-7.15,22.63-27v-39.71h41.29Z"/><path d="M159.61,69.88C159.61,25.41,183.03,0,225.92,0s66.31,25.41,66.31,69.88v144.53c0,44.47-23.43,69.88-66.31,69.88s-66.31-25.41-66.31-69.88V69.88ZM203.28,217.19c0,19.85,8.73,27.4,22.63,27.4s22.63-7.54,22.63-27.4V67.1c0-19.85-8.73-27.4-22.63-27.4s-22.63,7.54-22.63,27.4v150.08Z"/><path d="M412.93,200.51L442.7,3.18h60.75v277.93h-41.29V81.79l-30.18,199.32h-41.29l-32.56-196.54v196.54h-38.12V3.18h60.75l32.16,197.33Z"/><path d="M665.84,67.1v9.93c0,28.59-8.73,46.85-28.19,55.98,23.43,9.13,32.56,30.18,32.56,59.56v22.63c0,42.88-22.63,65.91-66.31,65.91h-68.69V3.18h65.91c45.26,0,64.72,21.04,64.72,63.92ZM578.89,42.88v73.45h17.07c16.28,0,26.21-7.15,26.21-29.38v-15.48c0-19.85-6.75-28.59-22.24-28.59h-21.04ZM578.89,156.04v85.37h25.01c14.69,0,22.63-6.75,22.63-27.4v-24.22c0-25.81-8.34-33.75-28.19-33.75h-19.46Z"/><path d="M837.76,281.11h-44.07l-7.54-50.42h-53.6l-7.54,50.42h-40.1L729.37,3.18h63.92l44.47,277.93ZM738.1,192.97h42.09l-21.04-140.56-21.04,140.56Z"/><path d="M830.22,3.18h135v39.71h-45.66v238.23h-43.68V42.88h-45.66V3.18Z"/><path d="M106.81,480.98l-15.88,148.1H30.97L0,351.15h42.48l23.43,219.17,21.04-219.17h42.09l21.84,220.76,22.63-220.76h38.12l-30.97,277.93h-57.97l-15.88-148.1Z"/><path d="M229.89,417.85c0-44.47,23.43-69.88,66.31-69.88s66.31,25.41,66.31,69.88v144.53c0,44.47-23.43,69.88-66.31,69.88s-66.31-25.41-66.31-69.88v-144.53ZM273.56,565.16c0,19.85,8.73,27.4,22.63,27.4s22.63-7.54,22.63-27.4v-150.08c0-19.85-8.73-27.4-22.63-27.4s-22.63,7.54-22.63,27.4v150.08Z"/><path d="M483.2,548.48l29.78-197.33h60.75v277.93h-41.29v-199.32l-30.18,199.32h-41.29l-32.56-196.54v196.54h-38.12v-277.93h60.75l32.16,197.33Z"/><path d="M736.12,415.07v9.93c0,28.59-8.73,46.85-28.19,55.98,23.43,9.13,32.56,30.18,32.56,59.56v22.63c0,42.88-22.63,65.91-66.31,65.91h-68.69v-277.93h65.91c45.26,0,64.72,21.04,64.72,63.92ZM649.17,390.85v73.45h17.07c16.28,0,26.21-7.15,26.21-29.38v-15.48c0-19.85-6.75-28.59-22.24-28.59h-21.04ZM649.17,504.01v85.37h25.01c14.69,0,22.63-6.75,22.63-27.4v-24.22c0-25.81-8.34-33.75-28.19-33.75h-19.46Z"/><path d="M908.04,629.08h-44.07l-7.54-50.42h-53.6l-7.54,50.42h-40.1l44.47-277.93h63.92l44.47,277.93ZM808.38,540.94h42.09l-21.04-140.56-21.04,140.56Z"/><path d="M900.5,351.15h135v39.71h-45.66v238.23h-43.68v-238.23h-45.66v-39.71Z"/>';
 function wordmarkSVG(extra){return '<svg class="bmwm'+(extra?' '+extra:'')+'" viewBox="0 0 1035.49 632.26" role="img" aria-label="Combat Wombat" focusable="false"><g fill="currentColor">'+WORDMARK_PATHS+'</g></svg>';}
 function logoSVG(extra,label){return '<svg class="bmlogo'+(extra?' '+extra:'')+'" viewBox="'+LOGO_VB+'" '+(label?'role="img" aria-label="'+label+'"':'aria-hidden="true"')+' focusable="false">'+LOGO_PATHS+'</svg>';}
+/* Full screen: shown when the browser can do it, or on a computer, where F11 works even if the page can't ask.
+   iPhones have neither, so the button would do nothing there. */
+function canFullScreen(){
+  var de=document.documentElement, fine=!(window.matchMedia&&matchMedia('(pointer:coarse)').matches);
+  if(de.requestFullscreen||de.webkitRequestFullscreen)return document.fullscreenEnabled!==false||document.webkitFullscreenEnabled===true||fine;
+  return fine;
+}
 function logoLockup(){return '<div class="bmlock">'+logoSVG('')+'<span class="bmword">'+wordmarkSVG()+'</span></div>';}
 var ICONS={};
 (function(){
@@ -197,7 +205,7 @@ var ICONS={};
   ICONS.close=ic('<path d="M6 6l12 12M18 6L6 18"/>');
   ICONS.folder=ic('<path d="M3.5 7.2A2.2 2.2 0 0 1 5.7 5h3.6l2 2.2h7A2.2 2.2 0 0 1 20.5 9.4v7.4a2.2 2.2 0 0 1-2.2 2.2H5.7a2.2 2.2 0 0 1-2.2-2.2z"/>');
   ICONS.filter=ic('<path d="M4 5h16l-6.2 7.4V19l-3.6-1.8v-4.8z"/>');
-  ICONS.d20=ic('<path d="M12 1.8 20.8 6.9v10.2L12 22.2 3.2 17.1V6.9z"/><path d="M12 5.4 17 14.6H7z"/><path d="M12 1.8V5.4M3.2 6.9 12 5.4 20.8 6.9M3.2 6.9 7 14.6M20.8 6.9 17 14.6M3.2 17.1 7 14.6M20.8 17.1 17 14.6M7 14.6 12 22.2 17 14.6" stroke-width="1.3"/>');
+  ICONS.d20=ic('<path d="M12 1.8 20.8 6.9v10.2L12 22.2 3.2 17.1V6.9z"/><path d="M12 5.4 17 14.6H7z"/><path d="M12 1.8V5.4M3.2 6.9 12 5.4 20.8 6.9M3.2 6.9 7 14.6M20.8 6.9 17 14.6M3.2 17.1 7 14.6M20.8 17.1 17 14.6M7 14.6 12 22.2 17 14.6"/>',1.6);   /* one stroke weight for every line, so it looks even at any size */
   ICONS.heart=ic('<path fill-rule="evenodd" fill="currentColor" stroke="none" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35zM10.9 8A1.1 1.1 0 0 1 13.1 8V10.8H15.9A1.1 1.1 0 0 1 15.9 13H13.1V15.8A1.1 1.1 0 0 1 10.9 15.8V13H8.1A1.1 1.1 0 0 1 8.1 10.8H10.9Z"/>');
   ICONS.trash=ic('<path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/>');
   ICONS.stats=ic('<rect x="5" y="3.5" width="14" height="17" rx="2.5"/><path d="M8.5 8.5h7M8.5 12h7M8.5 15.5h4.5"/>');
@@ -289,15 +297,15 @@ function renderTop(){
   var L=state.combatants, idx=state.started?turnIdx():-1;
   var canPrev=state.started&&!(state.round<=1&&idx<=0);
   var upn=state.started?byId(nextPcId()):null;
-  var status=cur?'<span class="rn">Round '+state.round+'</span>'+(state.paused?'<button type="button" class="btn primary resumebtn" data-act="combatToggle" title="Resume combat: show the cards to players again">\u25b6 Resume</button>':''):'<span class="cur muted">Combat hasn\u2019t started</span>'+(state.rfi?'<button type="button" class="btn small rfibtn on" data-act="rfiToggle" aria-pressed="true" title="Players see \u201cRoll for initiative!\u201d on the Combat Monitor and their phones">'+ICONS.d20+'<span>Showing \u201cRoll for initiative!\u201d \u00b7 Hide</span></button>':'<button type="button" class="btn small rfibtn" data-act="rfiToggle" aria-pressed="false" title="Ask players to roll: shows on the Combat Monitor and their phones">'+ICONS.d20+'<span>Show \u201cRoll for initiative\u201d</span></button>');
+  var status=cur?'<span class="rn">Round '+state.round+'</span>'+(state.paused?'<button type="button" class="btn primary resumebtn" data-act="combatToggle" title="Resume combat: show the cards to players again">\u25b6 Resume</button>':''):(state.combatants.length?'<button type="button" class="btn primary small startbtn" data-act="next" title="Start combat (Right arrow)" aria-label="Start combat">\u25b6 Start<span class="smhide">\u00a0combat</span></button>':'<span class="cur muted">Combat hasn\u2019t started</span>')+'<button type="button" class="btn small rfibtn'+(state.rfi?' on':'')+'" data-act="rfiToggle" aria-pressed="'+(state.rfi?'true':'false')+'" aria-label="'+(state.rfi?'Hide':'Show')+' Roll for initiative on the Monitor and phones" title="'+(state.rfi?'Players see \u201cRoll for initiative!\u201d on the Combat Monitor and their phones. Press to hide it':'Ask players to roll: shows on the Combat Monitor and their phones')+'">'+ICONS.d20+'<span><span class="smhide"><span class="rfiverb">'+(state.rfi?'Hide':'Show')+'</span>\u00a0\u201c</span>Roll for initiative<span class="smhide">\u201d</span></span>'+'<span class="rfidot'+(state.rfi?'':' off')+'" aria-hidden="true"></span></button>';
   var blurb=cur?'<div class="topstat"><span class="stat now'+(isSide(cur)?'':' foe')+'"><small>Now</small><b>'+esc(cur.name)+'</b></span>'+
       (upn?'<span class="stat nxt"><small>'+readyWord(upn.id,false)+'</small><b>'+esc(upn.name)+'</b></span>':'')+'</div>':'';
   var tm=state.timer, tOn=tm.mode!=='off'&&state.started;
   document.getElementById('ctlmain').innerHTML=
     '<div class="ctl-l status"><button type="button" class="btn iconbtn hambtn" data-act="navMobile" aria-label="Menu" aria-expanded="'+(ui.navMob?'true':'false')+'" title="Menu">'+ICONS.menu+'</button>'+status+'</div><div class="ctl-c">'+blurb+'</div><div class="ctl-r">'+
-    '<button type="button" class="btn timerbtn" data-act="timerOpen" aria-haspopup="dialog" aria-expanded="'+(ui.timerOpen?'true':'false')+'" title="Turn timer" aria-label="Turn timer">'+ICONS.timer+(tOn?'<span class="timer" data-timer>0:00</span>':'')+'</button>'+
+    '<button type="button" class="btn timerbtn" data-act="timerOpen" aria-haspopup="dialog" aria-expanded="'+(ui.timerOpen?'true':'false')+'" title="Timer" aria-label="Timer">'+ICONS.timer+(tOn?'<span class="timer" data-timer>0:00</span>':'')+'</button>'+
     '<div class="seg sm densityseg" role="radiogroup" aria-label="Cards">'+[['focus','Focus','Only the card in turn is open. Click any card to open it'],['full','Full','Every card open']].map(function(o){return '<button type="button" role="radio" aria-checked="'+((ui.density||'full')===o[0])+'" data-act="density" data-val="'+o[0]+'" title="'+o[2]+'">'+o[1]+'</button>';}).join('')+'</div>'+
-    '<button class="btn iconbtn fsbtn" data-act="fullscreen" aria-pressed="'+(document.fullscreenElement?'true':'false')+'" title="'+(document.fullscreenElement?'Leave full screen':'Full screen')+'" aria-label="Full screen">'+(document.fullscreenElement?ICONS.fullx:ICONS.full)+'</button></div>';
+    (canFullScreen()?'<button class="btn iconbtn fsbtn" data-act="fullscreen" aria-pressed="'+(document.fullscreenElement?'true':'false')+'" title="'+(document.fullscreenElement?'Leave full screen':'Full screen')+'" aria-label="Full screen">'+(document.fullscreenElement?ICONS.fullx:ICONS.full)+'</button>':'')+'</div>';
   document.getElementById('dock').innerHTML=
     '<button class="btn targetbtn" data-act="targetOpen" title="Damage, heal, conditions or an attack against several creatures">'+ICONS.target+'<span class="btxt">Target</span></button>'+
     '<button class="btn iconbtn undobtn" data-act="undo" title="Undo (Ctrl+Z or \u2318Z)" aria-label="Undo"'+(undoStack.length?'':' disabled')+'>'+ICONS.undo+'</button>'+
@@ -457,7 +465,10 @@ function condPanel(c){
     .map(function(d){return '<option value="'+d[0]+'"'+(f.dur===d[0]?' selected':'')+'>'+d[1]+'</option>';}).join('');
   var picks=EXTRA_CONDS.concat(CONDITIONS,['Custom']).map(function(n){
     return '<button type="button" class="cpick'+(EXTRA_CONDS.indexOf(n)>=0?' extra':'')+(f.name===n?' on':'')+'" data-act="condPick" data-name="'+n+'">'+n+'</button>';}).join('');
-  return '<div class="cpanel"><div class="cgrid">'+picks+'</div>'+(f.name&&COND_INFO[f.name]?'<p class="help">'+esc(COND_INFO[f.name])+'</p>':'')+
+  var who=isGroup(c)?'<div class="cwho" role="group" aria-label="Which ones get it"><span class="cwlab">Who</span>'+
+    '<button type="button" class="cpick'+(f.mem?'':' on')+'" data-act="condWho" data-v="all" aria-pressed="'+(f.mem?'false':'true')+'">All '+c.members.length+'</button>'+
+    c.members.map(function(m){var on=!!(f.mem&&f.mem.indexOf(m.id)>=0); return '<button type="button" class="cpick cwnum'+(on?' on':'')+'" data-act="condWho" data-v="'+m.id+'" aria-pressed="'+on+'" aria-label="'+esc(c.name+' '+m.n)+'">'+m.n+'</button>';}).join('')+'</div>':'';
+  return '<div class="cpanel"><div class="cgrid">'+picks+'</div>'+who+(f.name&&COND_INFO[f.name]?'<p class="help">'+esc(COND_INFO[f.name])+'</p>':'')+
     '<div class="crow">'+
       (f.name==='Exhaustion'?'<label>Level<select data-cf="level">'+[1,2,3,4,5,6].map(function(n){return '<option'+(String(f.level)===String(n)?' selected':'')+'>'+n+'</option>';}).join('')+'</select></label>':'')+
       (f.name==='Custom'?'<label>Name<input type="text" data-cf="custom" value="'+esc(f.custom)+'" placeholder="Hexed, Hasted…"></label>':'')+
@@ -538,6 +549,8 @@ function memberHTML(c,m){
       '<div class="bar '+hpClass(m)+'"><i style="width:'+hpPct(m)+'%"></i></div>'+
       '<div class="hpact"><input type="number" min="0" placeholder="Amount" value="'+esc(ui.mdelta[m.id]==null?'':ui.mdelta[m.id])+'" data-mdelta aria-label="Damage or healing amount for '+nm+'"><span class="bgrp dgrp" role="group" aria-label="Damage"><button class="btn small dmg half" data-act="mDmgHalf" data-half="1" title="Half damage, rounded down">\u00bd</button><button class="btn small dmg" data-act="mDmg">\u2212 Damage</button><button class="btn small dmg dbl" data-act="mDmgDbl" data-dbl="1" title="Double damage">2\u00d7</button></span><span class="bgrp hgrp" role="group" aria-label="Healing"><button class="btn small heal" data-act="mHeal">+ Heal</button><button class="btn small temp" data-act="mTemp" title="Set temp HP (keeps the higher value)">+ Temp HP</button></span></div>';
   }
+  var mconds=c.conditions.filter(function(cd){return condCovers(cd,m.id);});
+  if(mconds.length)body+='<div class="mconds">'+mconds.map(function(cd){return '<span class="mcond">'+esc(condLabel(cd))+'<button type="button" class="icon" data-act="condMemRemove" data-cid="'+cd.id+'" aria-label="Remove '+esc(condLabel(cd))+' from '+nm+'" title="Remove from this one only">\u00d7</button></span>';}).join('')+'</div>';
   return '<div class="mem'+(dead?' dead':'')+'" data-mid="'+m.id+'"><div class="mhead"><b>'+nm+'</b><span class="macts">'+
     '<button class="btn small rxbtn '+(m.rx?'used':'ready')+'" data-act="mRx">'+(m.rx?'Reaction used':'Use Reaction')+'</button>'+
     (c.members.length>1?'<button class="icon" data-act="mSplit" title="Track this one on its own card">Split</button>':'')+
@@ -615,7 +628,8 @@ function openPop(id,kind){
 }
 function isCollapsed(c){
   var o=ui.cardOpen&&ui.cardOpen[c.id]; if(o!=null)return !o;
-  if(ui.density==='focus')return !!state.started&&c.id!==state.turnId;
+  /* Focus: only the card in turn is open; before combat every card starts closed. Tapped cards stay open. */
+  if(ui.density==='focus')return !(state.started&&c.id===state.turnId);
   return false;
 }
 
@@ -642,7 +656,8 @@ function rowHTML(c,i,L,np){
   }
   var chips=c.conditions.map(function(cd){
     var dt=durText(cd,c), info=condInfoText(cd), open=!!ui.cinfo[cd.id];
-    return '<span class="chip"><span><b>'+esc(condLabel(cd))+'</b>'+(dt?'<small>'+esc(dt)+'</small>':'')+'</span>'+
+    var wn=condMemNums(c,cd);
+    return '<span class="chip"><span><b>'+esc(condLabel(cd))+'</b>'+(wn?'<small class="cmem">on '+esc(wn)+'</small>':'')+(dt?'<small>'+esc(dt)+'</small>':'')+'</span>'+
       (info?'<button class="cinfo" data-act="condInfo" data-cid="'+cd.id+'" aria-expanded="'+open+'" title="What this does">'+(open?'\u25be':'\u25b8')+'</button>':'')+
       '<button data-act="condRemove" data-cid="'+cd.id+'" aria-label="Remove '+esc(cd.name)+'">\u00d7</button></span>';
   }).join('');
@@ -663,14 +678,14 @@ function rowHTML(c,i,L,np){
       '<div class="sum" data-sum>'+esc(sheetSummary(c.sheet))+'</div>'+
       '</div>'+
     hp+
-    '<div class="conds">'+endedChips+chips+'<button class="btn small cond" data-act="condOpen">Add condition</button>'+(grp||c.death?'':rxHTML(c))+(c.kind==='npc'?'<span class="savewrap"><button type="button" class="btn small saveopen" data-act="saveOpen" aria-haspopup="menu" aria-expanded="'+(ui.menu===c.id&&ui.menuKind==='save')+'" title="Roll a saving throw">Save</button>'+(ui.menu===c.id&&ui.menuKind==='save'?savePop(c,grp):'')+'</span>':'')+descs+'</div>'+
+    '<div class="conds">'+endedChips+chips+'<button class="btn small cond" data-act="condOpen">Add condition</button>'+(grp||c.death?'':rxHTML(c))+(c.kind==='npc'?'<span class="savewrap"><button type="button" class="btn small saveopen" data-act="saveOpen" aria-haspopup="menu" aria-expanded="'+(ui.menu===c.id&&ui.menuKind==='save')+'" title="Roll a saving throw">Saving throw</button>'+(ui.menu===c.id&&ui.menuKind==='save'?savePop(c,grp):'')+'</span>':'')+descs+'</div>'+
     '<div class="acbox">'+acHTML(c)+'</div>'+
     '<div class="acts">'+
       '<button type="button" class="icon eyebtn'+(c.hidden?' off':'')+'" data-act="hide" aria-pressed="'+(!!c.hidden)+'" title="'+(c.hidden?'Hidden from players. Click to show':'Visible to players. Click to hide')+'" aria-label="'+(c.hidden?'Show to players':'Hide from players')+'">'+(c.hidden?ICONS.eyeoff:ICONS.eye)+'</button>'+
       '<button class="icon more" data-act="menu" aria-haspopup="menu" aria-expanded="'+(ui.menu===c.id&&(ui.menuKind||'more')==='more')+'" title="More: clone, save, regroup, remove">\u22ef</button>'+
       (ui.menu===c.id&&(ui.menuKind||'more')==='more'?rowMenu(c,grp,hpswMenu):'')+(ui.menu===c.id&&ui.menuKind==='regroup'?regroupPop(c):'')+'</div>'+
     legHTML(c)+deathHTML(c,now)+
-    (grp?'<div class="members">'+c.members.map(function(m){return memberHTML(c,m);}).join('')+'<button type="button" class="memadd" data-act="mAdd" title="Add one more to this group" aria-label="Add one more">+1</button></div>':'')+
+    (grp?'<div class="members">'+c.members.map(function(m){return memberHTML(c,m);}).join('')+'<button type="button" class="memadd" data-act="mAdd" title="Add one more to this group" aria-label="Add another '+esc(c.name)+'"><span class="memplus" aria-hidden="true">+</span><span>Add one</span></button></div>':'')+
     (ui.cond&&ui.cond.id===c.id?condPanel(c):'')+
     (ui.ready&&ui.ready.id===c.id?readyPanel(c):'')+
     '<div class="rowtools"><button type="button" class="btn small ghost viewstats" data-act="sheetToggle" aria-expanded="'+sheetOpen('c',c.id)+'">'+ICONS.stats+'<span>'+(sheetOpen('c',c.id)?'Hide stats':'View stats')+'</span></button></div>'+

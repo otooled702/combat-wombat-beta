@@ -131,7 +131,7 @@ form.stack label.check input{width:auto}
 .acwrap .swtrack i{width:11px;height:11px}
 .acwrap .swbtn.on .swtrack i{transform:translateX(13px)}
 .mem .hpact input{width:84px}
-.memadd{flex:0 0 66px;align-self:stretch;min-height:66px;border:2px dashed var(--line);border-radius:10px;background:transparent;font:800 24px var(--fd);color:var(--muted);cursor:pointer}
+.memadd{flex:0 0 84px;align-self:stretch;min-height:66px;border:1.5px solid var(--line);border-radius:10px;background:var(--panel);color:var(--text);cursor:pointer}
 .memadd:hover{color:var(--text);border-color:var(--muted);background:color-mix(in srgb,var(--panel2) 60%,transparent)}
 .imgrow{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
 .imgprev{width:84px;height:84px;border-radius:10px;border:1px solid var(--line);background:var(--panel2);display:grid;place-items:center;overflow:hidden;color:var(--muted);font-size:12px}
@@ -187,3 +187,16 @@ body.selftest #app{display:block}
 .clopt[aria-checked="true"]{border-color:var(--now);background:color-mix(in srgb,var(--now) 12%,var(--panel2))}
 .clqty{}.clqty input{}
 
+/* "Add one" to a group: a real button (plus in a filled circle), not a dashed "+1" that reads as a hidden count */
+.memadd{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:8px 10px}
+.memadd .memplus{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font:700 20px/1 var(--fb)}
+.memadd>span:last-child{font:600 13px var(--fb);color:var(--text)}
+/* conditions on some members of a group */
+.cwho{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:10px 0 4px}
+.cwlab{font-weight:700;font-size:13px;margin-right:4px}
+.cwho .cwnum{min-width:44px;justify-content:center}
+.chip .cmem{font-weight:700}
+.mconds{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.mcond{display:inline-flex;align-items:center;gap:2px;padding:1px 2px 1px 8px;border-radius:99px;border:1px solid var(--line);background:color-mix(in srgb,var(--next) 22%,var(--panel));font-size:12.5px;font-weight:600}
+.mcond .icon{border:0;padding:0 6px;min-height:28px;background:transparent;font-size:15px}
+body.dm .mem .mcond button.icon{border:0;box-shadow:none;background:transparent;padding:0 6px;min-height:28px;min-width:28px}

@@ -123,7 +123,7 @@ var Sfx=(function(){
     timer:function(role){
       var t=state.timer;
       if(!state.started||t.mode!=='down'||!t.running){buzzed=false;lastTick=-1;return;}
-      var rem=Math.max(0,Math.ceil(t.secs-timerMs()/1000));
+      var rem=Math.max(0,Math.ceil(timerLen()-timerMs()/1000));
       if(rem>10){buzzed=false;lastTick=-1;return;}
       if(rem>0&&rem!==lastTick){lastTick=rem; if(wants('tick',role))play('tick');}
       else if(rem===0&&!buzzed){buzzed=true; if(wants('buzz',role))play('buzz');}

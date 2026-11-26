@@ -29,9 +29,9 @@ Functions: `fresh`, `normalise`, `load`, `pruneImages`, `snap`, `readImage`, `pe
 *5. Stat sheets and images*
 Functions: `blankSheet`, `ensureSheet`, `hasSheet`, `sheetSummary`, `modText`, `sheetTarget`, `syncSheet`, `autoSheet`, `imgSrc`
 
-### 06-timer.js  (32 lines, 1 KB)
+### 06-timer.js  (36 lines, 1 KB)
 *6. Timer*
-Functions: `timerMs`, `timerRun`, `timerReset`, `timerInfo`, `tick`
+Functions: `timerMs`, `timerRun`, `timerReset`, `timerWhole`, `timerLen`, `timerTurn`, `timerInfo`, `tick`
 
 ### 07-change-tracking.js  (33 lines, 1 KB)
 *7. Change tracking*
@@ -45,18 +45,18 @@ Functions: `partyById`, `libById`, `isGroup`, `isSide`, `sideClass`, `makeMember
 *9. Hit point rules*
 Functions: `hpPct`, `hpClass`, `hpStatus`, `hpMode`, `memDamage`, `memHeal`, `memTemp`, `hpDamage`, `hpHeal`, `hpTemp`, `d20`, `sgn`, `abMod`, `abOf`, `dexMod`, `saveBonus`, `hasCond`, `rollInit`, `rollSave`, `saveLine`
 
-### 10-turn-engine.js  (133 lines, 5 KB)
+### 10-turn-engine.js  (157 lines, 6 KB)
 *10. Turn engine*
-Functions: `turnIdx`, `after`, `startTurnEffects`, `endTurnEffects`, `beginTurn`, `newRound`, `nextTurn`, `prevTurn`, `removeInner`, `nextTurnId`, `readyWord`, `nextPcId`, `makeCond`, `addCondition`
+Functions: `turnIdx`, `after`, `startTurnEffects`, `endTurnEffects`, `beginTurn`, `newRound`, `nextTurn`, `prevTurn`, `removeInner`, `nextTurnId`, `readyWord`, `nextPcId`, `makeCond`, `condMemNums`, `condCovers`, `condTidy`, `addCondition`
 
 ### 11-ui-building-blocks.js  (19 lines, 1 KB)
 *11. UI building blocks*
 Functions: `swHTML`, `segHTML`, `pips`, `failPips`
 
-### 12-dm-screen.js  (689 lines, 78 KB)
+### 12-dm-screen.js  (704 lines, 80 KB)
 *12. DM screen*
 Constants: `SET_CATS`, `LOGO_PATHS`, `LOGO_VB`, `WORDMARK_PATHS`, `ICONS`, `RES_TYPES`, `RES_LABEL`
-Functions: `nGroup`, `buildNavHTML`, `buildDMShell`, `narrowNav`, `closeNav`, `navTimerHTML`, `renderNav`, `setTile`, `setPreviewHTML`, `renderDrawer`, `wordmarkSVG`, `logoSVG`, `logoLockup`, `pushMonitor`, `nowIntoView`, `openMonitor`, `placeMonitor`, `renderTimerPop`, `renderMonMini`, `renderTop`, `sheetPanel`, `resParse`, `resCompose`, `resField`, `resPanel`, `fmtText`, `fmtBox`, `sheetOpen`, `renderParty`, `renderPartyEdit`, `partyListHTML`, `libSummary`, `libRowsHTML`, `renderLibrary`, `condPanel`, `legPop`, `legHTML`, `deathHTML`, `acHTML`, `acPop`, `acShowRow`, `rxHTML`, `readyPanel`, `memberHTML`, `dispSeg`, `rowMenu`, `savePop`, `regroupPop`, `mergeCards`, `closeMenu`, `keepScroll`, `openPop`, `isCollapsed`, `rowHTML`, `renderList`
+Functions: `nGroup`, `buildNavHTML`, `buildDMShell`, `narrowNav`, `closeNav`, `navTimerHTML`, `renderNav`, `setTile`, `setPreviewHTML`, `renderDrawer`, `wordmarkSVG`, `logoSVG`, `canFullScreen`, `logoLockup`, `pushMonitor`, `nowIntoView`, `openMonitor`, `placeMonitor`, `renderTimerPop`, `renderMonMini`, `renderTop`, `sheetPanel`, `resParse`, `resCompose`, `resField`, `resPanel`, `fmtText`, `fmtBox`, `sheetOpen`, `renderParty`, `renderPartyEdit`, `partyListHTML`, `libSummary`, `libRowsHTML`, `renderLibrary`, `condPanel`, `legPop`, `legHTML`, `deathHTML`, `acHTML`, `acPop`, `acShowRow`, `rxHTML`, `readyPanel`, `memberHTML`, `dispSeg`, `rowMenu`, `savePop`, `regroupPop`, `mergeCards`, `closeMenu`, `keepScroll`, `openPop`, `isCollapsed`, `rowHTML`, `renderList`
 
 ### 13-combat-monitor.js  (128 lines, 10 KB)
 *13. Combat Monitor*
@@ -86,7 +86,7 @@ Functions: `pageLink`, `qrSvg`, `renderQr`
 *19. Player screen*
 Functions: `phoneModeNow`, `phOffline`, `phSetMy`, `phMyAsSt`, `phLocalMap`, `phMine`, `phHit`, `phRelease`, `phCheckClaim`, `phMakeSound`, `phUnlock`, `phBeep`, `phFlashTitle`, `phAlert`, `phCheckAlerts`, `phWake`, `phOnSnap`, `phOp`, `phHpHTML`, `phChips`, `phShield`, `phRow`, `phMeHTML`, `phAcSheet`, `phMeCard`, `phTick`, `phLandscape`, `phMonCard`, `phPopupHTML`, `renderPhoneMonitor`, `phSheetFields`, `phLocalCard`, `phStatsHTML`, `phPicker`, `phMenu`, `phFocusSel`, `renderPhone`
 
-### 20-events.js  (519 lines, 37 KB)
+### 20-events.js  (531 lines, 38 KB)
 *20. Events*
 Constants: `ESC_LAYERS`
 Functions: `askConfirm`, `refreshSummary`, `closeTopLayer`, `nmTextW`, `syncFromStorage`
@@ -140,17 +140,18 @@ Functions: (none at top level)
 - `01-design-tokens.css`: 40 lines, 1 KB. Design tokens
 - `02-base-and-controls.css`: 27 lines, 1 KB. Base
 - `03-shared-components.css`: 92 lines, 7 KB. Shared components
-- `04-dm-screen.css`: 190 lines, 12 KB. DM screen
+- `04-dm-screen.css`: 203 lines, 13 KB. DM screen
 - `05-studio-finish.css`: 476 lines, 34 KB. Studio finish
 - `06-combat-monitor.css`: 164 lines, 13 KB. Combat Monitor
 - `07-phone-view.css`: 177 lines, 14 KB. Phone view
 - `08-skins.css`: 195 lines, 17 KB. Skins
 - `09-skin-frost.css`: 27 lines, 3 KB. Frost: icy, snowy, light. Frosted-glass cards on a pale blue sky with drifting snow
 - `10-skin-feywild.css`: 53 lines, 4 KB. Feywild: wildly coloured. Violet night, neon pink, cyan and lime, everything glowing
-- `11-left-menu-and-combat-bar.css`: 630 lines, 44 KB. Left menu + combat bar
+- `11-left-menu-and-combat-bar.css`: 638 lines, 44 KB. Left menu + combat bar
 - `13-skin-frost-ice.css`: 16 lines, 18 KB. 
 - `14-contrast.css`: 42 lines, 2 KB. 
 - `15-demo.css`: 105 lines, 8 KB. Beta build only: test-account sign-in and the account row (27c-beta-accounts.js)
+- `16-mobile.css`: 73 lines, 3 KB. short screens (a phone on its side): the bar scrolls away instead of covering the cards
 
 ## Data (`src/data/`)
 

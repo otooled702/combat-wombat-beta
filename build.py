@@ -24,6 +24,62 @@ def joined(folder, ext):
     files = sorted(f for f in os.listdir(os.path.join(SRC, folder)) if f.endswith(ext))
     return ''.join(read(folder, f) for f in files), files
 
+def _split_top(sel):
+    """Split a selector list on commas that are not inside (...) or quotes."""
+    out, depth, q, cur = [], 0, '', ''
+    for ch in sel:
+        if q:
+            cur += ch
+            if ch == q: q = ''
+            continue
+        if ch in '"\'': q = ch
+        elif ch == '(': depth += 1
+        elif ch == ')': depth -= 1
+        elif ch == ',' and depth == 0:
+            out.append(cur); cur = ''; continue
+        cur += ch
+    out.append(cur)
+    return [x.strip() for x in out if x.strip()]
+
+def hover_guard(css):
+    """Touch screens keep :hover after a tap, so buttons stay highlighted. Put every :hover selector in
+    @media (hover:hover), leaving the other selectors of the same rule (focus styles) as they are."""
+    out, i, n = [], 0, len(css)
+    def block_end(j):                      # index of the } matching the { at j
+        depth, q = 0, ''
+        while j < n:
+            ch = css[j]
+            if q:
+                if ch == '\\': j += 2; continue
+                if ch == q: q = ''
+            elif ch in '"\'': q = ch
+            elif ch == '/' and css.startswith('/*', j): j = css.index('*/', j) + 2; continue
+            elif ch == '{': depth += 1
+            elif ch == '}':
+                depth -= 1
+                if depth == 0: return j
+            j += 1
+        raise SystemExit('CSS: unbalanced braces')
+    while i < n:
+        if css.startswith('/*', i):
+            k = css.index('*/', i) + 2; out.append(css[i:k]); i = k; continue
+        b = css.find('{', i)
+        if b < 0: out.append(css[i:]); break
+        e = block_end(b); head = css[i:b]; body = css[b + 1:e]
+        h = head.strip()
+        if h.startswith('@media') or h.startswith('@supports'):
+            out.append(head + '{' + hover_guard(body) + '}')
+        elif h.startswith('@') or ':hover' not in h:
+            out.append(css[i:e + 1])
+        else:
+            lead = head[:len(head) - len(head.lstrip())]
+            parts = _split_top(h)
+            hov = [x for x in parts if ':hover' in x]; rest = [x for x in parts if ':hover' not in x]
+            if rest: out.append(lead + ','.join(rest) + '{' + body + '}')
+            out.append(('' if rest else lead) + '@media (hover:hover){' + ','.join(hov) + '{' + body + '}}')
+        i = e + 1
+    return ''.join(out)
+
 DEMO_FLAG = 'var DEMO=false/*@demo*/;'
 
 def favicon_svg():
@@ -43,6 +99,7 @@ BETA_FLAG = 'var BETA=false/*@beta*/;'
 def build(demo=False, beta=False):
     tpl = read('index.template.html')
     css, cfiles = joined('css', '.css')
+    css = hover_guard(css)
     js, jfiles = joined('js', '.js')
     if js.count(DEMO_FLAG) != 1:
         raise SystemExit('the DEMO flag line is missing from src/js')

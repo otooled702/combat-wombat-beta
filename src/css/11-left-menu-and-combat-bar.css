@@ -627,3 +627,11 @@ body.dm .hpact>[data-delta],body.dm .hpact>[data-mdelta]{width:84px;min-width:0}
 .bmwm{display:block;height:1.5em;width:auto;flex:none}
 .bword,.bmword,.ph-brand span{display:inline-flex;align-items:center;color:var(--text);line-height:1}
 :root[data-skin="feywild"] .bword{background:none;-webkit-background-clip:border-box;background-clip:border-box;color:#FF7BE6}
+/* the button keeps one width in both states; "on" is a filled lime pill with a dot */
+.rfibtn.on{background:var(--next);color:var(--next-ink);border-color:var(--line)}
+.rfidot{width:8px;height:8px;border-radius:50%;background:currentColor;flex:none;animation:rfipulse 1.6s ease-in-out infinite}
+@keyframes rfipulse{50%{opacity:.35}}
+@media (prefers-reduced-motion:reduce){.rfidot{animation:none}}
+.startbtn{white-space:nowrap}
+.rfidot.off{visibility:hidden;animation:none}
+.rfiverb{display:inline-block;min-width:3em;text-align:center}

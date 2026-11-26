@@ -45,7 +45,7 @@ function renderPlayers(){
       else dsv='<div class="dsv'+(big?' big':'')+'">'+(dd.dead?'<span class="dlab bad">Dead</span>':dd.stable?'<span class="dlab ok">Stable</span>':'<span class="dlab">'+(big?'Death saving throw':'Death saves')+'</span><span class="pips ok">'+pips(dd.s,3)+'</span><span class="pips bad">'+failPips(dd.f)+'</span>')+'</div>';
     }
     var im=imgSrc(c);
-    var conds=c.conditions.map(function(cd){var dt=durText(cd,c);return '<li><b>'+esc(condLabel(cd))+'</b>'+(dt?'<small>'+esc(dt)+'</small>':'')+'</li>';}).join('');
+    var conds=c.conditions.map(function(cd){var dt=durText(cd,c), wn=condMemNums(c,cd);return '<li><b>'+esc(condLabel(cd)+(wn?' \u00b7 '+wn:''))+'</b>'+(dt?'<small>'+esc(dt)+'</small>':'')+'</li>';}).join('');
     conds=liveEnded(c).map(function(e){var fresh=Date.now()-e.at<2500; return '<li class="ended'+(fresh?' fresh':'')+'"><b><i class="ck">\u2713</i> <s>'+esc(e.label)+'</s></b><small>ended</small></li>';}).join('')+conds;
     return '<section data-cid="'+c.id+'" class="pcard '+sideClass(c)+(isNow?' now cur':'')+(isNext?' next':'')+(small?' small':'')+(isDown(c)?' down':'')+(isSide(c)&&c.death&&!c.death.dead&&c.hp===0&&tracks(c)?' dying':'')+'" style="--w:'+(isNow?1.2:1)+'">'+
       (isNow?'<span class="flag now">'+(state.settings.cbMarks?'\u25b6 ':'')+'Now</span>':'')+(isNext?'<span class="flag nxt">'+(state.settings.cbMarks?'\u25b7 ':'')+readyWord(c.id,true)+'</span>':'')+
@@ -93,7 +93,7 @@ function renderPlayers(){
   var gw=(app.querySelector('.pgrid')||{}).offsetWidth||0;
   var tvqr=(state.settings.tvQr&&qrSvg(pageLink()+'#player'))?'<div class="tvqr">'+qrSvg(pageLink()+'#player')+'<span>Join on your phone</span></div>':'';
   var pill=(isPlayerWindow()&&state.settings.sfxTv!==false&&!Sfx.unlocked())?'<button type="button" class="sfxpill" data-act="sfxUnlock">\ud83d\udd0a Tap to turn on sound</button>':'';
-  var fs=(isPlayerWindow()&&window.name==='bm-monitor'&&!document.fullscreenElement)?'<button type="button" class="sfxpill fspill" data-act="goFull">\u26f6 Full screen</button>':'';
+  var fs=(isPlayerWindow()&&window.name==='bm-monitor'&&!document.fullscreenElement&&canFullScreen())?'<button type="button" class="sfxpill fspill" data-act="goFull">\u26f6 Full screen</button>':'';
   app.innerHTML='<div class="pwrap'+(state.settings.cbMarks?' cb':'')+'">'+head+grid+banner+tvqr+((pill||fs)?'<div class="pillrow">'+pill+fs+'</div>':'')+'</div>'+(ui.owner&&isPlayerWindow()?'<button class="viewbtn" data-act="viewMenu">View \u25be</button>'+(ui.viewMenu?'<div class="viewmenu">'+[['dm','DM screen'],['monitor','Combat Monitor'],['player','Player screen']].map(function(v){return '<button type="button" data-act="viewSet" data-val="'+v[0]+'"'+(v[0]==='monitor'?' aria-current="true"':'')+'>'+v[1]+'</button>';}).join('')+'</div>':''):'');
   var calm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches, evs=Sfx.take();
   if(!calm){

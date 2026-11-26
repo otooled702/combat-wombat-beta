@@ -180,7 +180,7 @@ function phHpHTML(c){
 function phChips(c,mine){
   var out=(c.en||[]).map(function(l){return '<span class="ph-chip ended"><b>\u2713 <s>'+esc(l)+'</s></b> <small>ended</small></span>';}).join('');
   out+=c.cd.map(function(cd){
-    var label=cd.n+(cd.l?' '+cd.l:''), open=!!ph.open[cd.i], info=COND_INFO[cd.n];
+    var label=cd.n+(cd.l?' '+cd.l:'')+(cd.w?' \u00b7 '+cd.w:''), open=!!ph.open[cd.i], info=COND_INFO[cd.n];
     return '<button type="button" class="ph-chip" data-pact="cinfo" data-i="'+esc(cd.i)+'" aria-expanded="'+open+'"><b>'+esc(label)+'</b>'+(cd.d?'<small>'+esc(cd.d)+'</small>':'')+'</button>'+
       (open&&info?'<div class="ph-cdesc"><b>'+esc(label)+'</b> '+esc(info)+(mine?' <button type="button" class="ph-link" data-pact="cdel" data-i="'+esc(cd.i)+'">Remove</button>':'')+'</div>':'');
   }).join('');
@@ -258,7 +258,7 @@ function phTick(){
   var els=document.querySelectorAll('[data-ptimer]'); if(!els.length)return;
   var tm=ph.snap.tm; if(!tm)return;
   var e=(tm.e+(tm.r?Date.now()-ph.lastSnapAt:0))/1000, text, low=false, over=false;
-  if(tm.m==='down'){var r=Math.max(0,Math.ceil(tm.s-e)); text=fmt(r); low=r>0&&r<=10; over=r===0;} else text=fmt(Math.floor(e));
+  if(tm.m==='down'){var r=Math.max(0,Math.ceil(tm.s-e)); text=fmt(r); low=r>0&&r<=(tm.sc?60:10); over=r===0;} else text=fmt(Math.floor(e));
   els.forEach(function(el){if(el.textContent!==text)el.textContent=text; el.classList.toggle('low',low); el.classList.toggle('over',over); el.classList.toggle('paused',!tm.r);});
 }
 setInterval(phTick,250);
@@ -293,7 +293,7 @@ function phMonCard(c,sn){
   var dsv='';
   if(c.ds){var d=c.ds; dsv=d.hd?'<div class="dsv"><span class="dlab">Down</span></div>':'<div class="dsv">'+(d.dd?'<span class="dlab bad">Dead</span>':d.st?'<span class="dlab ok">Stable</span>':'<span class="dlab">Death saves</span><span class="pips ok">'+pips(d.s,3)+'</span><span class="pips bad">'+failPips(d.f)+'</span>')+'</div>';}
   var conds=(c.en||[]).map(function(l){return '<li class="ended"><b><i class="ck">\u2713</i> <s>'+esc(l)+'</s></b><small>ended</small></li>';}).join('')+
-    c.cd.map(function(cd){return '<li><b>'+esc(cd.n+(cd.l?' '+cd.l:''))+'</b>'+(cd.d?'<small>'+esc(cd.d)+'</small>':'')+'</li>';}).join('');
+    c.cd.map(function(cd){return '<li><b>'+esc(cd.n+(cd.l?' '+cd.l:'')+(cd.w?' \u00b7 '+cd.w:''))+'</b>'+(cd.d?'<small>'+esc(cd.d)+'</small>':'')+'</li>';}).join('');
   var player=c.s==='p'&&c.pl?'<p class="player">'+esc(c.pl)+'</p>':(c.s==='a'?'<p class="player">Ally</p>':(c.s==='n'?'<p class="player">Neutral</p>':''));
   return '<section class="pcard '+cls+(now?' now cur':'')+(nxt?' next':'')+(c.dn?' down':'')+'" data-cid="'+esc(c.i)+'" style="--w:'+(now?1.2:1)+'">'+
     (now?'<span class="flag now">'+(sn.cb?'\u25b6 ':'')+'Now</span>':'')+(nxt?'<span class="flag nxt">'+(sn.cb?'\u25b7 ':'')+(sn.np===sn.nx?'Up next':'Get ready')+'</span>':'')+

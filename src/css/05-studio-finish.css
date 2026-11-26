@@ -128,7 +128,7 @@ body.dm .acshield b{font:600 20px var(--fd)}
 body.dm .sheet,body.dm .cpanel{border:0;background:var(--fill);border-radius:18px;gap:14px}
 body.dm .members{border-top:1px solid var(--hair)}
 body.dm .mem{border:0;border-radius:18px}
-body.dm .memadd{border:2px dashed var(--hair);border-radius:18px;font:500 22px var(--fd)}
+body.dm .memadd{border:1.5px solid var(--line);border-radius:18px}
 body.dm .leg{border-top:1px solid var(--hair);padding-top:14px;gap:12px}
 body.dm .rowmenu{border:0;border-radius:18px;padding:16px;gap:16px;width:310px;background:color-mix(in srgb,var(--panel) 92%,transparent);backdrop-filter:saturate(180%) blur(24px);-webkit-backdrop-filter:saturate(180%) blur(24px);box-shadow:var(--shadow-2),inset 0 0 0 1px var(--hair)}
 body.dm .mgrp>span{font-size:11px;font-weight:600;letter-spacing:.06em}

@@ -31,7 +31,7 @@ function render(){
     if(m==='phone')Link.setPresence({ph:1,cl:ph.claim,ops:[]});
   }
   applyTheme();
-  if(ui.density===undefined){ui.density=lsGet('bm-density')||'full'; if(ui.density==='compact')ui.density='focus'; ui.cardOpen={};}
+  if(ui.density===undefined){ui.density=lsGet('bm-density')||'focus'; if(ui.density==='compact')ui.density='focus'; ui.cardOpen={};}
   if(ui.navMin===undefined){ui.navMin=lsGet('bm-nav')==='min';}
   if(m==='dm'){if(ui.density==='focus'&&ui.lastTurn!==state.turnId)ui.cardOpen={}; ui.lastTurn=state.turnId;}
   if(m!=='phone')Sfx.observe(isPlayerWindow()?'tv':'dm');

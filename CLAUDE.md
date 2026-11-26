@@ -21,6 +21,8 @@ Read this first. `docs/CODEMAP.md` lists every file and function. Search before 
 - `build.py` also writes `dist/beta.html` (`BETA` on): a sign-in screen with three test accounts (`betaAccounts()` in `27c-beta-accounts.js`),
   each with its own storage key; the free one turns on `DEMO`. `APP_VERSION` in `01-` must match the release tag (v + version).
   Public beta repo: GitHub Pages via `.github/workflows/pages.yml` (site from `tools/site/make_site.py`), pre-releases on `v*` tags. Test: `t_beta_accounts`.
+- `build.py` wraps every `:hover` rule in `@media (hover:hover)` (`hover_guard`), so taps on touch screens don't leave buttons highlighted.
+  Write hover styles normally. Phone and short-screen layout lives in `src/css/16-mobile.css` (loads last).
 - Frost's ice texture is generated: edit and run `tools/frost_ice.py`, which writes `src/css/13-skin-frost-ice.css`.
 
 ## Tests
@@ -33,6 +35,9 @@ Read this first. `docs/CODEMAP.md` lists every file and function. Search before 
 - Helpers in `tests/battlemaster_tests.py`: `basic_table` (Rowan 15 PC, Ogre 12 NPC, Alric 9 PC), `add_npc`, `nxt`, `nav`, `row`, `hp`,
   `tgt`/`mclick`/`mfill`/`mpick` (Target window), `lib_open`/`lib_close`, `set_skin`, `check(label, ok, detail)`. New tests go in SUITE.
 - Computed colours can be `color(srgb r g b)` with 0-1 values (from `color-mix`), not `rgb()`: convert before comparing.
+- The runners serve `dist/` over http (`tests/serve.py`): as a file:// page with the claude.ai stand-in, Chromium can drop the
+  saved table on a quick reload. The app opens in Focus; `page()` starts tests in Full unless `density=None`.
+  `nxt()` clicks the dock's button: the top bar has its own Start combat button before combat.
 
 ## State and rendering
 - State lives in localStorage key `initiative-tracker-v1`. EVERY change goes through `mutate(fn)` (undo, sorting, saving, render).
@@ -54,6 +59,9 @@ Read this first. `docs/CODEMAP.md` lists every file and function. Search before 
   Healing spells (`hl` dice or number, `hm` add modifier, `hu` upcast, `hf` full, `hx` divided) configure the Heal engine.
   Caster DC: stat-block text first ("spell save DC N, +N to hit"), else 8 + proficiency (from CR, +2 if unknown) + casting ability mod.
   Concentration is optional and adds a Concentrating condition with `note` = spell name.
+- Group conditions: a condition on a group can list members in `cd.mem` (ids); none means the whole group. `condTidy(c)` cleans up after
+  members leave. Durations tick on the group's turn. The Target window still applies conditions to the whole group.
+- Timer: `state.timer.scope` is `turn` (resets each turn) or `combat` (from Start combat); a combat countdown uses `cmins`.
 
 ## Design conventions
 - Controls need roles, labels and keyboard support. Colour is never the only cue. Fields keep a visible label (no placeholder-only labels);

@@ -33,7 +33,7 @@ function endTurnEffects(x){
   });
 }
 
-function beginTurn(c){state.turnId=c.id;startTurnEffects(c);timerReset();autoSheet(c);ui.scrollNow=true;}
+function beginTurn(c){state.turnId=c.id;startTurnEffects(c);timerTurn();autoSheet(c);ui.scrollNow=true;}
 
 function newRound(){
   state.round++;
@@ -45,7 +45,7 @@ function nextTurn(){
     var L=state.combatants; if(!L.length)return;
     bumpEnded();
     if(!state.started){
-      state.started=true;state.round=1;state.rfi=false;
+      state.started=true;state.round=1;state.rfi=false;timerReset();
       L.forEach(function(c){resetRx(c);c.ready=null;if(c.leg)c.leg.left=c.leg.max;});
       beginTurn(L[0]);return;
     }
@@ -70,7 +70,7 @@ function prevTurn(){
       if(state.round<=1){notes.push('Already at the first turn');return;}
       pi=L.length-1; state.round--;
     }
-    var c=L[pi]; state.turnId=c.id; timerReset(); autoSheet(c); ui.scrollNow=true;
+    var c=L[pi]; state.turnId=c.id; timerTurn(); autoSheet(c); ui.scrollNow=true;
     notes.push('Back to '+c.name+'\u2019s turn');
   });
 }
@@ -120,13 +120,37 @@ function makeCond(c,f,name){
   return {id:uid(),name:name,level:name==='Exhaustion'?parseInt(f.level,10)||1:null,dur:dur};
 }
 
+/* On a group, a condition can cover only some members: cd.mem lists their ids. No list means the whole group.
+   condTidy drops ids of members who left, ends a condition nobody has any more, and turns "all of them" back into no list. */
+function condMemNums(c,cd){
+  if(!cd.mem||!isGroup(c))return '';
+  return c.members.filter(function(m){return cd.mem.indexOf(m.id)>=0;}).map(function(m){return m.n;}).join(', ');
+}
+function condCovers(cd,mid){return !cd.mem||cd.mem.indexOf(mid)>=0;}
+function condTidy(c){
+  if(!isGroup(c)){c.conditions.forEach(function(cd){delete cd.mem;}); return;}
+  var ids=c.members.map(function(m){return m.id;});
+  c.conditions=c.conditions.filter(function(cd){
+    if(!cd.mem)return true;
+    cd.mem=cd.mem.filter(function(id){return ids.indexOf(id)>=0;});
+    if(!cd.mem.length){endedAdd(c,cd); return false;}
+    if(cd.mem.length===ids.length)delete cd.mem;
+    return true;
+  });
+}
+
 function addCondition(cid,f){
   var c=byId(cid); if(!c)return;
   var name=f.name==='Custom'?(f.custom||'').trim():f.name; if(!name)return;
   var cd=makeCond(c,f,name);
+  var mem=(isGroup(c)&&f.mem&&f.mem.length&&f.mem.length<c.members.length)?f.mem.slice():null;
   mutate(function(){
+    var old=c.conditions.filter(function(x){return x.name===name;})[0];
+    if(mem&&old)mem=old.mem?old.mem.concat(mem.filter(function(id){return old.mem.indexOf(id)<0;})):null;   /* adding to some: keep the ones who had it */
+    if(mem)cd.mem=mem;
     c.conditions=c.conditions.filter(function(x){return x.name!==name;});
     c.conditions.push(cd);
+    condTidy(c);
   });
 }
 

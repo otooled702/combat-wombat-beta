@@ -7,7 +7,10 @@ import sys, os, traceback
 name = sys.argv[1]
 HERE = os.path.dirname(os.path.abspath(__file__))
 url = sys.argv[2] if len(sys.argv) > 2 else 'file://' + os.path.join(os.path.dirname(HERE), 'dist', 'initiative-tracker.html')
-sys.argv = ['x', url]; sys.path.insert(0, HERE)
+sys.path.insert(0, HERE)
+from serve import http_url
+url, _srv = http_url(url)                  # served over http: see tests/serve.py for why
+sys.argv = ['x', url]
 import battlemaster_tests as T
 from playwright.sync_api import sync_playwright
 with sync_playwright() as p:

@@ -165,6 +165,7 @@ document.addEventListener('click',function(e){
     case 'seg':{
       var grp=t.dataset.grp, key=t.dataset.key, val=t.dataset.val;
       if(grp==='tset'){state.timer.mode=val; if(state.started)timerReset(); persist(); render(); break;}
+      if(grp==='tscope'){state.timer.scope=val; if(state.started)timerReset(); persist(); render(); break;}
       if(grp==='view'){setView(val); break;}
       state.settings[key]=val; persist(); render(); break;}
     case 'swset':{var k3=t.dataset.key; if(k3==='imgShow')state.settings.imgShow=state.settings.imgShow==='off'?'on':'off'; else state.settings[k3]=!state.settings[k3]; persist(); render(); break;}
@@ -275,7 +276,7 @@ document.addEventListener('click',function(e){
       if(!ui.rmOK){if(c&&mEl3){var mm0=c.members.find(function(x){return x.id===mEl3.dataset.mid;}); askConfirm({kind:'rmMember',id:c.id,mid:mEl3.dataset.mid,name:c.name+' '+(mm0?mm0.n:'')});} break;}
       ui.rmOK=false; if(c&&mEl3){toast('Removed from the group',true);} if(c&&mEl3)mutate(function(){
       c.members=c.members.filter(function(x){return x.id!==mEl3.dataset.mid;});
-      if(!c.members.length)removeInner(c.id);});break;}
+      if(!c.members.length)removeInner(c.id); else condTidy(c);});break;}
     case 'mAdd':if(c&&isGroup(c))mutate(function(){
       var nn=c.members.reduce(function(a2,x){return Math.max(a2,x.n);},0)+1, ref=c.members.find(function(x){return x.maxHp!=null;});
       c.members.push({id:uid(),n:nn,hp:ref?ref.maxHp:null,maxHp:ref?ref.maxHp:null,temp:0,rx:false});});break;
@@ -284,7 +285,8 @@ document.addEventListener('click',function(e){
         c.members=c.members.filter(function(x){return x.id!==m4.id;});
         var nc=addCombatant({name:c.name+' '+m4.n,kind:'npc',disp:c.disp,init:c.init,hp:m4.hp,maxHp:m4.maxHp,hidden:c.hidden,sheet:c.sheet});
         nc.temp=m4.temp||0; nc.rx=!!m4.rx;
-        nc.conditions=c.conditions.map(function(cd){var k=clone(cd);k.id=uid();return k;});
+        nc.conditions=c.conditions.filter(function(cd){return condCovers(cd,m4.id);}).map(function(cd){var k=clone(cd);k.id=uid();delete k.mem;return k;});
+        condTidy(c);
         notes.push(nc.name+' split off to its own card');});
       break;}
     case 'dsHide':if(c&&c.death)mutate(function(){c.death.hide=!c.death.hide;});break;
@@ -292,6 +294,15 @@ document.addEventListener('click',function(e){
       deathApply(c,{dsOk:'success',dsFail:'fail',dsNat20:'nat20',dsNat1:'nat1',dsReset:'reset'}[a]);});break;
     case 'condOpen':ui.cond={id:id,name:'',level:1,custom:'',dur:'manual',n:1,owner:id};renderList();break;
     case 'condClose':ui.cond=null;renderList();break;
+    case 'condWho':if(ui.cond&&c&&isGroup(c)){var wv=t.dataset.v, f3=ui.cond;
+      if(wv==='all')f3.mem=null;
+      else{var cur3=f3.mem?f3.mem.slice():[], i3=cur3.indexOf(wv); if(i3>=0)cur3.splice(i3,1); else cur3.push(wv); f3.mem=(cur3.length&&cur3.length<c.members.length)?cur3:null;}
+      renderList();} break;
+    case 'condMemRemove':{var mEl5=t.closest('[data-mid]'), cid5=t.dataset.cid; if(c&&mEl5&&isGroup(c))mutate(function(){
+      var cd5=c.conditions.find(function(x){return x.id===cid5;}); if(!cd5)return;
+      cd5.mem=(cd5.mem||c.members.map(function(m){return m.id;})).filter(function(id){return id!==mEl5.dataset.mid;});
+      condTidy(c);});
+      break;}
     case 'condPick':ui.cond.name=t.dataset.name;
       if(SPELL_ROUNDS[ui.cond.name]&&ui.cond.dur==='manual'){ui.cond.dur='rounds';ui.cond.n=SPELL_ROUNDS[ui.cond.name];}
       renderList();break;
@@ -322,6 +333,7 @@ document.addEventListener('change',function(e){
   if(t.dataset.tset){
     var k=t.dataset.tset, tm=state.timer;
     if(k==='secs'){var v0=num(t.value); if(v0!=null&&v0>=1)tm.secs=Math.round(v0); persist(); tick();}
+    if(k==='cmins'){var v1=num(t.value); if(v1!=null&&v1>=1)tm.cmins=Math.round(v1); persist(); tick();}
     return;
   }
   var sh=t.closest('.sheet');

@@ -77,7 +77,7 @@ textarea{resize:vertical;line-height:1.3}
    ============================================================ */
 
 .btn{background:var(--panel2);border:1px solid var(--line);border-radius:7px;padding:7px 13px;font-weight:600}
-.btn:hover:not(:disabled){border-color:var(--muted)}
+@media (hover:hover){.btn:hover:not(:disabled){border-color:var(--muted)}}
 .btn.primary{background:var(--now);color:var(--now-ink);border-color:transparent;font-weight:700}
 .btn.small{padding:3px 9px;font-size:13px;border-radius:6px}
 .btn.ghost{background:transparent}
@@ -86,7 +86,7 @@ textarea{resize:vertical;line-height:1.3}
 .tag.now{background:var(--now);color:var(--now-ink)}
 .tag.nxt{background:var(--next);color:var(--next-ink)}
 .icon{background:transparent;border:1px solid var(--line);border-radius:6px;padding:3px 8px;font-size:13px}
-.icon:hover:not(:disabled){border-color:var(--muted)}
+@media (hover:hover){.icon:hover:not(:disabled){border-color:var(--muted)}}
 .icon.danger{color:var(--danger)}
 .help{font-size:13px;color:var(--muted);margin:6px 0 0}
 .help code{background:var(--chip);border-radius:4px;padding:0 5px}
@@ -98,7 +98,7 @@ textarea{resize:vertical;line-height:1.3}
 .chip b{font-weight:700}
 .chip small{display:block;font-size:11.5px;color:var(--muted);line-height:1.15}
 .chip button{background:transparent;border:0;font-size:17px;line-height:1;padding:2px 6px;color:var(--muted)}
-.chip button:hover{color:var(--danger)}
+@media (hover:hover){.chip button:hover{color:var(--danger)}}
 .empty{padding:40px 16px;text-align:center;color:var(--page-text,var(--muted));border:1px dashed var(--line);border-radius:14px}
 /* above the windows (they go up to 95), so a toast's Undo button can be clicked while a window is open */
 .toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--inv);color:var(--inv-ink);padding:9px 16px;border-radius:99px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .2s;max-width:90vw;z-index:96}
@@ -112,7 +112,7 @@ textarea{resize:vertical;line-height:1.3}
 .seg{display:inline-flex;flex-wrap:nowrap;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--panel2);vertical-align:middle}
 .seg button{border:0;background:transparent;padding:5px 11px;font-weight:600;font-size:13px;border-right:1px solid var(--line);color:var(--text);white-space:nowrap}
 .seg button:last-child{border-right:0}
-.seg button:hover{background:color-mix(in srgb,var(--now) 18%,transparent)}
+@media (hover:hover){.seg button:hover{background:color-mix(in srgb,var(--now) 18%,transparent)}}
 .seg button[aria-checked="true"]{background:var(--now);color:var(--now-ink)}
 .seg.sm button{padding:2px 8px;font-size:12px}
 .swbtn{display:inline-flex;align-items:center;gap:8px;background:transparent;border:0;padding:2px 0;font-size:13px;color:var(--text);cursor:pointer}
@@ -208,7 +208,7 @@ form.stack label.check input{width:auto}
 .row.ishidden{opacity:.72}
 .r-init input{text-align:center;font:800 24px var(--fd);padding:4px 2px}
 .nm{font:700 21px var(--fd);background:transparent!important;border:1px solid transparent!important;padding:2px 4px!important}
-.nm:hover,.nm:focus{border-color:var(--line)!important}
+.nm:focus{border-color:var(--line)!important}@media (hover:hover){.nm:hover{border-color:var(--line)!important}}
 .sub{font-size:14px;color:var(--muted);padding:0 4px;display:flex;flex-wrap:wrap;gap:4px 6px;align-items:center}
 .sum{font-size:13px;color:var(--muted);padding:2px 4px 0}
 .sum:empty{display:none}
@@ -285,7 +285,7 @@ form.stack label.check input{width:auto}
 .acshield b{font:800 24px var(--fd);margin-top:-4px}
 .acshield small{font-size:10px;font-weight:700;color:var(--muted);margin-top:1px}
 .cinfo{background:transparent;border:0;font-size:13px;line-height:1;padding:2px 4px;color:var(--muted)}
-.cinfo:hover{color:var(--text)}
+@media (hover:hover){.cinfo:hover{color:var(--text)}}
 .cdesc{flex:1 1 100%;font-size:13px;line-height:1.35;border-left:3px solid var(--now);border-radius:4px;padding:6px 10px;background:color-mix(in srgb,var(--panel2) 70%,transparent)}
 .gcount{font-size:12.5px}
 .hp .swbtn{margin-top:2px}
@@ -295,8 +295,8 @@ form.stack label.check input{width:auto}
 .acwrap .swtrack i{width:11px;height:11px}
 .acwrap .swbtn.on .swtrack i{transform:translateX(13px)}
 .mem .hpact input{width:84px}
-.memadd{flex:0 0 66px;align-self:stretch;min-height:66px;border:2px dashed var(--line);border-radius:10px;background:transparent;font:800 24px var(--fd);color:var(--muted);cursor:pointer}
-.memadd:hover{color:var(--text);border-color:var(--muted);background:color-mix(in srgb,var(--panel2) 60%,transparent)}
+.memadd{flex:0 0 84px;align-self:stretch;min-height:66px;border:1.5px solid var(--line);border-radius:10px;background:var(--panel);color:var(--text);cursor:pointer}
+@media (hover:hover){.memadd:hover{color:var(--text);border-color:var(--muted);background:color-mix(in srgb,var(--panel2) 60%,transparent)}}
 .imgrow{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
 .imgprev{width:84px;height:84px;border-radius:10px;border:1px solid var(--line);background:var(--panel2);display:grid;place-items:center;overflow:hidden;color:var(--muted);font-size:12px}
 .imgprev img{width:100%;height:100%;object-fit:cover}
@@ -340,10 +340,10 @@ body.selftest #app{display:block}
 .mgrp>span{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
 .mdiv{height:1px;background:var(--line)}
 .mi{text-align:left;padding:8px 10px;border-radius:8px;border:0;background:transparent;color:var(--text);font-weight:600}
-.mi:hover{background:var(--panel2)}.mi.danger{color:var(--danger)}
+@media (hover:hover){.mi:hover{background:var(--panel2)}}.mi.danger{color:var(--danger)}
 .abbtns{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;width:100%}
 .abbtns button{padding:6px 0;font-size:12px;font-weight:700;border-radius:6px;border:1px solid var(--line);background:var(--panel2);color:var(--text)}
-.abbtns button:hover{border-color:var(--now)}
+@media (hover:hover){.abbtns button:hover{border-color:var(--now)}}
 .initrow{display:grid;grid-template-columns:1fr 70px auto;gap:8px;align-items:end}
 .btn.dice{white-space:nowrap}
 .clmodal{width:min(520px,94vw)}
@@ -351,6 +351,19 @@ body.selftest #app{display:block}
 .clopt[aria-checked="true"]{border-color:var(--now);background:color-mix(in srgb,var(--now) 12%,var(--panel2))}
 .clqty{}.clqty input{}
 
+/* "Add one" to a group: a real button (plus in a filled circle), not a dashed "+1" that reads as a hidden count */
+.memadd{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:8px 10px}
+.memadd .memplus{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font:700 20px/1 var(--fb)}
+.memadd>span:last-child{font:600 13px var(--fb);color:var(--text)}
+/* conditions on some members of a group */
+.cwho{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:10px 0 4px}
+.cwlab{font-weight:700;font-size:13px;margin-right:4px}
+.cwho .cwnum{min-width:44px;justify-content:center}
+.chip .cmem{font-weight:700}
+.mconds{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.mcond{display:inline-flex;align-items:center;gap:2px;padding:1px 2px 1px 8px;border-radius:99px;border:1px solid var(--line);background:color-mix(in srgb,var(--next) 22%,var(--panel));font-size:12.5px;font-weight:600}
+.mcond .icon{border:0;padding:0 6px;min-height:28px;background:transparent;font-size:15px}
+body.dm .mem .mcond button.icon{border:0;box-shadow:none;background:transparent;padding:0 6px;min-height:28px;min-width:28px}
 /* ============================================================
    Studio finish
    The DM screen's calmer, roomier look: system type at lighter weights, soft tinted
@@ -396,14 +409,14 @@ body.dm .initrow{gap:12px}
 
 /* controls */
 body.dm .btn,body.dm .icon{background:var(--fill);border:0;border-radius:var(--r-sm);padding:9px 16px;font-weight:500;font-size:14px;color:var(--text);transition:background .18s var(--ease),transform .12s var(--ease),box-shadow .2s var(--ease),filter .18s}
-body.dm .btn:hover:not(:disabled),body.dm .icon:hover:not(:disabled){background:var(--fill-2);border:0}
+@media (hover:hover){body.dm .btn:hover:not(:disabled),body.dm .icon:hover:not(:disabled){background:var(--fill-2);border:0}}
 body.dm .btn:active:not(:disabled),body.dm .icon:active:not(:disabled){transform:scale(.97)}
 body.dm .btn.small,body.dm .icon{padding:6px 13px;font-size:13px;border-radius:9px}
 body.dm .btn.ghost{background:transparent}
-body.dm .btn.ghost:hover:not(:disabled){background:var(--fill)}
+@media (hover:hover){body.dm .btn.ghost:hover:not(:disabled){background:var(--fill)}}
 body.dm .btn:disabled{opacity:.4}
 body.dm .btn.primary{background:var(--accent);color:var(--accent-ink);font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.18),0 8px 20px color-mix(in srgb,var(--accent) 32%,transparent)}
-body.dm .btn.primary:hover:not(:disabled){background:var(--accent);filter:brightness(1.07)}
+@media (hover:hover){body.dm .btn.primary:hover:not(:disabled){background:var(--accent);filter:brightness(1.07)}}
 body.dm :is(.btn,.icon,.seg button,.chipbtn,.mi,.svchip):focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 45%,transparent);outline-offset:2px}
 body.dm .icon.danger{color:var(--danger)}
 body.dm .icon.more{font-size:18px;padding:4px 12px;letter-spacing:.05em}
@@ -412,20 +425,20 @@ body.dm .btn.dmg{background:color-mix(in srgb,var(--danger) 15%,transparent);col
 body.dm .btn.heal{background:color-mix(in srgb,var(--ok) 16%,transparent);color:color-mix(in srgb,var(--ok) 78%,var(--text))}
 body.dm .btn.temp{background:color-mix(in srgb,var(--pc) 15%,transparent);color:color-mix(in srgb,var(--pc) 78%,var(--text))}
 body.dm .btn.cond{background:color-mix(in srgb,var(--next) 16%,transparent);color:color-mix(in srgb,var(--next) 45%,var(--text))}
-body.dm .btn.dmg:hover:not(:disabled){background:color-mix(in srgb,var(--danger) 27%,transparent)}
-body.dm .btn.heal:hover:not(:disabled){background:color-mix(in srgb,var(--ok) 28%,transparent)}
-body.dm .btn.temp:hover:not(:disabled){background:color-mix(in srgb,var(--pc) 27%,transparent)}
-body.dm .btn.cond:hover:not(:disabled){background:color-mix(in srgb,var(--next) 28%,transparent)}
+@media (hover:hover){body.dm .btn.dmg:hover:not(:disabled){background:color-mix(in srgb,var(--danger) 27%,transparent)}}
+@media (hover:hover){body.dm .btn.heal:hover:not(:disabled){background:color-mix(in srgb,var(--ok) 28%,transparent)}}
+@media (hover:hover){body.dm .btn.temp:hover:not(:disabled){background:color-mix(in srgb,var(--pc) 27%,transparent)}}
+@media (hover:hover){body.dm .btn.cond:hover:not(:disabled){background:color-mix(in srgb,var(--next) 28%,transparent)}}
 body.dm .rxbtn{background:color-mix(in srgb,var(--ok) 13%,transparent);color:color-mix(in srgb,var(--ok) 75%,var(--text))}
 body.dm .rxbtn.used{background:var(--fill);color:var(--muted)}
 body.dm .rxbtn.held{background:var(--next);color:var(--next-ink)}
 body.dm :where(input:not([type=checkbox]):not([type=radio]):not([type=file]),select,textarea){background:var(--fill);border:1px solid transparent;border-radius:var(--r-sm);padding:9px 12px;font-family:inherit;font-size:14.5px;color:var(--text);transition:background .18s,box-shadow .18s,border-color .18s}
-body.dm :where(input:not([type=checkbox]):not([type=radio]):not([type=file]),select,textarea):hover{background:var(--fill-2)}
+@media (hover:hover){body.dm :where(input:not([type=checkbox]):not([type=radio]):not([type=file]),select,textarea):hover{background:var(--fill-2)}}
 body.dm :where(input:not([type=checkbox]):not([type=radio]):not([type=file]),select,textarea):focus{outline:0;background:var(--panel);border-color:color-mix(in srgb,var(--accent) 65%,transparent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 18%,transparent)}
 body.dm ::placeholder{color:color-mix(in srgb,var(--muted) 75%,transparent)}
 body.dm .seg{border:0;background:var(--fill);border-radius:11px;padding:3px;gap:2px}
 body.dm .seg button{border:0;border-radius:8px;padding:6px 14px;font-weight:500;font-size:13px;color:var(--muted);background:transparent;transition:background .18s var(--ease),color .18s}
-body.dm .seg button:hover{background:transparent;color:var(--text)}
+@media (hover:hover){body.dm .seg button:hover{background:transparent;color:var(--text)}}
 body.dm .seg button[aria-checked="true"]{background:var(--thumb);color:var(--text);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.22),0 0 0 .5px rgba(0,0,0,.06)}
 body.dm .seg.sm button{padding:4px 10px;font-size:12px}
 body.dm .kseg button[aria-checked="true"][data-kind="dmg"]{color:color-mix(in srgb,var(--danger) 85%,var(--text))}
@@ -444,7 +457,7 @@ body.dm .chip{background:var(--fill);border-radius:99px;padding:4px 6px 4px 13px
 body.dm .tag{font-weight:600;font-size:11.5px;padding:2px 10px}
 body.dm .bar{height:7px;border:0;background:var(--fill-2)}
 body.dm .chipbtn{border:0;background:var(--fill);color:var(--text);border-radius:99px;padding:5px 13px;font:500 12.5px var(--fb);cursor:pointer;transition:background .18s}
-body.dm .chipbtn:hover{background:var(--fill-2)}
+@media (hover:hover){body.dm .chipbtn:hover{background:var(--fill-2)}}
 
 /* the creature card: roomy, one soft surface, a slim accent for who it is */
 body.dm .row{grid-template-columns:56px minmax(170px,1fr) minmax(290px,1.5fr) 84px 36px;border:0;border-radius:var(--r-lg);background:var(--panel);box-shadow:var(--shadow-1),inset 0 0 0 1px var(--hair);transition:box-shadow .25s var(--ease),background .25s}
@@ -469,7 +482,7 @@ body.dm .row.now::before{background:var(--now)}
 body.dm .row.now::after{content:"Now";position:absolute;left:30px;z-index:3;pointer-events:none;padding:4px 16px 3px;border-radius:99px;background:var(--now);color:var(--now-ink);font:800 12px/1.2 var(--fd);letter-spacing:.1em;text-transform:uppercase;box-shadow:0 2px 8px rgba(0,0,0,.28)}
 body.dm .r-init input{padding:0;background:var(--fill);font:600 22px var(--fd);letter-spacing:-.02em;text-align:center}
 body.dm .nm{font:600 20px var(--fd);letter-spacing:-.02em;padding:3px 6px!important}
-body.dm .nm:hover,body.dm .nm:focus{border-color:var(--hair)!important}
+body.dm .nm:focus{border-color:var(--hair)!important}@media (hover:hover){body.dm .nm:hover{border-color:var(--hair)!important}}
 body.dm .sub{gap:6px 10px;padding:2px 6px 0;font-size:13.5px}
 body.dm .sum{padding:6px 6px 0}
 body.dm .rowtools{margin-top:12px;padding-left:2px}
@@ -481,14 +494,14 @@ body.dm .acshield b{font:600 20px var(--fd)}
 body.dm .sheet,body.dm .cpanel{border:0;background:var(--fill);border-radius:18px;gap:14px}
 body.dm .members{border-top:1px solid var(--hair)}
 body.dm .mem{border:0;border-radius:18px}
-body.dm .memadd{border:2px dashed var(--hair);border-radius:18px;font:500 22px var(--fd)}
+body.dm .memadd{border:1.5px solid var(--line);border-radius:18px}
 body.dm .leg{border-top:1px solid var(--hair);padding-top:14px;gap:12px}
 body.dm .rowmenu{border:0;border-radius:18px;padding:16px;gap:16px;width:310px;background:color-mix(in srgb,var(--panel) 92%,transparent);backdrop-filter:saturate(180%) blur(24px);-webkit-backdrop-filter:saturate(180%) blur(24px);box-shadow:var(--shadow-2),inset 0 0 0 1px var(--hair)}
 body.dm .mgrp>span{font-size:11px;font-weight:600;letter-spacing:.06em}
 body.dm .mi{padding:9px 12px;font-weight:500;border-radius:10px}
-body.dm .mi:hover{background:var(--fill)}
+@media (hover:hover){body.dm .mi:hover{background:var(--fill)}}
 body.dm .abbtns button{border:0;background:var(--fill);border-radius:9px;padding:7px 0}
-body.dm .abbtns button:hover{background:var(--fill-2)}
+@media (hover:hover){body.dm .abbtns button:hover{background:var(--fill-2)}}
 body.dm .dispchip{border:0;background:color-mix(in srgb,currentColor 13%,transparent);font-weight:600;font-size:11.5px;padding:2px 10px}
 
 /* settings drawer and dialogs */
@@ -543,7 +556,7 @@ body.dm .aoetop input{width:100%;font:600 22px var(--fd);text-align:center;paddi
 body.dm .aoeapply.dmg{background:var(--danger);color:#fff}
 body.dm .aoeapply.heal{background:var(--ok);color:#06210f}
 body.dm .aoeapply.temp{background:var(--pc);color:#fff}
-body.dm .aoeapply:hover:not(:disabled){filter:brightness(1.08)}
+@media (hover:hover){body.dm .aoeapply:hover:not(:disabled){filter:brightness(1.08)}}
 
 /* Damage / Heal / Conditions: four kinds on one row, then amount or the condition controls */
 body.dm .aoetop{display:block;margin-bottom:12px}
@@ -792,14 +805,14 @@ body.dm .acshield{cursor:pointer}
 .savewrap{position:relative;display:inline-block}
 .savepop{left:0;right:auto;top:100%;margin-top:6px;width:300px}
 .regroup{width:290px}
-button.dispchip{border:0;font-family:inherit;cursor:pointer;transition:filter .15s}button.dispchip:hover{filter:brightness(1.15)}
+button.dispchip{border:0;font-family:inherit;cursor:pointer;transition:filter .15s}@media (hover:hover){button.dispchip:hover{filter:brightness(1.15)}}
 body.dm .btn.targetbtn{background:#D13B4F;color:#fff}
-body.dm .btn.targetbtn:hover:not(:disabled){background:#E04A5E;color:#fff}
+@media (hover:hover){body.dm .btn.targetbtn:hover:not(:disabled){background:#E04A5E;color:#fff}}
 body.dm .btn.xbtn,body.dm .icon.xbtn{color:#D13B4F;font-size:18px;line-height:1;padding:0 10px}
 /* health reads as text; click a number to edit it */
 :root:root body.dm .hpnums input[type="number"]{background:transparent;border:0;box-shadow:none;height:30px;line-height:28px;box-sizing:border-box;padding:1px 4px;border-radius:8px;font:700 23px var(--fd);text-align:center;width:3.1ch;min-width:2.2ch;field-sizing:content;-moz-appearance:textfield}
 :root:root body.dm .hpnums input[type="number"]::-webkit-inner-spin-button,:root:root body.dm .hpnums input[type="number"]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
-:root:root body.dm .hpnums input[type="number"]:hover{background:var(--fill)}
+@media (hover:hover){:root:root body.dm .hpnums input[type="number"]:hover{background:var(--fill)}}
 :root:root body.dm .hpnums input[type="number"]:focus{background:var(--panel);box-shadow:0 0 0 2px var(--accent)}
 body.dm .hpnums .tmpin{color:var(--accent)}
 body.dm .hpnums span{color:var(--muted);font-weight:500}
@@ -948,10 +961,10 @@ body.players.live{cursor:none}
 .rolemark{font-size:.66em;font-weight:700;padding:.1em .6em;border:.12em solid currentColor;border-radius:99px;white-space:nowrap;color:var(--muted)}
 .cb .flag{border:.12em solid currentColor}
 .viewbtn{position:fixed;top:calc(8px + env(safe-area-inset-top,0px));right:10px;z-index:60;opacity:.35;background:var(--inv);color:var(--inv-ink);border:0;border-radius:99px;min-height:40px;padding:0 18px;font:700 15px var(--fb);cursor:pointer}
-.viewbtn:hover,.viewbtn:focus-visible{opacity:1}
+.viewbtn:focus-visible{opacity:1}@media (hover:hover){.viewbtn:hover{opacity:1}}
 .viewmenu{position:fixed;top:calc(54px + env(safe-area-inset-top,0px));right:12px;z-index:61;display:grid;gap:4px;padding:8px;background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.5)}
 .viewmenu button{border:0;background:transparent;color:inherit;font:600 16px var(--fb);text-align:left;padding:8px 14px;border-radius:8px;cursor:pointer}
-.viewmenu button:hover,.viewmenu button[aria-current]{background:var(--panel2)}
+.viewmenu button[aria-current]{background:var(--panel2)}@media (hover:hover){.viewmenu button:hover{background:var(--panel2)}}
 .cloudbtns{display:grid;gap:10px;margin:16px 0 8px}
 
 /* Cards size to their content, with a capped height; conditions sit directly under the player info.
@@ -1316,14 +1329,14 @@ body.phone #app{display:block}
 /* buttons: lowercase-free, tracked, nudged to sit dead centre */
 :root[data-skin^="spark"] :is(.btn,.icon){background:var(--panel);border:var(--bw) solid var(--line);border-radius:8px;font-family:var(--fd);font-weight:700;font-size:12.5px;line-height:1.2;letter-spacing:.05em;text-transform:uppercase;color:var(--text);padding:calc(9px + var(--nudge)) 18px calc(9px - var(--nudge))}
 :root[data-skin^="spark"] :is(.btn.small,.icon){padding:calc(6px + var(--nudge)) 13px calc(6px - var(--nudge));font-size:12px}
-:root[data-skin^="spark"] :is(.btn,.icon):hover:not(:disabled){background:var(--next);color:var(--next-ink);border:var(--bw) solid var(--line);transform:translateY(-2px)}
+@media (hover:hover){:root[data-skin^="spark"] :is(.btn,.icon):hover:not(:disabled){background:var(--next);color:var(--next-ink);border:var(--bw) solid var(--line);transform:translateY(-2px)}}
 :root[data-skin^="spark"] .btn.ghost{background:transparent}
 :root[data-skin^="spark"] .btn.primary{background:var(--accent);color:var(--accent-ink)}
-:root[data-skin^="spark"] .btn.primary:hover:not(:disabled){background:color-mix(in srgb,var(--accent) 82%,#000);color:var(--accent-ink)}
-:root[data-skin^="spark"] .btn.dmg,:root[data-skin^="spark"] .btn.dmg:hover:not(:disabled){background:var(--sp-dmg);color:var(--sp-dmg-ink)}
-:root[data-skin^="spark"] .btn.heal,:root[data-skin^="spark"] .btn.heal:hover:not(:disabled){background:var(--sp-heal);color:var(--sp-heal-ink)}
-:root[data-skin^="spark"] .btn.temp,:root[data-skin^="spark"] .btn.temp:hover:not(:disabled){background:var(--sp-temp);color:var(--sp-temp-ink)}
-:root[data-skin^="spark"] .btn.cond,:root[data-skin^="spark"] .btn.cond:hover:not(:disabled){background:var(--sp-cond);color:var(--sp-cond-ink)}
+@media (hover:hover){:root[data-skin^="spark"] .btn.primary:hover:not(:disabled){background:color-mix(in srgb,var(--accent) 82%,#000);color:var(--accent-ink)}}
+:root[data-skin^="spark"] .btn.dmg{background:var(--sp-dmg);color:var(--sp-dmg-ink)}@media (hover:hover){:root[data-skin^="spark"] .btn.dmg:hover:not(:disabled){background:var(--sp-dmg);color:var(--sp-dmg-ink)}}
+:root[data-skin^="spark"] .btn.heal{background:var(--sp-heal);color:var(--sp-heal-ink)}@media (hover:hover){:root[data-skin^="spark"] .btn.heal:hover:not(:disabled){background:var(--sp-heal);color:var(--sp-heal-ink)}}
+:root[data-skin^="spark"] .btn.temp{background:var(--sp-temp);color:var(--sp-temp-ink)}@media (hover:hover){:root[data-skin^="spark"] .btn.temp:hover:not(:disabled){background:var(--sp-temp);color:var(--sp-temp-ink)}}
+:root[data-skin^="spark"] .btn.cond{background:var(--sp-cond);color:var(--sp-cond-ink)}@media (hover:hover){:root[data-skin^="spark"] .btn.cond:hover:not(:disabled){background:var(--sp-cond);color:var(--sp-cond-ink)}}
 :root[data-skin^="spark"] .rxbtn{background:var(--sp-heal);color:var(--sp-heal-ink)}
 :root[data-skin^="spark"] .rxbtn.used{background:var(--panel2);color:var(--muted)}
 :root[data-skin^="spark"] .rxbtn.held{background:var(--next);color:var(--next-ink)}
@@ -1426,7 +1439,7 @@ body.phone #app{display:block}
 :root[data-skin^="spark"] :is(.ctl .targetbtn,.libbrowse){padding-top:7px;padding-bottom:7px}
 :root[data-skin^="spark"] .acts :is(.eyebtn,.colbtn){padding:0}
 :root[data-skin^="spark"] .btn.targetbtn{background:var(--sp-dmg-solid);color:#fff}
-:root[data-skin^="spark"] .btn.targetbtn:hover:not(:disabled){background:color-mix(in srgb,var(--sp-dmg-solid) 82%,#000);color:#fff}
+@media (hover:hover){:root[data-skin^="spark"] .btn.targetbtn:hover:not(:disabled){background:color-mix(in srgb,var(--sp-dmg-solid) 82%,#000);color:#fff}}
 :root[data-skin^="spark"] .icon.xbtn{color:var(--sp-dmg-solid)}
 /* Combat Monitor (TV): cards not up are one size; the Now card is the same shape, 1.2x bigger */
 @media (min-width:1001px){
@@ -1458,7 +1471,7 @@ body.dm .nitem .nl{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-ov
 body.dm .nitem .chev{display:inline-flex;opacity:.6;transition:transform .16s}
 body.dm .nitem .chev svg{width:16px;height:16px}
 body.dm .ngrp.on>.nitem .chev{transform:rotate(180deg)}
-body.dm .nitem:hover{background:var(--fill-2,var(--panel2))}
+@media (hover:hover){body.dm .nitem:hover{background:var(--fill-2,var(--panel2))}}
 body.dm .ngrp.on>.nitem{background:var(--fill-2,var(--panel2))}
 body.dm .nitem:focus-visible,body.dm .nsubi:focus-visible{outline:3px solid color-mix(in srgb,var(--accent,var(--now)) 45%,transparent);outline-offset:-1px}
 body.dm .nbadge{display:inline-flex;align-items:center;gap:4px;font:600 12px var(--fb)}
@@ -1469,7 +1482,7 @@ body.dm .nsub{padding:2px 0 8px 18px;margin-left:19px;border-left:2px solid var(
 body.dm .nsub[hidden]{display:none}
 body.dm .nsubi{display:flex;align-items:center;gap:8px;width:100%;min-height:36px;padding:calc(6px + var(--nudge,0em)) 10px calc(6px - var(--nudge,0em)) 10px;border:0;border-radius:10px;background:transparent;color:var(--text);font:500 14px var(--fb);text-align:left;cursor:pointer}
 body.dm .nsubi::before{content:"\21b3";opacity:.5;flex:none}
-body.dm .nsubi:hover:not(:disabled){background:var(--fill-2,var(--panel2))}
+@media (hover:hover){body.dm .nsubi:hover:not(:disabled){background:var(--fill-2,var(--panel2))}}
 body.dm .nsubi[aria-expanded="true"]{font-weight:700;background:var(--fill-2,var(--panel2))}
 body.dm .nsubi:disabled{opacity:.45;cursor:default}
 body.dm .nsubi.danger{color:var(--danger)}
@@ -1651,7 +1664,7 @@ body.dm .aoeamt input{flex:1;min-width:0;width:auto;font:600 22px var(--fd);text
 body.dm .aoepicks .chipbtn{display:inline-flex;align-items:center;gap:6px}
 body.dm .aoepicks .chipbtn svg{width:14px;height:14px}
 body.dm .aoepicks .pickclear{background:transparent;box-shadow:inset 0 0 0 1.5px var(--danger);color:var(--danger)}
-body.dm .aoepicks .pickclear:hover:not(:disabled){background:color-mix(in srgb,var(--danger) 14%,transparent)}
+@media (hover:hover){body.dm .aoepicks .pickclear:hover:not(:disabled){background:color-mix(in srgb,var(--danger) 14%,transparent)}}
 body.dm .aoepicks .pickclear:disabled{box-shadow:inset 0 0 0 1.5px var(--line);color:var(--muted);opacity:.5;cursor:default}
 /* saved encounters */
 .encmodal .enclist{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:10px}
@@ -1694,7 +1707,7 @@ body.dm .nsep.mob{display:none}
 /* tie arrows beside the initiative number */
 body.dm .r-init.hastie{display:flex;flex-direction:column;align-items:center;gap:3px}
 body.dm .tiebtn{display:inline-flex;align-items:center;justify-content:center;width:100%;min-width:30px;height:17px;padding:0;border:1px solid var(--line);border-radius:8px;background:transparent;color:var(--text);font-size:9px;line-height:1;cursor:pointer}
-body.dm .tiebtn:hover{background:var(--fill-2,var(--panel2))}
+@media (hover:hover){body.dm .tiebtn:hover{background:var(--fill-2,var(--panel2))}}
 body.dm .tiebtn.ph{visibility:hidden;border-color:transparent}
 /* collapsed group: a quiet row of health */
 body.dm .gmini{display:none}
@@ -1745,7 +1758,7 @@ body.dm .gm.dead em{text-decoration:line-through}
 .drawer .dside{overflow-y:auto;padding:10px 10px 18px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:2px;background:var(--panel2,var(--panel))}
 .drawer .dcat{display:flex;align-items:center;gap:11px;width:100%;padding:9px 12px;border:0;border-radius:10px;background:transparent;color:var(--text);font:600 15px var(--fb);text-align:left;cursor:pointer}
 .drawer .dcat svg{width:20px;height:20px;flex:none;color:var(--muted)}
-.drawer .dcat:hover{background:color-mix(in srgb,var(--text) 7%,transparent)}
+@media (hover:hover){.drawer .dcat:hover{background:color-mix(in srgb,var(--text) 7%,transparent)}}
 .drawer .dcat[aria-current=page]{background:var(--accent);color:var(--accent-ink)}
 .drawer .dcat[aria-current=page] svg{color:inherit}
 .drawer .dmain{overflow-y:auto;padding:0 22px 40px;outline:0}
@@ -1774,7 +1787,7 @@ body.dm .gm.dead em{text-decoration:line-through}
 /* picker tiles with a small picture, like the Light / Dark choice in System Settings */
 .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));gap:10px;width:100%}
 .tile{display:flex;flex-direction:column;align-items:center;gap:8px;padding:10px 8px 8px;border:2px solid var(--line);border-radius:12px;background:var(--panel);color:var(--text);cursor:pointer;font:600 13px var(--fb)}
-.tile:hover{border-color:color-mix(in srgb,var(--accent) 50%,var(--line))}
+@media (hover:hover){.tile:hover{border-color:color-mix(in srgb,var(--accent) 50%,var(--line))}}
 .tile[aria-checked=true]{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 28%,transparent)}
 .tile .tpic{display:flex;align-items:center;justify-content:center;width:100%;height:46px;overflow:hidden}
 .tp-word{font:800 15px var(--fb);color:var(--wound)}
@@ -1812,7 +1825,7 @@ body.dm .row>.rowtools .btn{display:inline-flex;align-items:center;gap:7px}
 body.dm .row>.rowtools svg{width:16px;height:16px;flex:none}
 body.dm .row>.rowtab{position:absolute;right:26px;bottom:-15px;z-index:3;display:inline-flex;align-items:center;gap:6px;padding:4px 14px 4px 11px;border-radius:99px;border:1.5px solid color-mix(in srgb,var(--text) 38%,transparent);background:var(--panel);color:var(--text);font:800 11.5px var(--fb);letter-spacing:.06em;text-transform:uppercase;cursor:pointer;box-shadow:0 3px 8px rgba(0,0,0,.14)}
 body.dm .row>.rowtab svg{width:15px;height:15px;flex:none}
-body.dm .row>.rowtab:hover{background:color-mix(in srgb,var(--text) 8%,var(--panel))}
+@media (hover:hover){body.dm .row>.rowtab:hover{background:color-mix(in srgb,var(--text) 8%,var(--panel))}}
 body.dm .row.collapsed>.rowtab{bottom:-15px}
 @media (max-width:900px){
   body.dm .row:not(.collapsed){grid-template-columns:48px minmax(0,1fr) auto auto;grid-template-areas:"init who ac acts" "hp hp hp hp" "conds conds conds conds" "tools tools tools tools";gap:10px 10px;padding-bottom:20px}
@@ -1864,7 +1877,7 @@ body.dm .row.collapsed>.rowtab{bottom:-15px}
 .mmfops{display:flex;gap:8px;margin:0 0 10px}
 .mmfmenu{position:absolute;right:0;top:calc(100% + 6px);z-index:25;min-width:200px;display:grid;gap:2px;padding:6px;border:1.5px solid var(--line);border-radius:12px;background:var(--panel);box-shadow:0 14px 34px rgba(0,0,0,.35)}
 .mmfmenu>button{display:block;width:100%;text-align:left;padding:8px 10px;border:0;border-radius:8px;background:transparent;color:var(--text);font:600 14px var(--fb);cursor:pointer}
-.mmfmenu>button:hover{background:color-mix(in srgb,var(--text) 8%,transparent)}
+@media (hover:hover){.mmfmenu>button:hover{background:color-mix(in srgb,var(--text) 8%,transparent)}}
 .mmfmenu>button[aria-checked=true]{background:var(--accent);color:var(--accent-ink)}
 .mmfmform{display:flex;gap:6px;padding:6px}
 .mmfmform input{width:130px}
@@ -1907,7 +1920,7 @@ body.dm .row>.rowtools .btn span{display:block;line-height:1}
 .stdph{width:34px}
 /* standard NPC groups fold: the heading is a button, open groups show their rows */
 .mmsec.stdgrp{position:static;width:100%;border:0;cursor:pointer;align-items:center;margin:0 0 8px;padding:12px 14px;border-radius:12px;background:color-mix(in srgb,var(--text) 6%,var(--panel));text-align:left}
-.mmsec.stdgrp:hover{background:color-mix(in srgb,var(--text) 10%,var(--panel))}
+@media (hover:hover){.mmsec.stdgrp:hover{background:color-mix(in srgb,var(--text) 10%,var(--panel))}}
 .mmsec.stdgrp:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .mmsec.stdgrp .stdchev{width:1em;font-size:12px;opacity:.75}
 .mmsec.stdgrp.open{margin-bottom:6px}
@@ -2026,7 +2039,7 @@ body.dm .hpact>[data-delta],body.dm .hpact>[data-mdelta]{width:84px;min-width:0}
 .spsearch{display:flex;gap:8px}.spsearch input{flex:1;min-width:0}
 .splist{display:flex;flex-direction:column;gap:6px;max-height:340px;overflow:auto;padding-right:2px}
 .sprowbtn{display:flex;flex-direction:column;align-items:flex-start;gap:2px;width:100%;text-align:left;padding:8px 12px;border:var(--bw,1.5px) solid var(--line);border-radius:12px;background:var(--panel);color:var(--text);cursor:pointer;font:inherit}
-.sprowbtn:hover{background:color-mix(in srgb,var(--text) 6%,var(--panel))}
+@media (hover:hover){.sprowbtn:hover{background:color-mix(in srgb,var(--text) 6%,var(--panel))}}
 .sprowbtn small{font-size:12px;color:var(--muted)}
 .sprec{margin-left:8px;font-style:normal;font-size:11px;padding:0 7px;border-radius:99px;background:color-mix(in srgb,var(--text) 10%,var(--panel));color:var(--muted)}
 .spcard{border:var(--bw,1.5px) solid var(--line);border-radius:14px;padding:10px 12px;background:var(--panel);display:flex;flex-direction:column;gap:8px}
@@ -2066,6 +2079,14 @@ body.dm .hpact>[data-delta],body.dm .hpact>[data-mdelta]{width:84px;min-width:0}
 .bmwm{display:block;height:1.5em;width:auto;flex:none}
 .bword,.bmword,.ph-brand span{display:inline-flex;align-items:center;color:var(--text);line-height:1}
 :root[data-skin="feywild"] .bword{background:none;-webkit-background-clip:border-box;background-clip:border-box;color:#FF7BE6}
+/* the button keeps one width in both states; "on" is a filled lime pill with a dot */
+.rfibtn.on{background:var(--next);color:var(--next-ink);border-color:var(--line)}
+.rfidot{width:8px;height:8px;border-radius:50%;background:currentColor;flex:none;animation:rfipulse 1.6s ease-in-out infinite}
+@keyframes rfipulse{50%{opacity:.35}}
+@media (prefers-reduced-motion:reduce){.rfidot{animation:none}}
+.startbtn{white-space:nowrap}
+.rfidot.off{visibility:hidden;animation:none}
+.rfiverb{display:inline-block;min-width:3em;text-align:center}
 /* Mockup: Frost ice streaks instead of straight stripes */
 :root[data-skin="frost"]{
   --ice:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%222400%22 height=%221500%22%3E%3Cdefs%3E%3Cfilter id=%22s%22 x=%22-50%25%22 y=%22-50%25%22 width=%22200%25%22 height=%22200%25%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.0012 0.022%22 numOctaves=%223%22 seed=%224%22/%3E%3CfeColorMatrix values=%220 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 2.2 -1.22%22/%3E%3C/filter%3E%3Cfilter id=%22h%22 x=%220%22 y=%220%22 width=%22100%25%22 height=%22100%25%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.0035%22 numOctaves=%224%22 seed=%229%22/%3E%3CfeColorMatrix values=%220 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.2 -0.5%22/%3E%3C/filter%3E%3CradialGradient id=%22g%22%3E%3Cstop offset=%220%22 stop-color=%22%23fff%22/%3E%3Cstop offset=%22.75%22 stop-color=%22%23fff%22 stop-opacity=%22.55%22/%3E%3Cstop offset=%221%22 stop-color=%22%23fff%22 stop-opacity=%220%22/%3E%3C/radialGradient%3E%3Cmask id=%22fade%22%3E%3Crect width=%222400%22 height=%221500%22 fill=%22url(%23g)%22/%3E%3C/mask%3E%3C/defs%3E%3Cg transform=%22rotate(-62 1200.0 750.0)%22%3E%3Crect x=%22-2400%22 y=%22-1500%22 width=%227200%22 height=%224500%22 filter=%22url(%23s)%22/%3E%3C/g%3E%3Crect width=%222400%22 height=%221500%22 filter=%22url(%23h)%22 opacity=%22.55%22/%3E%3Cpath d=%22M1622.8 -63.0 L1632.4 -88.5 L1641.4 -114.4 L1650.1 -142.1 L1661.2 -169.8 L1668.5 -194.5 L1678.5 -224.5 L1691.0 -251.0 L1699.8 -276.9 L1706.8 -305.0 L1719.1 -330.2 L1728.3 -356.8 L1738.7 -382.5 L1747.4 -410.0 L1757.6 -437.8 L1764.5 -463.9 L1774.2 -490.4 L1802.4 -510.7 L1810.9 -536.6 L1822.6 -564.0 L1834.7 -590.4 L1841.3 -615.8 L1855.9 -641.6 L1863.8 -668.7 L1868.2 -699.5 L1915.1 -709.9 L1930.1 -736.5 L1940.5 -758.8 L1953.6 -787.4 L1963.2 -810.6%22 transform=%22translate(1.2 1.4)%22 stroke=%22%235E8FB8%22 stroke-opacity=%220.14%22 stroke-width=%220.64%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M1622.8 -63.0 L1632.4 -88.5 L1641.4 -114.4 L1650.1 -142.1 L1661.2 -169.8 L1668.5 -194.5 L1678.5 -224.5 L1691.0 -251.0 L1699.8 -276.9 L1706.8 -305.0 L1719.1 -330.2 L1728.3 -356.8 L1738.7 -382.5 L1747.4 -410.0 L1757.6 -437.8 L1764.5 -463.9 L1774.2 -490.4 L1802.4 -510.7 L1810.9 -536.6 L1822.6 -564.0 L1834.7 -590.4 L1841.3 -615.8 L1855.9 -641.6 L1863.8 -668.7 L1868.2 -699.5 L1915.1 -709.9 L1930.1 -736.5 L1940.5 -758.8 L1953.6 -787.4 L1963.2 -810.6%22 stroke=%22%23fff%22 stroke-opacity=%220.39%22 stroke-width=%220.8%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M-167.6 1378.1 L-152.1 1354.9 L-139.9 1331.4 L-123.6 1306.3 L-108.7 1282.6 L-96.1 1255.5 L-82.4 1230.9 L-66.2 1206.4 L-53.9 1180.3 L-40.2 1159.4 L-28.3 1131.5 L-11.8 1110.2 L1.4 1081.9 L17.6 1058.9 L27.9 1035.4 L43.4 1010.5 L56.2 987.1 L72.3 962.3 L84.5 936.4 L100.9 911.3 L112.8 885.4 L127.4 862.5 L142.6 838.5 L154.2 812.3%22 transform=%22translate(1.2 1.4)%22 stroke=%22%235E8FB8%22 stroke-opacity=%220.20%22 stroke-width=%220.64%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M-167.6 1378.1 L-152.1 1354.9 L-139.9 1331.4 L-123.6 1306.3 L-108.7 1282.6 L-96.1 1255.5 L-82.4 1230.9 L-66.2 1206.4 L-53.9 1180.3 L-40.2 1159.4 L-28.3 1131.5 L-11.8 1110.2 L1.4 1081.9 L17.6 1058.9 L27.9 1035.4 L43.4 1010.5 L56.2 987.1 L72.3 962.3 L84.5 936.4 L100.9 911.3 L112.8 885.4 L127.4 862.5 L142.6 838.5 L154.2 812.3%22 stroke=%22%23fff%22 stroke-opacity=%220.58%22 stroke-width=%220.8%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M-122.8 331.7 L-110.7 306.6 L-97.2 277.9 L-89.2 251.0 L-76.1 227.9 L-65.5 200.6 L-55.9 174.4 L-41.6 148.6 L-33.0 122.6 L-19.0 97.2 L-9.5 70.9 L0.8 41.1 L15.3 17.9 L26.2 -7.5 L35.4 -35.6 L45.2 -60.0 L58.8 -86.3 L71.5 -113.0 L80.1 -141.5 L92.8 -167.9 L102.1 -191.2 L114.8 -218.8 L125.9 -243.6 L137.7 -271.5 L139.5 -303.3 L150.4 -327.6 L163.1 -354.6 L174.0 -378.9 L185.0 -407.6 L196.9 -432.8 L207.8 -457.3%22 transform=%22translate(1.2 1.4)%22 stroke=%22%235E8FB8%22 stroke-opacity=%220.28%22 stroke-width=%221.44%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M-122.8 331.7 L-110.7 306.6 L-97.2 277.9 L-89.2 251.0 L-76.1 227.9 L-65.5 200.6 L-55.9 174.4 L-41.6 148.6 L-33.0 122.6 L-19.0 97.2 L-9.5 70.9 L0.8 41.1 L15.3 17.9 L26.2 -7.5 L35.4 -35.6 L45.2 -60.0 L58.8 -86.3 L71.5 -113.0 L80.1 -141.5 L92.8 -167.9 L102.1 -191.2 L114.8 -218.8 L125.9 -243.6 L137.7 -271.5 L139.5 -303.3 L150.4 -327.6 L163.1 -354.6 L174.0 -378.9 L185.0 -407.6 L196.9 -432.8 L207.8 -457.3%22 stroke=%22%23fff%22 stroke-opacity=%220.79%22 stroke-width=%221.8%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M577.5 765.5 L588.2 741.4 L601.9 715.8 L611.8 688.0 L623.2 663.4 L634.8 636.1 L649.2 613.2 L659.4 584.5 L671.8 560.9 L685.7 532.7 L694.7 509.3 L707.5 482.4 L718.1 456.4 L731.7 432.2 L744.0 404.7 L754.2 381.7 L769.5 352.4 L781.6 327.1 L793.2 304.3 L805.8 276.7 L815.9 251.3 L826.8 227.0 L841.5 198.9 L798.8 153.2 L808.5 124.4 L886.5 130.0 L897.2 103.6 L913.7 76.1 L926.0 52.2 L935.2 25.9 L948.0 2.0 L959.4 -27.0 L975.9 -50.3 L986.0 -75.1 L999.4 -101.1 L1013.2 -127.7 L1022.3 -153.6 L1037.0 -179.4 L1050.5 -201.8 L1088.4 -216.0%22 transform=%22translate(1.2 1.4)%22 stroke=%22%235E8FB8%22 stroke-opacity=%220.26%22 stroke-width=%221.04%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M577.5 765.5 L588.2 741.4 L601.9 715.8 L611.8 688.0 L623.2 663.4 L634.8 636.1 L649.2 613.2 L659.4 584.5 L671.8 560.9 L685.7 532.7 L694.7 509.3 L707.5 482.4 L718.1 456.4 L731.7 432.2 L744.0 404.7 L754.2 381.7 L769.5 352.4 L781.6 327.1 L793.2 304.3 L805.8 276.7 L815.9 251.3 L826.8 227.0 L841.5 198.9 L798.8 153.2 L808.5 124.4 L886.5 130.0 L897.2 103.6 L913.7 76.1 L926.0 52.2 L935.2 25.9 L948.0 2.0 L959.4 -27.0 L975.9 -50.3 L986.0 -75.1 L999.4 -101.1 L1013.2 -127.7 L1022.3 -153.6 L1037.0 -179.4 L1050.5 -201.8 L1088.4 -216.0%22 stroke=%22%23fff%22 stroke-opacity=%220.74%22 stroke-width=%221.3%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M478.0 355.3 L489.6 333.1 L503.3 304.3 L514.7 279.1 L525.3 252.8 L537.2 224.6 L547.2 200.4 L541.3 166.3 L551.4 141.5 L561.4 115.0 L568.8 88.5 L579.7 59.9 L612.1 41.3 L622.8 12.8 L632.4 -10.5 L644.8 -37.9 L655.2 -63.8 L663.4 -92.6 L674.7 -115.8 L688.0 -143.1 L698.4 -172.2 L710.6 -196.3 L721.2 -224.6 L730.4 -250.9 L743.5 -276.6 L755.6 -301.7 L764.5 -327.2 L776.1 -353.7 L730.3 -400.4 L740.7 -430.7 L710.5 -466.9 L716.6 -495.2 L725.1 -524.4 L731.6 -548.1 L738.5 -577.9 L750.4 -605.4 L754.8 -630.7 L764.2 -661.8 L773.5 -689.3 L779.3 -713.5 L785.8 -740.9 L792.6 -772.3%22 transform=%22translate(1.2 1.4)%22 stroke=%22%235E8FB8%22 stroke-opacity=%220.19%22 stroke-width=%221.04%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M478.0 355.3 L489.6 333.1 L503.3 304.3 L514.7 279.1 L525.3 252.8 L537.2 224.6 L547.2 200.4 L541.3 166.3 L551.4 141.5 L561.4 115.0 L568.8 88.5 L579.7 59.9 L612.1 41.3 L622.8 12.8 L632.4 -10.5 L644.8 -37.9 L655.2 -63.8 L663.4 -92.6 L674.7 -115.8 L688.0 -143.1 L698.4 -172.2 L710.6 -196.3 L721.2 -224.6 L730.4 -250.9 L743.5 -276.6 L755.6 -301.7 L764.5 -327.2 L776.1 -353.7 L730.3 -400.4 L740.7 -430.7 L710.5 -466.9 L716.6 -495.2 L725.1 -524.4 L731.6 -548.1 L738.5 -577.9 L750.4 -605.4 L754.8 -630.7 L764.2 -661.8 L773.5 -689.3 L779.3 -713.5 L785.8 -740.9 L792.6 -772.3%22 stroke=%22%23fff%22 stroke-opacity=%220.53%22 stroke-width=%221.3%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M852.4 29.0 L865.7 6.3 L877.0 -20.0 L890.3 -46.9 L903.3 -70.0 L919.8 -98.2 L937.0 -121.4 L950.0 -145.6 L965.4 -170.1 L989.7 -185.9 L1004.1 -213.5 L1020.2 -235.3 L1037.4 -260.0 L1051.3 -285.5 L1065.3 -309.3 L1082.2 -332.7 L1096.7 -355.7 L1112.6 -382.5 L1128.6 -404.5 L1141.7 -427.7 L1157.8 -454.1 L1173.1 -478.0 L1189.5 -502.6 L1244.8 -495.5 L1261.4 -518.4 L1279.7 -543.0 L1296.6 -564.0 L1311.7 -586.4 L1331.2 -611.3 L1349.0 -631.9 L1364.4 -655.6 L1383.8 -679.7 L1464.4 -650.4 L1481.3 -670.5 L1499.0 -690.9 L1521.0 -713.4 L1540.4 -737.3 L1555.5 -758.4 L1574.7 -777.1 L1596.3 -799.2 L1616.0 -822.3 L1635.8 -843.2 L1654.2 -865.3 L1674.1 -885.3%22 transform=%22translate(1.2 1.4)%22 stroke=%22%235E8FB8%22 stroke-opacity=%220.20%22 stroke-width=%220.64%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M852.4 29.0 L865.7 6.3 L877.0 -20.0 L890.3 -46.9 L903.3 -70.0 L919.8 -98.2 L937.0 -121.4 L950.0 -145.6 L965.4 -170.1 L989.7 -185.9 L1004.1 -213.5 L1020.2 -235.3 L1037.4 -260.0 L1051.3 -285.5 L1065.3 -309.3 L1082.2 -332.7 L1096.7 -355.7 L1112.6 -382.5 L1128.6 -404.5 L1141.7 -427.7 L1157.8 -454.1 L1173.1 -478.0 L1189.5 -502.6 L1244.8 -495.5 L1261.4 -518.4 L1279.7 -543.0 L1296.6 -564.0 L1311.7 -586.4 L1331.2 -611.3 L1349.0 -631.9 L1364.4 -655.6 L1383.8 -679.7 L1464.4 -650.4 L1481.3 -670.5 L1499.0 -690.9 L1521.0 -713.4 L1540.4 -737.3 L1555.5 -758.4 L1574.7 -777.1 L1596.3 -799.2 L1616.0 -822.3 L1635.8 -843.2 L1654.2 -865.3 L1674.1 -885.3%22 stroke=%22%23fff%22 stroke-opacity=%220.56%22 stroke-width=%220.8%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M2488.9 1136.7 L2502.6 1113.0 L2514.8 1089.7 L2524.1 1061.6 L2539.1 1035.5 L2551.5 1011.3 L2564.7 984.9 L2573.6 959.0 L2586.0 936.7 L2597.7 908.0 L2612.0 885.7 L2622.9 856.9 L2634.0 830.7 L2642.0 805.4 L2654.0 779.8 L2662.0 754.1 L2672.9 727.1 L2686.0 699.9 L2696.0 673.9 L2711.7 647.4 L2720.0 622.6 L2734.3 597.2 L2740.8 572.1 L2752.2 546.2 L2753.9 514.8 L2696.9 465.9 L2708.3 438.8%22 transform=%22translate(1.2 1.4)%22 stroke=%22%235E8FB8%22 stroke-opacity=%220.18%22 stroke-width=%220.80%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M2488.9 1136.7 L2502.6 1113.0 L2514.8 1089.7 L2524.1 1061.6 L2539.1 1035.5 L2551.5 1011.3 L2564.7 984.9 L2573.6 959.0 L2586.0 936.7 L2597.7 908.0 L2612.0 885.7 L2622.9 856.9 L2634.0 830.7 L2642.0 805.4 L2654.0 779.8 L2662.0 754.1 L2672.9 727.1 L2686.0 699.9 L2696.0 673.9 L2711.7 647.4 L2720.0 622.6 L2734.3 597.2 L2740.8 572.1 L2752.2 546.2 L2753.9 514.8 L2696.9 465.9 L2708.3 438.8%22 stroke=%22%23fff%22 stroke-opacity=%220.50%22 stroke-width=%221%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M1891.9 1109.3 L1901.8 1085.4 L1910.8 1059.3 L1925.0 1031.6 L1936.6 1007.4 L1945.1 979.4 L1971.1 960.9 L1984.4 936.6 L2000.5 910.4 L2012.4 883.5 L2027.2 859.9 L2038.7 834.6 L2051.9 810.4 L2067.1 787.0 L2079.7 758.2 L2096.5 733.7 L2109.6 710.9 L2121.2 683.8 L2134.6 658.7 L2148.0 633.6 L2164.8 608.3 L2147.8 570.6 L2159.5 544.6 L2112.5 491.7 L2119.9 467.7 L2128.1 439.6 L2138.3 410.5 L2147.8 386.0 L2159.6 356.5 L2169.4 331.2 L2148.9 298.0 L2202.0 284.1 L2209.8 255.5 L2218.4 227.3 L2230.1 202.3 L2240.9 174.5 L2250.9 148.9 L2262.4 123.4 L2268.3 97.0 L2279.9 67.1 L2291.6 43.2 L2299.8 17.8 L2308.8 -12.5 L2320.6 -38.1 L2328.6 -66.2 L2341.6 -91.4 L2352.2 -116.6 L2359.6 -145.8 L2368.4 -171.5 L2381.6 -196.3 L2391.8 -226.4 L2399.5 -250.6%22 transform=%22translate(1.2 1.4)%22 stroke=%22%235E8FB8%22 stroke-opacity=%220.26%22 stroke-width=%220.48%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M1891.9 1109.3 L1901.8 1085.4 L1910.8 1059.3 L1925.0 1031.6 L1936.6 1007.4 L1945.1 979.4 L1971.1 960.9 L1984.4 936.6 L2000.5 910.4 L2012.4 883.5 L2027.2 859.9 L2038.7 834.6 L2051.9 810.4 L2067.1 787.0 L2079.7 758.2 L2096.5 733.7 L2109.6 710.9 L2121.2 683.8 L2134.6 658.7 L2148.0 633.6 L2164.8 608.3 L2147.8 570.6 L2159.5 544.6 L2112.5 491.7 L2119.9 467.7 L2128.1 439.6 L2138.3 410.5 L2147.8 386.0 L2159.6 356.5 L2169.4 331.2 L2148.9 298.0 L2202.0 284.1 L2209.8 255.5 L2218.4 227.3 L2230.1 202.3 L2240.9 174.5 L2250.9 148.9 L2262.4 123.4 L2268.3 97.0 L2279.9 67.1 L2291.6 43.2 L2299.8 17.8 L2308.8 -12.5 L2320.6 -38.1 L2328.6 -66.2 L2341.6 -91.4 L2352.2 -116.6 L2359.6 -145.8 L2368.4 -171.5 L2381.6 -196.3 L2391.8 -226.4 L2399.5 -250.6%22 stroke=%22%23fff%22 stroke-opacity=%220.76%22 stroke-width=%220.6%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M247.6 1292.6 L264.7 1267.7 L277.4 1245.3 L290.7 1220.1 L308.6 1195.3 L322.5 1171.3 L334.3 1149.8 L351.0 1124.6 L365.4 1101.2 L379.3 1077.3 L399.9 1056.1 L416.3 1033.5 L430.1 1008.4 L445.0 984.8 L460.5 961.0 L473.7 940.4 L490.7 913.9 L505.3 894.2 L522.5 870.9 L537.4 843.8 L551.1 823.5 L564.8 799.2 L579.5 773.7 L595.0 752.5 L613.0 725.7 L628.6 702.4 L641.9 679.3 L612.3 632.7 L629.0 604.8 L639.1 581.8 L653.7 558.8 L668.2 534.3 L683.5 508.7 L696.2 482.5 L708.7 458.4 L721.6 433.1 L733.4 411.4 L749.5 387.6 L763.2 360.1 L678.6 290.0 L691.3 265.5%22 transform=%22translate(1.2 1.4)%22 stroke=%22%235E8FB8%22 stroke-opacity=%220.22%22 stroke-width=%220.64%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M247.6 1292.6 L264.7 1267.7 L277.4 1245.3 L290.7 1220.1 L308.6 1195.3 L322.5 1171.3 L334.3 1149.8 L351.0 1124.6 L365.4 1101.2 L379.3 1077.3 L399.9 1056.1 L416.3 1033.5 L430.1 1008.4 L445.0 984.8 L460.5 961.0 L473.7 940.4 L490.7 913.9 L505.3 894.2 L522.5 870.9 L537.4 843.8 L551.1 823.5 L564.8 799.2 L579.5 773.7 L595.0 752.5 L613.0 725.7 L628.6 702.4 L641.9 679.3 L612.3 632.7 L629.0 604.8 L639.1 581.8 L653.7 558.8 L668.2 534.3 L683.5 508.7 L696.2 482.5 L708.7 458.4 L721.6 433.1 L733.4 411.4 L749.5 387.6 L763.2 360.1 L678.6 290.0 L691.3 265.5%22 stroke=%22%23fff%22 stroke-opacity=%220.63%22 stroke-width=%220.8%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M1388.0 377.3 L1398.5 349.2 L1412.3 323.0 L1428.2 300.2 L1433.4 270.3 L1445.9 242.9 L1456.7 218.8 L1466.6 192.0 L1475.8 163.3 L1463.0 128.7 L1471.1 103.3 L1480.0 75.0 L1490.5 48.6 L1498.8 20.5 L1519.1 -2.7 L1526.3 -31.4 L1537.2 -59.9 L1543.1 -83.1 L1554.4 -114.1 L1564.8 -137.7%22 transform=%22translate(1.2 1.4)%22 stroke=%22%235E8FB8%22 stroke-opacity=%220.16%22 stroke-width=%220.48%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M1388.0 377.3 L1398.5 349.2 L1412.3 323.0 L1428.2 300.2 L1433.4 270.3 L1445.9 242.9 L1456.7 218.8 L1466.6 192.0 L1475.8 163.3 L1463.0 128.7 L1471.1 103.3 L1480.0 75.0 L1490.5 48.6 L1498.8 20.5 L1519.1 -2.7 L1526.3 -31.4 L1537.2 -59.9 L1543.1 -83.1 L1554.4 -114.1 L1564.8 -137.7%22 stroke=%22%23fff%22 stroke-opacity=%220.47%22 stroke-width=%220.6%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M2006.6 794.8 L2019.5 770.5 L2030.1 743.4 L2044.2 715.6 L2054.1 689.3 L2067.3 665.4 L2080.6 638.5 L2091.2 614.3 L2103.1 587.1 L2112.6 561.4 L2146.0 544.0 L2163.4 520.6 L2173.4 494.4 L2190.1 472.5 L2201.6 447.2 L2218.9 423.4 L2229.6 398.8 L2247.4 370.7 L2257.7 345.5 L2274.8 323.4 L2288.0 297.0 L2299.6 274.3 L2314.6 248.0 L2298.9 208.9 L2311.8 184.5 L2326.9 157.4 L2325.6 126.7 L2339.0 100.0 L2351.9 72.3 L2361.1 46.2 L2376.0 24.8 L2385.5 -2.5 L2397.7 -30.2 L2408.9 -53.3 L2420.8 -80.1 L2432.6 -106.2 L2447.7 -131.6 L2459.2 -158.9%22 transform=%22translate(1.2 1.4)%22 stroke=%22%235E8FB8%22 stroke-opacity=%220.26%22 stroke-width=%221.04%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M2006.6 794.8 L2019.5 770.5 L2030.1 743.4 L2044.2 715.6 L2054.1 689.3 L2067.3 665.4 L2080.6 638.5 L2091.2 614.3 L2103.1 587.1 L2112.6 561.4 L2146.0 544.0 L2163.4 520.6 L2173.4 494.4 L2190.1 472.5 L2201.6 447.2 L2218.9 423.4 L2229.6 398.8 L2247.4 370.7 L2257.7 345.5 L2274.8 323.4 L2288.0 297.0 L2299.6 274.3 L2314.6 248.0 L2298.9 208.9 L2311.8 184.5 L2326.9 157.4 L2325.6 126.7 L2339.0 100.0 L2351.9 72.3 L2361.1 46.2 L2376.0 24.8 L2385.5 -2.5 L2397.7 -30.2 L2408.9 -53.3 L2420.8 -80.1 L2432.6 -106.2 L2447.7 -131.6 L2459.2 -158.9%22 stroke=%22%23fff%22 stroke-opacity=%220.75%22 stroke-width=%221.3%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M1607.5 506.4 L1619.9 483.7 L1636.3 454.7 L1648.1 431.7 L1662.0 408.6 L1675.5 381.2 L1689.5 356.0 L1701.3 332.7 L1715.4 306.2 L1730.2 282.8 L1744.2 258.3 L1754.9 231.2 L1767.8 209.4 L1780.8 183.2 L1794.1 156.0 L1808.1 131.6 L1824.2 106.7 L1835.6 80.6 L1848.9 56.5 L1861.6 30.7 L1876.9 5.7 L1890.8 -16.2 L1903.3 -40.5 L1916.7 -65.3 L1929.7 -93.1 L1941.1 -117.1 L1957.0 -140.0 L1969.1 -165.8 L1984.4 -191.7 L2049.5 -184.7 L2066.4 -210.1 L2131.9 -200.4 L2145.7 -220.5 L2162.4 -244.8 L2180.4 -268.2 L2195.3 -288.4 L2213.5 -311.4 L2233.2 -336.6 L2249.8 -356.9 L2265.3 -381.8 L2279.6 -405.3 L2298.9 -425.4 L2313.5 -449.8 L2334.0 -469.6 L2350.9 -494.6%22 transform=%22translate(1.2 1.4)%22 stroke=%22%235E8FB8%22 stroke-opacity=%220.25%22 stroke-width=%220.48%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M1607.5 506.4 L1619.9 483.7 L1636.3 454.7 L1648.1 431.7 L1662.0 408.6 L1675.5 381.2 L1689.5 356.0 L1701.3 332.7 L1715.4 306.2 L1730.2 282.8 L1744.2 258.3 L1754.9 231.2 L1767.8 209.4 L1780.8 183.2 L1794.1 156.0 L1808.1 131.6 L1824.2 106.7 L1835.6 80.6 L1848.9 56.5 L1861.6 30.7 L1876.9 5.7 L1890.8 -16.2 L1903.3 -40.5 L1916.7 -65.3 L1929.7 -93.1 L1941.1 -117.1 L1957.0 -140.0 L1969.1 -165.8 L1984.4 -191.7 L2049.5 -184.7 L2066.4 -210.1 L2131.9 -200.4 L2145.7 -220.5 L2162.4 -244.8 L2180.4 -268.2 L2195.3 -288.4 L2213.5 -311.4 L2233.2 -336.6 L2249.8 -356.9 L2265.3 -381.8 L2279.6 -405.3 L2298.9 -425.4 L2313.5 -449.8 L2334.0 -469.6 L2350.9 -494.6%22 stroke=%22%23fff%22 stroke-opacity=%220.71%22 stroke-width=%220.6%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3C/svg%3E");
@@ -2182,7 +2203,7 @@ body.betasignin{background:var(--page-img,var(--bg));background-color:var(--bg);
 .betalist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
 .betapick{display:flex;gap:14px;align-items:flex-start;width:100%;padding:14px 16px;border-radius:16px;border:1px solid var(--line);background:var(--panel);
   color:var(--text);font:inherit;text-align:left;cursor:pointer;min-height:44px}
-.betapick:hover{background:color-mix(in srgb,var(--accent) 8%,var(--panel));border-color:var(--accent)}
+@media (hover:hover){.betapick:hover{background:color-mix(in srgb,var(--accent) 8%,var(--panel));border-color:var(--accent)}}
 .betapick:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .betaav{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--text);color:var(--panel);font-weight:700;font-size:14px}
 .betawho{display:flex;flex-direction:column;gap:3px;min-width:0}
@@ -2200,13 +2221,13 @@ body.betasignin{background:var(--page-img,var(--bg));background-color:var(--bg);
 .betabtn .betaav{width:34px;height:34px;font-size:13px}
 .betabtn .betawho b{font-size:14px}
 .betabtn .betawho small{font-size:12px}
-.betabtn[aria-expanded="true"],.betabtn:hover{background:color-mix(in srgb,var(--text) 6%,transparent)}
+.betabtn[aria-expanded="true"]{background:color-mix(in srgb,var(--text) 6%,transparent)}@media (hover:hover){.betabtn:hover{background:color-mix(in srgb,var(--text) 6%,transparent)}}
 .betamenu{position:absolute;left:0;right:0;bottom:calc(100% + 6px);box-sizing:border-box;padding:6px;border-radius:14px;background:var(--panel);color:var(--text);
   border:1px solid var(--line);box-shadow:0 18px 48px rgba(0,0,0,.24);z-index:60;display:flex;flex-direction:column;gap:2px}
 .betamenu[hidden]{display:none}
 .betainfo{margin:0;padding:8px 10px 10px;border-bottom:1px solid var(--line);font-size:13px;line-height:1.5;color:var(--muted)}
 .betamitem{min-height:44px;padding:0 10px;border:0;border-radius:10px;background:transparent;color:var(--text);font:inherit;text-align:left;cursor:pointer}
-.betamitem:hover,.betamitem:focus-visible{background:color-mix(in srgb,var(--text) 7%,transparent)}
+.betamitem:focus-visible{background:color-mix(in srgb,var(--text) 7%,transparent)}@media (hover:hover){.betamitem:hover{background:color-mix(in srgb,var(--text) 7%,transparent)}}
 body.dm.nav-min .lnav:not(.open) .betabtn{justify-content:center;border-color:transparent;padding:6px 0}
 body.dm.nav-min .lnav:not(.open) .betawho{display:none}
 
@@ -2215,7 +2236,7 @@ body.dm.nav-min .lnav:not(.open) .betawho{display:none}
 :root[data-skin^="spark"] :is(.betacard h1,.tourpop h2,.betabrand .bword,.paymodal .payprice,.payplan b){font-family:var(--fd)}
 :root[data-skin^="spark"] .betacard h1{font-weight:800;letter-spacing:-.01em}
 :root[data-skin^="spark"] .betapick{border:var(--bw) solid var(--line);border-radius:14px;transition:box-shadow .12s,transform .12s}
-:root[data-skin^="spark"] .betapick:hover{background:var(--sp-on);box-shadow:4px 4px 0 var(--sp-shadow);transform:translate(-2px,-2px)}
+@media (hover:hover){:root[data-skin^="spark"] .betapick:hover{background:var(--sp-on);box-shadow:4px 4px 0 var(--sp-shadow);transform:translate(-2px,-2px)}}
 :root[data-skin^="spark"] .betaav{background:var(--accent);color:var(--accent-ink)}
 :root[data-skin^="spark"] .betaplan{background:var(--sp-heal);color:var(--sp-heal-ink);border-color:var(--line)}
 :root[data-skin^="spark"] .betaplan.p-free{background:var(--chip);color:var(--text)}
@@ -2225,7 +2246,79 @@ body.dm.nav-min .lnav:not(.open) .betawho{display:none}
 :root[data-skin^="spark"] .payplan{border:var(--bw) solid var(--line)}
 :root[data-skin^="spark"] .payplan[aria-checked="true"]{border:3px solid var(--line);padding:12.5px 14.5px;background:var(--sp-on);box-shadow:4px 4px 0 var(--accent)}
 :root[data-skin^="spark"] .payck{color:var(--sp-heal-ink)}
-@media (prefers-reduced-motion:reduce){:root[data-skin^="spark"] .betapick{transition:none}:root[data-skin^="spark"] .betapick:hover{transform:none}}
+@media (prefers-reduced-motion:reduce){:root[data-skin^="spark"] .betapick{transition:none}@media (hover:hover){:root[data-skin^="spark"] .betapick:hover{transform:none}}}
+/* Phones and short screens. Loads last, so these layout rules win on small screens. */
+
+/* ---- top bar on phones (and phones on their side): menu, timer and Focus/Full on one row; Start combat and Roll for initiative
+   follow, wrapping to the next row only when there isn't room ---- */
+@media (max-width:700px),(max-height:520px){
+  body.dm .ctlgrid{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+  body.dm .ctl-l{display:contents}
+  body.dm .ctl-l .hambtn{order:0}
+  body.dm .ctl-r{order:1;margin-left:auto;gap:8px}
+  body.dm .ctl-l>:not(.hambtn){order:2}
+  body.dm .ctl-c{order:3;flex:1 1 100%}
+  body.dm .ctl .rfibtn{margin-left:0}
+}
+@media (max-width:700px){.smhide{display:none}}
+
+/* ---- short screens (a phone on its side): the bar scrolls away instead of covering the cards ---- */
+@media (max-height:520px){
+  body.dm .ctlstack{position:static}
+  body.dm .dock{padding:6px;gap:6px}
+  body.dm .dock .btn{min-height:40px;padding-top:4px;padding-bottom:4px}
+  body.dm .demobar{padding:4px 8px}
+  body.dm .demotxt{font-size:13px}
+}
+
+/* ---- Combat Monitor preview on phones: one row of small cards you swipe; it scrolls away; the X sits above the cards ---- */
+@media (max-width:700px),(max-height:520px){
+  body.dm .ctlstack{display:contents}
+  body.dm .ctlstack>.ctl{position:sticky;top:0;z-index:5}
+  body.dm .monmini{padding-top:40px;margin-bottom:8px}
+  body.dm .monmini .mmclose{top:4px;right:4px}
+  body.dm .monmini .pwrap{padding:0 8px 8px;min-height:0!important;height:auto!important}
+  body.dm .monmini .pgrid{font-size:11px!important;display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;overflow-x:auto;gap:8px;padding:12px 4px 6px!important;height:auto!important;min-height:0!important}
+  body.dm .monmini .pcard{flex:0 0 150px!important;width:150px!important;max-width:none!important;min-height:0!important;height:auto!important}
+}
+@media (max-height:520px){
+  body.dm .ctlstack>.ctl{position:static}
+  body.dm .monmini{padding-top:0;padding-right:48px}
+  body.dm .monmini .pcard{flex-basis:140px!important;width:140px!important}
+}
+
+/* ---- Library on phones: the whole window scrolls, so the cards get the room; controls are tighter ---- */
+@media (max-width:760px){
+  .mmbody{overflow:auto;display:block}
+  .mmbody .mmlist{overflow:visible;min-height:auto}
+  .mmbody .mmtabs{position:sticky;top:-10px;z-index:3;background:var(--panel);padding-top:6px;margin-top:-6px}
+  .mmctl{gap:6px}
+  .mmctl .mmsearch{flex:1 1 150px;min-width:0}
+  .mmnewx{display:none}
+  .mmbar{gap:4px 8px}
+  .mmisland{border:0;background:none;padding:0}
+  .mmisland .btn,.mmisland select{min-height:38px}
+  .mmadding{flex:1 1 100%;gap:6px}
+  .mmfoot{margin:10px 0 4px}
+}
+
+/* ---- the amount box spans both rows (Damage and Heal) on narrow cards ---- */
+@media (max-width:700px){
+  body.dm .hpact{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-rows:auto auto;column-gap:8px;row-gap:6px;align-items:stretch}
+  body.dm .hpact>[data-delta],body.dm .hpact>[data-mdelta]{grid-row:1/3;grid-column:1;width:72px;height:auto;align-self:stretch;text-align:center}
+  body.dm .hpact>.dgrp{grid-column:2;grid-row:1;justify-self:start}
+  body.dm .hpact>.hgrp{grid-column:2;grid-row:2;justify-self:start}
+}
+
+/* ---- Target window on phones: one scrolling body; Apply pinned to the bottom of the window ---- */
+@media (max-width:640px){
+  .aoemodal .aoebody{display:block;overflow:auto;padding-bottom:84px!important;scroll-padding-bottom:96px}
+  .aoemodal .aoectl{max-height:none;overflow:visible;padding-right:0}
+  .aoemodal .aoeright{min-height:0;margin-top:10px}
+  .aoemodal .aoelist{max-height:none;overflow:visible}
+  .aoemodal .aoectl .aoefoot{position:absolute;left:0;right:0;bottom:0;margin:0;padding:10px 14px calc(12px + env(safe-area-inset-bottom,0px));
+    background:var(--panel);border-top:1px solid var(--line);z-index:4}
+}
 </style>
 </head>
 <body>
@@ -4549,7 +4642,7 @@ var DEMO=true;
 /* The beta build (dist/beta.html) adds test accounts that live only in this browser: each has its own
    storage, and the "free" one behaves exactly like the demo. See 27c-beta-accounts.js. */
 var BETA=false/*@beta*/;
-var APP_VERSION='0.9.0-beta.2';
+var APP_VERSION='0.9.0-beta.3';
 var betaAcct=BETA?betaCurrent():null;
 if(betaAcct&&betaAcct.plan==='free')DEMO=true;
 var KEY=BETA?'cw-beta-'+(betaAcct?betaAcct.id:'signed-out'):(DEMO?'combat-wombat-demo':'initiative-tracker-v1');
@@ -4658,7 +4751,7 @@ var bc=null; try{bc=new BroadcastChannel(KEY);}catch(e){}
 var LIB_OK=false;
 function fresh(){return {v:2,libV:2,stars:[],folders:[],folderOf:{},rev:0,ep:uid(),party:[],library:[],encounters:[],encName:null,encCamp:null,images:{},claims:{},opSeen:[],combatants:[],round:0,started:false,paused:false,rfi:false,turnId:null,seq:0,
   settings:{trackPC:true,trackNPC:true,pcHp:'exact',npcHp:'status',autoStats:false,cardMode:'scroll',crowd:'shrink',skin:'spark',skinV:2,fontSize:'normal',reactionReset:'turn',rxShow:'pc',acShow:'default',imgShow:'on',phoneEdit:true,tvQr:false,sfxTv:true,sfxDm:false,sfxVol:'med',sfxTurn:true,sfxHit:true,sfxEnd:true,sfxCond:true,sfxTimer:true,fxFlash:true,fxNums:'pc',cbMarks:false,showNames:true},
-  timer:{mode:'off',secs:60,showPlayers:true,elapsed:0,startedAt:null,running:false}};}
+  timer:{mode:'off',scope:'turn',secs:60,cmins:60,showPlayers:true,elapsed:0,startedAt:null,running:false}};}
 
 /* Fills in whatever a saved table is missing. Local saves and the account copy both come through here,
    so a new saved field needs its default in this one place. */
@@ -4811,7 +4904,7 @@ function imgSrc(c){
 
 /* ================================================================
    6. Timer
-   Turn timer shared with the display.
+   Turn or whole-combat timer, shared with the display.
    ================================================================ */
 
 function timerMs(){var t=state.timer;return t.elapsed+(t.running&&t.startedAt?Date.now()-t.startedAt:0);}
@@ -4821,9 +4914,13 @@ function timerRun(on){var t=state.timer; if(on){t.running=true;t.startedAt=Date.
 
 function timerReset(){var t=state.timer;t.elapsed=0;if(state.paused){t.startedAt=null;t.running=false;t.pbc=true;}else{t.startedAt=Date.now();t.running=true;t.pbc=false;}}
 
+/* The timer times each turn (resets every turn) or the whole combat (from Start combat to the end). */
+function timerWhole(){return state.timer.scope==='combat';}
+function timerLen(){var t=state.timer; return timerWhole()?Math.max(1,Math.round(t.cmins||60))*60:t.secs;}
+function timerTurn(){if(!timerWhole())timerReset();}
 function timerInfo(){
   var t=state.timer, e=timerMs()/1000;
-  if(t.mode==='down'){var r=Math.max(0,Math.ceil(t.secs-e)); return {text:fmt(r),low:r>0&&r<=10,over:r===0,paused:!t.running};}
+  if(t.mode==='down'){var r=Math.max(0,Math.ceil(timerLen()-e)); return {text:fmt(r),low:r>0&&r<=(timerWhole()?60:10),over:r===0,paused:!t.running};}
   return {text:fmt(Math.floor(e)),low:false,over:false,paused:!t.running};
 }
 
@@ -5132,7 +5229,7 @@ function endTurnEffects(x){
   });
 }
 
-function beginTurn(c){state.turnId=c.id;startTurnEffects(c);timerReset();autoSheet(c);ui.scrollNow=true;}
+function beginTurn(c){state.turnId=c.id;startTurnEffects(c);timerTurn();autoSheet(c);ui.scrollNow=true;}
 
 function newRound(){
   state.round++;
@@ -5144,7 +5241,7 @@ function nextTurn(){
     var L=state.combatants; if(!L.length)return;
     bumpEnded();
     if(!state.started){
-      state.started=true;state.round=1;state.rfi=false;
+      state.started=true;state.round=1;state.rfi=false;timerReset();
       L.forEach(function(c){resetRx(c);c.ready=null;if(c.leg)c.leg.left=c.leg.max;});
       beginTurn(L[0]);return;
     }
@@ -5169,7 +5266,7 @@ function prevTurn(){
       if(state.round<=1){notes.push('Already at the first turn');return;}
       pi=L.length-1; state.round--;
     }
-    var c=L[pi]; state.turnId=c.id; timerReset(); autoSheet(c); ui.scrollNow=true;
+    var c=L[pi]; state.turnId=c.id; timerTurn(); autoSheet(c); ui.scrollNow=true;
     notes.push('Back to '+c.name+'\u2019s turn');
   });
 }
@@ -5219,13 +5316,37 @@ function makeCond(c,f,name){
   return {id:uid(),name:name,level:name==='Exhaustion'?parseInt(f.level,10)||1:null,dur:dur};
 }
 
+/* On a group, a condition can cover only some members: cd.mem lists their ids. No list means the whole group.
+   condTidy drops ids of members who left, ends a condition nobody has any more, and turns "all of them" back into no list. */
+function condMemNums(c,cd){
+  if(!cd.mem||!isGroup(c))return '';
+  return c.members.filter(function(m){return cd.mem.indexOf(m.id)>=0;}).map(function(m){return m.n;}).join(', ');
+}
+function condCovers(cd,mid){return !cd.mem||cd.mem.indexOf(mid)>=0;}
+function condTidy(c){
+  if(!isGroup(c)){c.conditions.forEach(function(cd){delete cd.mem;}); return;}
+  var ids=c.members.map(function(m){return m.id;});
+  c.conditions=c.conditions.filter(function(cd){
+    if(!cd.mem)return true;
+    cd.mem=cd.mem.filter(function(id){return ids.indexOf(id)>=0;});
+    if(!cd.mem.length){endedAdd(c,cd); return false;}
+    if(cd.mem.length===ids.length)delete cd.mem;
+    return true;
+  });
+}
+
 function addCondition(cid,f){
   var c=byId(cid); if(!c)return;
   var name=f.name==='Custom'?(f.custom||'').trim():f.name; if(!name)return;
   var cd=makeCond(c,f,name);
+  var mem=(isGroup(c)&&f.mem&&f.mem.length&&f.mem.length<c.members.length)?f.mem.slice():null;
   mutate(function(){
+    var old=c.conditions.filter(function(x){return x.name===name;})[0];
+    if(mem&&old)mem=old.mem?old.mem.concat(mem.filter(function(id){return old.mem.indexOf(id)<0;})):null;   /* adding to some: keep the ones who had it */
+    if(mem)cd.mem=mem;
     c.conditions=c.conditions.filter(function(x){return x.name!==name;});
     c.conditions.push(cd);
+    condTidy(c);
   });
 }
 
@@ -5295,8 +5416,9 @@ function narrowNav(){return !!(window.matchMedia&&matchMedia('(max-width:900px)'
 function closeNav(){if(ui.navOpen||ui.navMob){ui.navOpen=null;ui.navMob=false;renderNav();}}
 function navTimerHTML(){
   var t=state.timer;
-  return '<div class="ntimer"><div class="nlabrow"><span class="nlab">Turn timer</span><button type="button" class="btn small iconbtn timereye" data-act="swtimer" aria-pressed="'+(t.showPlayers?'true':'false')+'" aria-label="'+(t.showPlayers?'Showing the timer on the table view. Tap to hide it.':'Timer hidden from the table view. Tap to show it.')+'" title="'+(t.showPlayers?'Shown on the table view':'Hidden from the table view')+'">'+(t.showPlayers?ICONS.eye:ICONS.eyeoff)+'</button></div><span class="tbox">'+segHTML('tset','mode',t.mode,[['off','Off'],['up','Up'],['down','Down']],'sm')+'</span>'+
-    (t.mode==='down'?'<span class="tbox"><input type="number" min="5" step="5" value="'+esc(t.secs)+'" data-tset="secs" aria-label="Countdown length in seconds"> sec</span>':'')+
+  return '<div class="ntimer"><div class="nlabrow"><span class="nlab">Timer</span><button type="button" class="btn small iconbtn timereye" data-act="swtimer" aria-pressed="'+(t.showPlayers?'true':'false')+'" aria-label="'+(t.showPlayers?'Showing the timer on the table view. Tap to hide it.':'Timer hidden from the table view. Tap to show it.')+'" title="'+(t.showPlayers?'Shown on the table view':'Hidden from the table view')+'">'+(t.showPlayers?ICONS.eye:ICONS.eyeoff)+'</button></div><span class="tbox">'+segHTML('tset','mode',t.mode,[['off','Off'],['up','Up'],['down','Down']],'sm')+'</span>'+
+    (t.mode!=='off'?'<span class="tbox">'+segHTML('tscope','scope',t.scope==='combat'?'combat':'turn',[['turn','Each turn'],['combat','Whole combat']],'sm')+'</span>':'')+
+    (t.mode==='down'?(t.scope==='combat'?'<span class="tbox"><input type="number" min="1" step="5" value="'+esc(t.cmins||60)+'" data-tset="cmins" aria-label="Combat countdown length in minutes"> min</span>':'<span class="tbox"><input type="number" min="5" step="5" value="'+esc(t.secs)+'" data-tset="secs" aria-label="Countdown length in seconds"> sec</span>'):'')+
     (t.mode!=='off'&&state.started?'<span class="tbox"><span class="timer" data-timer>0:00</span><button type="button" class="btn small iconbtn" data-act="timerPause" aria-label="'+(t.running?'Pause timer':'Resume timer')+'" title="'+(t.running?'Pause':'Play')+'">'+(t.running?ICONS.pause:ICONS.play)+'</button><button type="button" class="btn small iconbtn" data-act="timerReset" aria-label="Reset timer" title="Reset">'+ICONS.reset+'</button></span>':'')+
     (t.mode!=='off'&&state.paused?'<small class="nhint">Held while combat is paused.</small>':'')+'</div>';
 }
@@ -5383,7 +5505,7 @@ function renderDrawer(){
   pane.table=setPreviewHTML()+
     group('On each card',row('Player names','Under each character\u2019s name, on the DM screen and the Combat Monitor',sw('swset',s.showNames!==false,'showNames'))+
       row('Images','Creature art at the bottom of each card',sw('swset',s.imgShow!=='off','imgShow'))+
-      row('Turn timer','On the current card',sw('swtimer',t.showPlayers,'showPlayers'))+
+      row('Timer','On the current card',sw('swtimer',t.showPlayers,'showPlayers'))+
       row('Armor class','The first option lets you flip each creature on its own',segHTML('set','acShow',s.acShow,[['default','Players + chosen'],['all','Everyone'],['none','Nobody']]),true)+
       row('Reactions','',segHTML('set','rxShow',s.rxShow,[['pc','Players'],['all','Everyone'],['none','Hidden']])))+
     group('Health shown',row('Player health','',hpTiles('pcHp',s.pcHp,'Player health'),true)+row('Enemy health','Each enemy also has its own Word / Bar / Numbers control',hpTiles('npcHp',s.npcHp,'Enemy health'),true))+
@@ -5417,6 +5539,13 @@ var LOGO_VB='0 0 884.97 997.17';
 var WORDMARK_PATHS='<path d="M136.58,177.48v36.93c0,44.47-22.24,69.88-65.12,69.88S6.35,258.88,6.35,214.41V69.88C6.35,25.41,28.59,0,71.47,0s65.12,25.41,65.12,69.88v27h-41.29v-29.78c0-19.85-8.73-27.4-22.63-27.4s-22.63,7.54-22.63,27.4v150.08c0,19.85,8.73,27,22.63,27s22.63-7.15,22.63-27v-39.71h41.29Z"/><path d="M159.61,69.88C159.61,25.41,183.03,0,225.92,0s66.31,25.41,66.31,69.88v144.53c0,44.47-23.43,69.88-66.31,69.88s-66.31-25.41-66.31-69.88V69.88ZM203.28,217.19c0,19.85,8.73,27.4,22.63,27.4s22.63-7.54,22.63-27.4V67.1c0-19.85-8.73-27.4-22.63-27.4s-22.63,7.54-22.63,27.4v150.08Z"/><path d="M412.93,200.51L442.7,3.18h60.75v277.93h-41.29V81.79l-30.18,199.32h-41.29l-32.56-196.54v196.54h-38.12V3.18h60.75l32.16,197.33Z"/><path d="M665.84,67.1v9.93c0,28.59-8.73,46.85-28.19,55.98,23.43,9.13,32.56,30.18,32.56,59.56v22.63c0,42.88-22.63,65.91-66.31,65.91h-68.69V3.18h65.91c45.26,0,64.72,21.04,64.72,63.92ZM578.89,42.88v73.45h17.07c16.28,0,26.21-7.15,26.21-29.38v-15.48c0-19.85-6.75-28.59-22.24-28.59h-21.04ZM578.89,156.04v85.37h25.01c14.69,0,22.63-6.75,22.63-27.4v-24.22c0-25.81-8.34-33.75-28.19-33.75h-19.46Z"/><path d="M837.76,281.11h-44.07l-7.54-50.42h-53.6l-7.54,50.42h-40.1L729.37,3.18h63.92l44.47,277.93ZM738.1,192.97h42.09l-21.04-140.56-21.04,140.56Z"/><path d="M830.22,3.18h135v39.71h-45.66v238.23h-43.68V42.88h-45.66V3.18Z"/><path d="M106.81,480.98l-15.88,148.1H30.97L0,351.15h42.48l23.43,219.17,21.04-219.17h42.09l21.84,220.76,22.63-220.76h38.12l-30.97,277.93h-57.97l-15.88-148.1Z"/><path d="M229.89,417.85c0-44.47,23.43-69.88,66.31-69.88s66.31,25.41,66.31,69.88v144.53c0,44.47-23.43,69.88-66.31,69.88s-66.31-25.41-66.31-69.88v-144.53ZM273.56,565.16c0,19.85,8.73,27.4,22.63,27.4s22.63-7.54,22.63-27.4v-150.08c0-19.85-8.73-27.4-22.63-27.4s-22.63,7.54-22.63,27.4v150.08Z"/><path d="M483.2,548.48l29.78-197.33h60.75v277.93h-41.29v-199.32l-30.18,199.32h-41.29l-32.56-196.54v196.54h-38.12v-277.93h60.75l32.16,197.33Z"/><path d="M736.12,415.07v9.93c0,28.59-8.73,46.85-28.19,55.98,23.43,9.13,32.56,30.18,32.56,59.56v22.63c0,42.88-22.63,65.91-66.31,65.91h-68.69v-277.93h65.91c45.26,0,64.72,21.04,64.72,63.92ZM649.17,390.85v73.45h17.07c16.28,0,26.21-7.15,26.21-29.38v-15.48c0-19.85-6.75-28.59-22.24-28.59h-21.04ZM649.17,504.01v85.37h25.01c14.69,0,22.63-6.75,22.63-27.4v-24.22c0-25.81-8.34-33.75-28.19-33.75h-19.46Z"/><path d="M908.04,629.08h-44.07l-7.54-50.42h-53.6l-7.54,50.42h-40.1l44.47-277.93h63.92l44.47,277.93ZM808.38,540.94h42.09l-21.04-140.56-21.04,140.56Z"/><path d="M900.5,351.15h135v39.71h-45.66v238.23h-43.68v-238.23h-45.66v-39.71Z"/>';
 function wordmarkSVG(extra){return '<svg class="bmwm'+(extra?' '+extra:'')+'" viewBox="0 0 1035.49 632.26" role="img" aria-label="Combat Wombat" focusable="false"><g fill="currentColor">'+WORDMARK_PATHS+'</g></svg>';}
 function logoSVG(extra,label){return '<svg class="bmlogo'+(extra?' '+extra:'')+'" viewBox="'+LOGO_VB+'" '+(label?'role="img" aria-label="'+label+'"':'aria-hidden="true"')+' focusable="false">'+LOGO_PATHS+'</svg>';}
+/* Full screen: shown when the browser can do it, or on a computer, where F11 works even if the page can't ask.
+   iPhones have neither, so the button would do nothing there. */
+function canFullScreen(){
+  var de=document.documentElement, fine=!(window.matchMedia&&matchMedia('(pointer:coarse)').matches);
+  if(de.requestFullscreen||de.webkitRequestFullscreen)return document.fullscreenEnabled!==false||document.webkitFullscreenEnabled===true||fine;
+  return fine;
+}
 function logoLockup(){return '<div class="bmlock">'+logoSVG('')+'<span class="bmword">'+wordmarkSVG()+'</span></div>';}
 var ICONS={};
 (function(){
@@ -5446,7 +5575,7 @@ var ICONS={};
   ICONS.close=ic('<path d="M6 6l12 12M18 6L6 18"/>');
   ICONS.folder=ic('<path d="M3.5 7.2A2.2 2.2 0 0 1 5.7 5h3.6l2 2.2h7A2.2 2.2 0 0 1 20.5 9.4v7.4a2.2 2.2 0 0 1-2.2 2.2H5.7a2.2 2.2 0 0 1-2.2-2.2z"/>');
   ICONS.filter=ic('<path d="M4 5h16l-6.2 7.4V19l-3.6-1.8v-4.8z"/>');
-  ICONS.d20=ic('<path d="M12 1.8 20.8 6.9v10.2L12 22.2 3.2 17.1V6.9z"/><path d="M12 5.4 17 14.6H7z"/><path d="M12 1.8V5.4M3.2 6.9 12 5.4 20.8 6.9M3.2 6.9 7 14.6M20.8 6.9 17 14.6M3.2 17.1 7 14.6M20.8 17.1 17 14.6M7 14.6 12 22.2 17 14.6" stroke-width="1.3"/>');
+  ICONS.d20=ic('<path d="M12 1.8 20.8 6.9v10.2L12 22.2 3.2 17.1V6.9z"/><path d="M12 5.4 17 14.6H7z"/><path d="M12 1.8V5.4M3.2 6.9 12 5.4 20.8 6.9M3.2 6.9 7 14.6M20.8 6.9 17 14.6M3.2 17.1 7 14.6M20.8 17.1 17 14.6M7 14.6 12 22.2 17 14.6"/>',1.6);   /* one stroke weight for every line, so it looks even at any size */
   ICONS.heart=ic('<path fill-rule="evenodd" fill="currentColor" stroke="none" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35zM10.9 8A1.1 1.1 0 0 1 13.1 8V10.8H15.9A1.1 1.1 0 0 1 15.9 13H13.1V15.8A1.1 1.1 0 0 1 10.9 15.8V13H8.1A1.1 1.1 0 0 1 8.1 10.8H10.9Z"/>');
   ICONS.trash=ic('<path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/>');
   ICONS.stats=ic('<rect x="5" y="3.5" width="14" height="17" rx="2.5"/><path d="M8.5 8.5h7M8.5 12h7M8.5 15.5h4.5"/>');
@@ -5538,15 +5667,15 @@ function renderTop(){
   var L=state.combatants, idx=state.started?turnIdx():-1;
   var canPrev=state.started&&!(state.round<=1&&idx<=0);
   var upn=state.started?byId(nextPcId()):null;
-  var status=cur?'<span class="rn">Round '+state.round+'</span>'+(state.paused?'<button type="button" class="btn primary resumebtn" data-act="combatToggle" title="Resume combat: show the cards to players again">\u25b6 Resume</button>':''):'<span class="cur muted">Combat hasn\u2019t started</span>'+(state.rfi?'<button type="button" class="btn small rfibtn on" data-act="rfiToggle" aria-pressed="true" title="Players see \u201cRoll for initiative!\u201d on the Combat Monitor and their phones">'+ICONS.d20+'<span>Showing \u201cRoll for initiative!\u201d \u00b7 Hide</span></button>':'<button type="button" class="btn small rfibtn" data-act="rfiToggle" aria-pressed="false" title="Ask players to roll: shows on the Combat Monitor and their phones">'+ICONS.d20+'<span>Show \u201cRoll for initiative\u201d</span></button>');
+  var status=cur?'<span class="rn">Round '+state.round+'</span>'+(state.paused?'<button type="button" class="btn primary resumebtn" data-act="combatToggle" title="Resume combat: show the cards to players again">\u25b6 Resume</button>':''):(state.combatants.length?'<button type="button" class="btn primary small startbtn" data-act="next" title="Start combat (Right arrow)" aria-label="Start combat">\u25b6 Start<span class="smhide">\u00a0combat</span></button>':'<span class="cur muted">Combat hasn\u2019t started</span>')+'<button type="button" class="btn small rfibtn'+(state.rfi?' on':'')+'" data-act="rfiToggle" aria-pressed="'+(state.rfi?'true':'false')+'" aria-label="'+(state.rfi?'Hide':'Show')+' Roll for initiative on the Monitor and phones" title="'+(state.rfi?'Players see \u201cRoll for initiative!\u201d on the Combat Monitor and their phones. Press to hide it':'Ask players to roll: shows on the Combat Monitor and their phones')+'">'+ICONS.d20+'<span><span class="smhide"><span class="rfiverb">'+(state.rfi?'Hide':'Show')+'</span>\u00a0\u201c</span>Roll for initiative<span class="smhide">\u201d</span></span>'+'<span class="rfidot'+(state.rfi?'':' off')+'" aria-hidden="true"></span></button>';
   var blurb=cur?'<div class="topstat"><span class="stat now'+(isSide(cur)?'':' foe')+'"><small>Now</small><b>'+esc(cur.name)+'</b></span>'+
       (upn?'<span class="stat nxt"><small>'+readyWord(upn.id,false)+'</small><b>'+esc(upn.name)+'</b></span>':'')+'</div>':'';
   var tm=state.timer, tOn=tm.mode!=='off'&&state.started;
   document.getElementById('ctlmain').innerHTML=
     '<div class="ctl-l status"><button type="button" class="btn iconbtn hambtn" data-act="navMobile" aria-label="Menu" aria-expanded="'+(ui.navMob?'true':'false')+'" title="Menu">'+ICONS.menu+'</button>'+status+'</div><div class="ctl-c">'+blurb+'</div><div class="ctl-r">'+
-    '<button type="button" class="btn timerbtn" data-act="timerOpen" aria-haspopup="dialog" aria-expanded="'+(ui.timerOpen?'true':'false')+'" title="Turn timer" aria-label="Turn timer">'+ICONS.timer+(tOn?'<span class="timer" data-timer>0:00</span>':'')+'</button>'+
+    '<button type="button" class="btn timerbtn" data-act="timerOpen" aria-haspopup="dialog" aria-expanded="'+(ui.timerOpen?'true':'false')+'" title="Timer" aria-label="Timer">'+ICONS.timer+(tOn?'<span class="timer" data-timer>0:00</span>':'')+'</button>'+
     '<div class="seg sm densityseg" role="radiogroup" aria-label="Cards">'+[['focus','Focus','Only the card in turn is open. Click any card to open it'],['full','Full','Every card open']].map(function(o){return '<button type="button" role="radio" aria-checked="'+((ui.density||'full')===o[0])+'" data-act="density" data-val="'+o[0]+'" title="'+o[2]+'">'+o[1]+'</button>';}).join('')+'</div>'+
-    '<button class="btn iconbtn fsbtn" data-act="fullscreen" aria-pressed="'+(document.fullscreenElement?'true':'false')+'" title="'+(document.fullscreenElement?'Leave full screen':'Full screen')+'" aria-label="Full screen">'+(document.fullscreenElement?ICONS.fullx:ICONS.full)+'</button></div>';
+    (canFullScreen()?'<button class="btn iconbtn fsbtn" data-act="fullscreen" aria-pressed="'+(document.fullscreenElement?'true':'false')+'" title="'+(document.fullscreenElement?'Leave full screen':'Full screen')+'" aria-label="Full screen">'+(document.fullscreenElement?ICONS.fullx:ICONS.full)+'</button>':'')+'</div>';
   document.getElementById('dock').innerHTML=
     '<button class="btn targetbtn" data-act="targetOpen" title="Damage, heal, conditions or an attack against several creatures">'+ICONS.target+'<span class="btxt">Target</span></button>'+
     '<button class="btn iconbtn undobtn" data-act="undo" title="Undo (Ctrl+Z or \u2318Z)" aria-label="Undo"'+(undoStack.length?'':' disabled')+'>'+ICONS.undo+'</button>'+
@@ -5706,7 +5835,10 @@ function condPanel(c){
     .map(function(d){return '<option value="'+d[0]+'"'+(f.dur===d[0]?' selected':'')+'>'+d[1]+'</option>';}).join('');
   var picks=EXTRA_CONDS.concat(CONDITIONS,['Custom']).map(function(n){
     return '<button type="button" class="cpick'+(EXTRA_CONDS.indexOf(n)>=0?' extra':'')+(f.name===n?' on':'')+'" data-act="condPick" data-name="'+n+'">'+n+'</button>';}).join('');
-  return '<div class="cpanel"><div class="cgrid">'+picks+'</div>'+(f.name&&COND_INFO[f.name]?'<p class="help">'+esc(COND_INFO[f.name])+'</p>':'')+
+  var who=isGroup(c)?'<div class="cwho" role="group" aria-label="Which ones get it"><span class="cwlab">Who</span>'+
+    '<button type="button" class="cpick'+(f.mem?'':' on')+'" data-act="condWho" data-v="all" aria-pressed="'+(f.mem?'false':'true')+'">All '+c.members.length+'</button>'+
+    c.members.map(function(m){var on=!!(f.mem&&f.mem.indexOf(m.id)>=0); return '<button type="button" class="cpick cwnum'+(on?' on':'')+'" data-act="condWho" data-v="'+m.id+'" aria-pressed="'+on+'" aria-label="'+esc(c.name+' '+m.n)+'">'+m.n+'</button>';}).join('')+'</div>':'';
+  return '<div class="cpanel"><div class="cgrid">'+picks+'</div>'+who+(f.name&&COND_INFO[f.name]?'<p class="help">'+esc(COND_INFO[f.name])+'</p>':'')+
     '<div class="crow">'+
       (f.name==='Exhaustion'?'<label>Level<select data-cf="level">'+[1,2,3,4,5,6].map(function(n){return '<option'+(String(f.level)===String(n)?' selected':'')+'>'+n+'</option>';}).join('')+'</select></label>':'')+
       (f.name==='Custom'?'<label>Name<input type="text" data-cf="custom" value="'+esc(f.custom)+'" placeholder="Hexed, Hasted…"></label>':'')+
@@ -5787,6 +5919,8 @@ function memberHTML(c,m){
       '<div class="bar '+hpClass(m)+'"><i style="width:'+hpPct(m)+'%"></i></div>'+
       '<div class="hpact"><input type="number" min="0" placeholder="Amount" value="'+esc(ui.mdelta[m.id]==null?'':ui.mdelta[m.id])+'" data-mdelta aria-label="Damage or healing amount for '+nm+'"><span class="bgrp dgrp" role="group" aria-label="Damage"><button class="btn small dmg half" data-act="mDmgHalf" data-half="1" title="Half damage, rounded down">\u00bd</button><button class="btn small dmg" data-act="mDmg">\u2212 Damage</button><button class="btn small dmg dbl" data-act="mDmgDbl" data-dbl="1" title="Double damage">2\u00d7</button></span><span class="bgrp hgrp" role="group" aria-label="Healing"><button class="btn small heal" data-act="mHeal">+ Heal</button><button class="btn small temp" data-act="mTemp" title="Set temp HP (keeps the higher value)">+ Temp HP</button></span></div>';
   }
+  var mconds=c.conditions.filter(function(cd){return condCovers(cd,m.id);});
+  if(mconds.length)body+='<div class="mconds">'+mconds.map(function(cd){return '<span class="mcond">'+esc(condLabel(cd))+'<button type="button" class="icon" data-act="condMemRemove" data-cid="'+cd.id+'" aria-label="Remove '+esc(condLabel(cd))+' from '+nm+'" title="Remove from this one only">\u00d7</button></span>';}).join('')+'</div>';
   return '<div class="mem'+(dead?' dead':'')+'" data-mid="'+m.id+'"><div class="mhead"><b>'+nm+'</b><span class="macts">'+
     '<button class="btn small rxbtn '+(m.rx?'used':'ready')+'" data-act="mRx">'+(m.rx?'Reaction used':'Use Reaction')+'</button>'+
     (c.members.length>1?'<button class="icon" data-act="mSplit" title="Track this one on its own card">Split</button>':'')+
@@ -5864,7 +5998,8 @@ function openPop(id,kind){
 }
 function isCollapsed(c){
   var o=ui.cardOpen&&ui.cardOpen[c.id]; if(o!=null)return !o;
-  if(ui.density==='focus')return !!state.started&&c.id!==state.turnId;
+  /* Focus: only the card in turn is open; before combat every card starts closed. Tapped cards stay open. */
+  if(ui.density==='focus')return !(state.started&&c.id===state.turnId);
   return false;
 }
 
@@ -5891,7 +6026,8 @@ function rowHTML(c,i,L,np){
   }
   var chips=c.conditions.map(function(cd){
     var dt=durText(cd,c), info=condInfoText(cd), open=!!ui.cinfo[cd.id];
-    return '<span class="chip"><span><b>'+esc(condLabel(cd))+'</b>'+(dt?'<small>'+esc(dt)+'</small>':'')+'</span>'+
+    var wn=condMemNums(c,cd);
+    return '<span class="chip"><span><b>'+esc(condLabel(cd))+'</b>'+(wn?'<small class="cmem">on '+esc(wn)+'</small>':'')+(dt?'<small>'+esc(dt)+'</small>':'')+'</span>'+
       (info?'<button class="cinfo" data-act="condInfo" data-cid="'+cd.id+'" aria-expanded="'+open+'" title="What this does">'+(open?'\u25be':'\u25b8')+'</button>':'')+
       '<button data-act="condRemove" data-cid="'+cd.id+'" aria-label="Remove '+esc(cd.name)+'">\u00d7</button></span>';
   }).join('');
@@ -5912,14 +6048,14 @@ function rowHTML(c,i,L,np){
       '<div class="sum" data-sum>'+esc(sheetSummary(c.sheet))+'</div>'+
       '</div>'+
     hp+
-    '<div class="conds">'+endedChips+chips+'<button class="btn small cond" data-act="condOpen">Add condition</button>'+(grp||c.death?'':rxHTML(c))+(c.kind==='npc'?'<span class="savewrap"><button type="button" class="btn small saveopen" data-act="saveOpen" aria-haspopup="menu" aria-expanded="'+(ui.menu===c.id&&ui.menuKind==='save')+'" title="Roll a saving throw">Save</button>'+(ui.menu===c.id&&ui.menuKind==='save'?savePop(c,grp):'')+'</span>':'')+descs+'</div>'+
+    '<div class="conds">'+endedChips+chips+'<button class="btn small cond" data-act="condOpen">Add condition</button>'+(grp||c.death?'':rxHTML(c))+(c.kind==='npc'?'<span class="savewrap"><button type="button" class="btn small saveopen" data-act="saveOpen" aria-haspopup="menu" aria-expanded="'+(ui.menu===c.id&&ui.menuKind==='save')+'" title="Roll a saving throw">Saving throw</button>'+(ui.menu===c.id&&ui.menuKind==='save'?savePop(c,grp):'')+'</span>':'')+descs+'</div>'+
     '<div class="acbox">'+acHTML(c)+'</div>'+
     '<div class="acts">'+
       '<button type="button" class="icon eyebtn'+(c.hidden?' off':'')+'" data-act="hide" aria-pressed="'+(!!c.hidden)+'" title="'+(c.hidden?'Hidden from players. Click to show':'Visible to players. Click to hide')+'" aria-label="'+(c.hidden?'Show to players':'Hide from players')+'">'+(c.hidden?ICONS.eyeoff:ICONS.eye)+'</button>'+
       '<button class="icon more" data-act="menu" aria-haspopup="menu" aria-expanded="'+(ui.menu===c.id&&(ui.menuKind||'more')==='more')+'" title="More: clone, save, regroup, remove">\u22ef</button>'+
       (ui.menu===c.id&&(ui.menuKind||'more')==='more'?rowMenu(c,grp,hpswMenu):'')+(ui.menu===c.id&&ui.menuKind==='regroup'?regroupPop(c):'')+'</div>'+
     legHTML(c)+deathHTML(c,now)+
-    (grp?'<div class="members">'+c.members.map(function(m){return memberHTML(c,m);}).join('')+'<button type="button" class="memadd" data-act="mAdd" title="Add one more to this group" aria-label="Add one more">+1</button></div>':'')+
+    (grp?'<div class="members">'+c.members.map(function(m){return memberHTML(c,m);}).join('')+'<button type="button" class="memadd" data-act="mAdd" title="Add one more to this group" aria-label="Add another '+esc(c.name)+'"><span class="memplus" aria-hidden="true">+</span><span>Add one</span></button></div>':'')+
     (ui.cond&&ui.cond.id===c.id?condPanel(c):'')+
     (ui.ready&&ui.ready.id===c.id?readyPanel(c):'')+
     '<div class="rowtools"><button type="button" class="btn small ghost viewstats" data-act="sheetToggle" aria-expanded="'+sheetOpen('c',c.id)+'">'+ICONS.stats+'<span>'+(sheetOpen('c',c.id)?'Hide stats':'View stats')+'</span></button></div>'+
@@ -5982,7 +6118,7 @@ function renderPlayers(){
       else dsv='<div class="dsv'+(big?' big':'')+'">'+(dd.dead?'<span class="dlab bad">Dead</span>':dd.stable?'<span class="dlab ok">Stable</span>':'<span class="dlab">'+(big?'Death saving throw':'Death saves')+'</span><span class="pips ok">'+pips(dd.s,3)+'</span><span class="pips bad">'+failPips(dd.f)+'</span>')+'</div>';
     }
     var im=imgSrc(c);
-    var conds=c.conditions.map(function(cd){var dt=durText(cd,c);return '<li><b>'+esc(condLabel(cd))+'</b>'+(dt?'<small>'+esc(dt)+'</small>':'')+'</li>';}).join('');
+    var conds=c.conditions.map(function(cd){var dt=durText(cd,c), wn=condMemNums(c,cd);return '<li><b>'+esc(condLabel(cd)+(wn?' \u00b7 '+wn:''))+'</b>'+(dt?'<small>'+esc(dt)+'</small>':'')+'</li>';}).join('');
     conds=liveEnded(c).map(function(e){var fresh=Date.now()-e.at<2500; return '<li class="ended'+(fresh?' fresh':'')+'"><b><i class="ck">\u2713</i> <s>'+esc(e.label)+'</s></b><small>ended</small></li>';}).join('')+conds;
     return '<section data-cid="'+c.id+'" class="pcard '+sideClass(c)+(isNow?' now cur':'')+(isNext?' next':'')+(small?' small':'')+(isDown(c)?' down':'')+(isSide(c)&&c.death&&!c.death.dead&&c.hp===0&&tracks(c)?' dying':'')+'" style="--w:'+(isNow?1.2:1)+'">'+
       (isNow?'<span class="flag now">'+(state.settings.cbMarks?'\u25b6 ':'')+'Now</span>':'')+(isNext?'<span class="flag nxt">'+(state.settings.cbMarks?'\u25b7 ':'')+readyWord(c.id,true)+'</span>':'')+
@@ -6030,7 +6166,7 @@ function renderPlayers(){
   var gw=(app.querySelector('.pgrid')||{}).offsetWidth||0;
   var tvqr=(state.settings.tvQr&&qrSvg(pageLink()+'#player'))?'<div class="tvqr">'+qrSvg(pageLink()+'#player')+'<span>Join on your phone</span></div>':'';
   var pill=(isPlayerWindow()&&state.settings.sfxTv!==false&&!Sfx.unlocked())?'<button type="button" class="sfxpill" data-act="sfxUnlock">\ud83d\udd0a Tap to turn on sound</button>':'';
-  var fs=(isPlayerWindow()&&window.name==='bm-monitor'&&!document.fullscreenElement)?'<button type="button" class="sfxpill fspill" data-act="goFull">\u26f6 Full screen</button>':'';
+  var fs=(isPlayerWindow()&&window.name==='bm-monitor'&&!document.fullscreenElement&&canFullScreen())?'<button type="button" class="sfxpill fspill" data-act="goFull">\u26f6 Full screen</button>':'';
   app.innerHTML='<div class="pwrap'+(state.settings.cbMarks?' cb':'')+'">'+head+grid+banner+tvqr+((pill||fs)?'<div class="pillrow">'+pill+fs+'</div>':'')+'</div>'+(ui.owner&&isPlayerWindow()?'<button class="viewbtn" data-act="viewMenu">View \u25be</button>'+(ui.viewMenu?'<div class="viewmenu">'+[['dm','DM screen'],['monitor','Combat Monitor'],['player','Player screen']].map(function(v){return '<button type="button" data-act="viewSet" data-val="'+v[0]+'"'+(v[0]==='monitor'?' aria-current="true"':'')+'>'+v[1]+'</button>';}).join('')+'</div>':''):'');
   var calm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches, evs=Sfx.take();
   if(!calm){
@@ -6187,7 +6323,7 @@ var Sfx=(function(){
     timer:function(role){
       var t=state.timer;
       if(!state.started||t.mode!=='down'||!t.running){buzzed=false;lastTick=-1;return;}
-      var rem=Math.max(0,Math.ceil(t.secs-timerMs()/1000));
+      var rem=Math.max(0,Math.ceil(timerLen()-timerMs()/1000));
       if(rem>10){buzzed=false;lastTick=-1;return;}
       if(rem>0&&rem!==lastTick){lastTick=rem; if(wants('tick',role))play('tick');}
       else if(rem===0&&!buzzed){buzzed=true; if(wants('buzz',role))play('buzz');}
@@ -6230,7 +6366,7 @@ function render(){
     if(m==='phone')Link.setPresence({ph:1,cl:ph.claim,ops:[]});
   }
   applyTheme();
-  if(ui.density===undefined){ui.density=lsGet('bm-density')||'full'; if(ui.density==='compact')ui.density='focus'; ui.cardOpen={};}
+  if(ui.density===undefined){ui.density=lsGet('bm-density')||'focus'; if(ui.density==='compact')ui.density='focus'; ui.cardOpen={};}
   if(ui.navMin===undefined){ui.navMin=lsGet('bm-nav')==='min';}
   if(m==='dm'){if(ui.density==='focus'&&ui.lastTurn!==state.turnId)ui.cardOpen={}; ui.lastTurn=state.turnId;}
   if(m!=='phone')Sfx.observe(isPlayerWindow()?'tv':'dm');
@@ -6356,7 +6492,7 @@ function pubC(c){
   }
   if(c.kind==='pc'){o.ab=acBase(c);o.am=c.acMod||0;}
   if(acVisible(c)){o.ac=acTotal(c);o.ax=c.acMod?1:0;}
-  o.cd=c.conditions.map(function(cd){return {i:cd.id,n:cd.name,l:cd.level||0,d:durText(cd,c)};});
+  o.cd=c.conditions.map(function(cd){var o2={i:cd.id,n:cd.name,l:cd.level||0,d:durText(cd,c)}, wn=condMemNums(c,cd); if(wn)o2.w=wn; return o2;});   /* w: which group members have it */
   var en=liveEnded(c); if(en.length)o.en=en.map(function(e){return e.label;});
   if(!grp&&!c.death&&(c.kind==='pc'||state.settings.rxShow==='all'||(state.settings.rxShow==='pc'&&isSide(c))))o.rx=c.ready?2:(c.rx?1:0);
   if(!grp&&c.kind==='pc'&&c.ready)o.rd=c.ready.trigger||'';
@@ -6373,7 +6509,7 @@ function buildSnapshot(){
     for(var k=1;k<=L.length;k++){var c2=L[(ci+k)%L.length]; if(c2.id!==state.turnId&&!c2.hidden){nx=c2.id;break;}}
   }
   var pz=!!(state.started&&state.paused);
-  return {v:1,t:Date.now(),ep:state.ep,rv:state.rev||0,sk:s.skin,cb:s.cbMarks===true?1:0,rs:s.rxShow||'pc',r:state.started?state.round:0,tid:(state.started&&!pz)?state.turnId:null,nx:pz?null:nx,np:pz?null:nextPcId(),pz:pz?1:0,rfi:(!state.started&&state.rfi)?1:0,tm:(state.started&&!pz&&state.timer.mode!=='off'&&state.timer.showPlayers)?{m:state.timer.mode,s:state.timer.secs,e:Math.floor(timerMs()),r:state.timer.running?1:0}:null,
+  return {v:1,t:Date.now(),ep:state.ep,rv:state.rev||0,sk:s.skin,cb:s.cbMarks===true?1:0,rs:s.rxShow||'pc',r:state.started?state.round:0,tid:(state.started&&!pz)?state.turnId:null,nx:pz?null:nx,np:pz?null:nextPcId(),pz:pz?1:0,rfi:(!state.started&&state.rfi)?1:0,tm:(state.started&&!pz&&state.timer.mode!=='off'&&state.timer.showPlayers)?{m:state.timer.mode,s:timerLen(),sc:timerWhole()?1:0,e:Math.floor(timerMs()),r:state.timer.running?1:0}:null,
     pe:s.phoneEdit===false?0:1,c:pz?[]:vis.map(pubC),
     P:state.party.map(function(p){
       var sh=p.sheet||{}, st={ac:sh.ac||'',sp:sh.speed||'',mh:p.maxHp==null?'':p.maxHp,rs:sh.resist||'',im:sh.immune||'',vu:sh.vuln||'',ab:{}};
@@ -6679,7 +6815,7 @@ function phHpHTML(c){
 function phChips(c,mine){
   var out=(c.en||[]).map(function(l){return '<span class="ph-chip ended"><b>\u2713 <s>'+esc(l)+'</s></b> <small>ended</small></span>';}).join('');
   out+=c.cd.map(function(cd){
-    var label=cd.n+(cd.l?' '+cd.l:''), open=!!ph.open[cd.i], info=COND_INFO[cd.n];
+    var label=cd.n+(cd.l?' '+cd.l:'')+(cd.w?' \u00b7 '+cd.w:''), open=!!ph.open[cd.i], info=COND_INFO[cd.n];
     return '<button type="button" class="ph-chip" data-pact="cinfo" data-i="'+esc(cd.i)+'" aria-expanded="'+open+'"><b>'+esc(label)+'</b>'+(cd.d?'<small>'+esc(cd.d)+'</small>':'')+'</button>'+
       (open&&info?'<div class="ph-cdesc"><b>'+esc(label)+'</b> '+esc(info)+(mine?' <button type="button" class="ph-link" data-pact="cdel" data-i="'+esc(cd.i)+'">Remove</button>':'')+'</div>':'');
   }).join('');
@@ -6757,7 +6893,7 @@ function phTick(){
   var els=document.querySelectorAll('[data-ptimer]'); if(!els.length)return;
   var tm=ph.snap.tm; if(!tm)return;
   var e=(tm.e+(tm.r?Date.now()-ph.lastSnapAt:0))/1000, text, low=false, over=false;
-  if(tm.m==='down'){var r=Math.max(0,Math.ceil(tm.s-e)); text=fmt(r); low=r>0&&r<=10; over=r===0;} else text=fmt(Math.floor(e));
+  if(tm.m==='down'){var r=Math.max(0,Math.ceil(tm.s-e)); text=fmt(r); low=r>0&&r<=(tm.sc?60:10); over=r===0;} else text=fmt(Math.floor(e));
   els.forEach(function(el){if(el.textContent!==text)el.textContent=text; el.classList.toggle('low',low); el.classList.toggle('over',over); el.classList.toggle('paused',!tm.r);});
 }
 setInterval(phTick,250);
@@ -6792,7 +6928,7 @@ function phMonCard(c,sn){
   var dsv='';
   if(c.ds){var d=c.ds; dsv=d.hd?'<div class="dsv"><span class="dlab">Down</span></div>':'<div class="dsv">'+(d.dd?'<span class="dlab bad">Dead</span>':d.st?'<span class="dlab ok">Stable</span>':'<span class="dlab">Death saves</span><span class="pips ok">'+pips(d.s,3)+'</span><span class="pips bad">'+failPips(d.f)+'</span>')+'</div>';}
   var conds=(c.en||[]).map(function(l){return '<li class="ended"><b><i class="ck">\u2713</i> <s>'+esc(l)+'</s></b><small>ended</small></li>';}).join('')+
-    c.cd.map(function(cd){return '<li><b>'+esc(cd.n+(cd.l?' '+cd.l:''))+'</b>'+(cd.d?'<small>'+esc(cd.d)+'</small>':'')+'</li>';}).join('');
+    c.cd.map(function(cd){return '<li><b>'+esc(cd.n+(cd.l?' '+cd.l:'')+(cd.w?' \u00b7 '+cd.w:''))+'</b>'+(cd.d?'<small>'+esc(cd.d)+'</small>':'')+'</li>';}).join('');
   var player=c.s==='p'&&c.pl?'<p class="player">'+esc(c.pl)+'</p>':(c.s==='a'?'<p class="player">Ally</p>':(c.s==='n'?'<p class="player">Neutral</p>':''));
   return '<section class="pcard '+cls+(now?' now cur':'')+(nxt?' next':'')+(c.dn?' down':'')+'" data-cid="'+esc(c.i)+'" style="--w:'+(now?1.2:1)+'">'+
     (now?'<span class="flag now">'+(sn.cb?'\u25b6 ':'')+'Now</span>':'')+(nxt?'<span class="flag nxt">'+(sn.cb?'\u25b7 ':'')+(sn.np===sn.nx?'Up next':'Get ready')+'</span>':'')+
@@ -7103,6 +7239,7 @@ document.addEventListener('click',function(e){
     case 'seg':{
       var grp=t.dataset.grp, key=t.dataset.key, val=t.dataset.val;
       if(grp==='tset'){state.timer.mode=val; if(state.started)timerReset(); persist(); render(); break;}
+      if(grp==='tscope'){state.timer.scope=val; if(state.started)timerReset(); persist(); render(); break;}
       if(grp==='view'){setView(val); break;}
       state.settings[key]=val; persist(); render(); break;}
     case 'swset':{var k3=t.dataset.key; if(k3==='imgShow')state.settings.imgShow=state.settings.imgShow==='off'?'on':'off'; else state.settings[k3]=!state.settings[k3]; persist(); render(); break;}
@@ -7213,7 +7350,7 @@ document.addEventListener('click',function(e){
       if(!ui.rmOK){if(c&&mEl3){var mm0=c.members.find(function(x){return x.id===mEl3.dataset.mid;}); askConfirm({kind:'rmMember',id:c.id,mid:mEl3.dataset.mid,name:c.name+' '+(mm0?mm0.n:'')});} break;}
       ui.rmOK=false; if(c&&mEl3){toast('Removed from the group',true);} if(c&&mEl3)mutate(function(){
       c.members=c.members.filter(function(x){return x.id!==mEl3.dataset.mid;});
-      if(!c.members.length)removeInner(c.id);});break;}
+      if(!c.members.length)removeInner(c.id); else condTidy(c);});break;}
     case 'mAdd':if(c&&isGroup(c))mutate(function(){
       var nn=c.members.reduce(function(a2,x){return Math.max(a2,x.n);},0)+1, ref=c.members.find(function(x){return x.maxHp!=null;});
       c.members.push({id:uid(),n:nn,hp:ref?ref.maxHp:null,maxHp:ref?ref.maxHp:null,temp:0,rx:false});});break;
@@ -7222,7 +7359,8 @@ document.addEventListener('click',function(e){
         c.members=c.members.filter(function(x){return x.id!==m4.id;});
         var nc=addCombatant({name:c.name+' '+m4.n,kind:'npc',disp:c.disp,init:c.init,hp:m4.hp,maxHp:m4.maxHp,hidden:c.hidden,sheet:c.sheet});
         nc.temp=m4.temp||0; nc.rx=!!m4.rx;
-        nc.conditions=c.conditions.map(function(cd){var k=clone(cd);k.id=uid();return k;});
+        nc.conditions=c.conditions.filter(function(cd){return condCovers(cd,m4.id);}).map(function(cd){var k=clone(cd);k.id=uid();delete k.mem;return k;});
+        condTidy(c);
         notes.push(nc.name+' split off to its own card');});
       break;}
     case 'dsHide':if(c&&c.death)mutate(function(){c.death.hide=!c.death.hide;});break;
@@ -7230,6 +7368,15 @@ document.addEventListener('click',function(e){
       deathApply(c,{dsOk:'success',dsFail:'fail',dsNat20:'nat20',dsNat1:'nat1',dsReset:'reset'}[a]);});break;
     case 'condOpen':ui.cond={id:id,name:'',level:1,custom:'',dur:'manual',n:1,owner:id};renderList();break;
     case 'condClose':ui.cond=null;renderList();break;
+    case 'condWho':if(ui.cond&&c&&isGroup(c)){var wv=t.dataset.v, f3=ui.cond;
+      if(wv==='all')f3.mem=null;
+      else{var cur3=f3.mem?f3.mem.slice():[], i3=cur3.indexOf(wv); if(i3>=0)cur3.splice(i3,1); else cur3.push(wv); f3.mem=(cur3.length&&cur3.length<c.members.length)?cur3:null;}
+      renderList();} break;
+    case 'condMemRemove':{var mEl5=t.closest('[data-mid]'), cid5=t.dataset.cid; if(c&&mEl5&&isGroup(c))mutate(function(){
+      var cd5=c.conditions.find(function(x){return x.id===cid5;}); if(!cd5)return;
+      cd5.mem=(cd5.mem||c.members.map(function(m){return m.id;})).filter(function(id){return id!==mEl5.dataset.mid;});
+      condTidy(c);});
+      break;}
     case 'condPick':ui.cond.name=t.dataset.name;
       if(SPELL_ROUNDS[ui.cond.name]&&ui.cond.dur==='manual'){ui.cond.dur='rounds';ui.cond.n=SPELL_ROUNDS[ui.cond.name];}
       renderList();break;
@@ -7260,6 +7407,7 @@ document.addEventListener('change',function(e){
   if(t.dataset.tset){
     var k=t.dataset.tset, tm=state.timer;
     if(k==='secs'){var v0=num(t.value); if(v0!=null&&v0>=1)tm.secs=Math.round(v0); persist(); tick();}
+    if(k==='cmins'){var v1=num(t.value); if(v1!=null&&v1>=1)tm.cmins=Math.round(v1); persist(); tick();}
     return;
   }
   var sh=t.closest('.sheet');
@@ -7976,7 +8124,7 @@ function renderLib(){
       '<label class="check"><input type="checkbox" class="tgl" data-mmf="leg"'+(L.leg?' checked':'')+'>Legendary only</label>'+
       '<div class="mmfbtns"><button type="button" class="btn small ghost" data-mm="fclear"'+(act.length?'':' disabled')+'>Clear all</button><button type="button" class="btn small" data-mm="filters">Done</button></div></div>':'';
   var chip=function(act_,on,label,title){return '<button type="button" class="chipbtn mmopt'+(on?' on':'')+'" data-mm="'+act_+'" aria-pressed="'+!!on+'" title="'+title+'">'+(on?'<span class="mmck" aria-hidden="true">\u2713</span>':'')+label+'</button>';};
-  el.innerHTML=head+'<div class="mmctl"><input type="search" class="mmsearch" data-mmsearch placeholder="Search name, type, size or CR\u2026" value="'+esc(L.q)+'" aria-label="Search creatures" autocomplete="off">'+(L.tab==='book'?'<button type="button" class="btn small mmnew" data-mm="new">+ New creature</button>':'')+
+  el.innerHTML=head+'<div class="mmctl"><input type="search" class="mmsearch" data-mmsearch placeholder="Search name, type, size or CR\u2026" value="'+esc(L.q)+'" aria-label="Search creatures" autocomplete="off">'+(L.tab==='book'?'<button type="button" class="btn small mmnew" data-mm="new" aria-label="New creature">+ New<span class="mmnewx"> creature</span></button>':'')+
       '<div class="mmbar">'+
         '<div class="mmisland mmfisl"><span class="mmfwrap"><button type="button" class="btn small mmfbtn'+(act.length?' on':'')+'" data-mm="filters" aria-expanded="'+!!L.fopen+'" aria-haspopup="dialog">'+ICONS.filter+'<span>Filters</span>'+(act.length?'<span class="mmcnt">'+act.length+'</span>':'')+'</button>'+pop+'</span>'+
           act.map(function(a){return '<button type="button" class="mmfsum" data-mm="unf" data-v="'+a[0]+'" aria-label="Remove filter '+esc(a[1])+'" title="Remove this filter">'+esc(a[1])+' <span aria-hidden="true">\u00d7</span></button>';}).join('')+'</div>'+
