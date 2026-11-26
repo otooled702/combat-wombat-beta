@@ -623,3 +623,7 @@ body.dm .hpact>[data-delta],body.dm .hpact>[data-mdelta]{width:84px;min-width:0}
 .rfiicon{display:inline-grid;place-items:center;color:var(--now)}
 .ppause.rfi .rfiicon svg{width:clamp(80px,12vw,160px);height:auto}
 .ph-popicon.rfiicon svg{width:64px;height:64px}
+/* the wordmark (COMBAT over WOMBAT) is an SVG in the text colour; its height follows the font size, so fitWordmark can shrink it */
+.bmwm{display:block;height:1.5em;width:auto;flex:none}
+.bword,.bmword,.ph-brand span{display:inline-flex;align-items:center;color:var(--text);line-height:1}
+:root[data-skin="feywild"] .bword{background:none;-webkit-background-clip:border-box;background-clip:border-box;color:#FF7BE6}

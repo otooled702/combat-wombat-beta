@@ -813,7 +813,7 @@ def t_frost_feywild(b):
     set_skin(dm, 'feywild')
     check('Feywild: neon lime current turn', dm.evaluate("getComputedStyle(document.documentElement).getPropertyValue('--now').trim().toLowerCase()") == '#c8ff3d')
     check('Feywild: glowing cards', 'rgb' in st('.lnav', 'boxShadow') and st('.lnav', 'boxShadow') != 'none')
-    check('Feywild: the wordmark is a rainbow gradient (the emoji keeps its colour)', 'gradient' in st('.bword', 'backgroundImage') and st('.bmark', 'backgroundImage') == 'none', st('.bword', 'backgroundImage'))
+    check('Feywild: the wordmark is drawn in bright pink (the vector wordmark can\u2019t take the old text gradient)', st('.bword', 'backgroundImage') == 'none' and st('.bword', 'color') not in ('rgba(0, 0, 0, 0)', 'transparent') and st('.bmark', 'backgroundImage') == 'none', st('.bword', 'color'))
     check('Feywild: primary buttons are gradient', 'gradient' in st('.btn.primary', 'backgroundImage'))
     check('Feywild: round, playful type', 'Baloo' in st('.row .nm', 'fontFamily'))
     tv = page(ctx, size=(1920, 720)); tv.goto(URL + '#monitor'); tv.wait_for_timeout(700)
@@ -2304,13 +2304,13 @@ def t_round7(b):
     rgb = lambda c: tuple(int(x) for x in re.findall(r'\d+', c)[:3])
     st = lambda: json.loads(dm.evaluate("localStorage.getItem('initiative-tracker-v1')"))
     # --- logo
-    check('the left menu shows the logo mark (six layers) and a lowercase wordmark, not the emoji', dm.locator('#lnav .nhead .bmlogo path').count() == 6 and dm.inner_text('#lnav .nhead .bword') == 'combat wombat' and '\u2694' not in dm.inner_text('#lnav .nhead'))
-    check('the empty screen shows the full logo (mark and wordmark)', dm.locator('.empty .bmlock .bmlogo').is_visible() and dm.inner_text('.empty .bmword') == 'combat wombat')
+    check('the left menu shows the wombat mark (one shape) and the COMBAT WOMBAT wordmark, not the emoji', dm.locator('#lnav .nhead .bmlogo path').count() == 1 and dm.get_attribute('#lnav .nhead .bword svg.bmwm', 'aria-label') == 'Combat Wombat' and dm.locator('#lnav .nhead .bword svg.bmwm path').count() == 12 and '\u2694' not in dm.inner_text('#lnav .nhead'))
+    check('the empty screen shows the full logo (mark and wordmark)', dm.locator('.empty .bmlock .bmlogo').is_visible() and dm.locator('.empty .bmword svg.bmwm').is_visible() and dm.get_attribute('.empty .bmword svg.bmwm', 'aria-label') == 'Combat Wombat')
     for sk in qs(('spark', 'sparkd', 'fire', 'light', 'medieval', 'water')):
         set_skin(dm, sk)
-        ink = rgb(dm.eval_on_selector('#lnav .bmlogo .lg-k', "e=>getComputedStyle(e).fill")); txt = rgb(dm.eval_on_selector('#lnav', "e=>getComputedStyle(e).color")); hi = rgb(dm.eval_on_selector('#lnav .bmlogo .lg-w', "e=>getComputedStyle(e).fill")); pan = rgb(dm.eval_on_selector('#lnav', "e=>getComputedStyle(e).backgroundColor"))
-        lum = lambda c: .299 * c[0] + .587 * c[1] + .114 * c[2]
-        check('%s: the mark is drawn in the skin\u2019s text colour with highlights in its panel colour' % sk, max(abs(a - b_) for a, b_ in zip(ink, rgb(dm.evaluate("getComputedStyle(document.querySelector('#lnav .nitem')).color")))) <= 2 and abs(lum(hi) - lum(pan)) <= 6 and abs(lum(ink) - lum(hi)) > 90, (ink, hi, pan))
+        ink = rgb(dm.eval_on_selector('#lnav .bmlogo .lg-k', "e=>getComputedStyle(e).fill")); itxt = rgb(dm.evaluate("getComputedStyle(document.querySelector('#lnav .nitem')).color"))
+        wm = rgb(dm.eval_on_selector('#lnav .bword', "e=>getComputedStyle(e).color"))
+        check('%s: the wombat and the wordmark are drawn in the skin\u2019s text colour' % sk, max(abs(a - b_) for a, b_ in zip(ink, itxt)) <= 2 and max(abs(a - b_) for a, b_ in zip(wm, itxt)) <= 2, (ink, wm, itxt))
     set_skin(dm, 'spark')
     dm.click('#lnav .navtoggle'); dm.wait_for_timeout(300)
     check('folded, the menu keeps the mark and drops the word', dm.locator('#lnav .nhead .bmlogo').is_visible() and not dm.locator('#lnav .nhead .bword').is_visible())
@@ -2392,7 +2392,7 @@ def t_campaigns(b):
 
 def t_round7_phone_logo(b):
     ctx, dm, ph = phone_setup(b, False); nxt(dm); dm.wait_for_timeout(500); ph.wait_for_timeout(1500)
-    check('the player screen header shows the mark and wordmark', ph.locator('.ph-brand .bmlogo').is_visible() and ph.inner_text('.ph-brand').strip() == 'combat wombat' and '\u2694' not in ph.inner_text('.ph-brand'))
+    check('the player screen header shows the mark and wordmark', ph.locator('.ph-brand .bmlogo').is_visible() and ph.get_attribute('.ph-brand svg.bmwm', 'aria-label') == 'Combat Wombat' and '\u2694' not in ph.inner_text('.ph-brand'))
     nav(dm, 'manage'); dm.click('#navStart'); dm.wait_for_timeout(500); ph.wait_for_timeout(1500)
     tv = page(ctx, size=(1920, 720)); tv.goto(URL + '#monitor'); tv.wait_for_timeout(900)
     check('the Combat Monitor shows the logo while combat is paused', tv.locator('.ppause .bmlogo').is_visible() and 'combat paused' in tv.inner_text('.ppause').lower())
@@ -3206,9 +3206,9 @@ def t_round13(b):
     for sk in qs(('spark', 'sparkd', 'slate', 'daylight', 'medieval', 'frost', 'water', 'forest', 'mountain', 'fire', 'feywild')):
         dm.evaluate("sk=>{const s=JSON.parse(localStorage.getItem('initiative-tracker-v1')); s.settings.skin=sk; localStorage.setItem('initiative-tracker-v1', JSON.stringify(s));}", sk)
         dm.reload(); dm.wait_for_timeout(500)
-        r = dm.evaluate("()=>{const w=document.querySelector('#lnav .bword'), h=w.closest('.nhead'); const a=w.getBoundingClientRect(), c=h.getBoundingClientRect(); return {t:w.textContent, ok:a.right<=c.right-4 && w.scrollWidth<=w.clientWidth+1}}")
-        if r['t'] != 'combat wombat' or not r['ok']: bad.append((sk, r))
-    check('the menu wordmark reads "combat wombat" and fits in every skin', not bad, bad)
+        r = dm.evaluate("()=>{const w=document.querySelector('#lnav .bword'), h=w.closest('.nhead'); const a=w.getBoundingClientRect(), c=h.getBoundingClientRect(); const s=w.querySelector('svg.bmwm'); return {t:s?s.getAttribute('aria-label'):'', h:s?s.getBoundingClientRect().height:0, ok:a.right<=c.right-4 && w.scrollWidth<=w.clientWidth+1}}")
+        if r['t'] != 'Combat Wombat' or not r['ok'] or r['h'] < 20: bad.append((sk, r))
+    check('the menu wordmark (COMBAT WOMBAT) is labelled, at least 20px tall, and fits in every skin', not bad, bad)
     # ---- QR codes work without the network
     check('the QR library is part of the page (no cdnjs script)', dm.evaluate("()=>typeof window.qrcode==='function' && !document.querySelector('script[src*=cdnjs]')"))
     ctx.close()

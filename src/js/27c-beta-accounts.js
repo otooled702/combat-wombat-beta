@@ -24,7 +24,7 @@ function betaInitials(n){return n.split(/\s+/).map(function(w){return w.charAt(0
 function betaSignInScreen(){
   shellMode='signin'; applyTheme(); document.body.className='betasignin';
   app.innerHTML='<main class="betasign"><div class="betacard">'+
-    '<div class="betabrand">'+logoSVG('', 'Combat Wombat')+'<span class="bword">combat wombat</span><span class="betatag">Beta</span></div>'+
+    '<div class="betabrand">'+logoSVG('')+'<span class="bword">'+wordmarkSVG()+'</span><span class="betatag">Beta</span></div>'+
     '<h1>Pick a test account</h1>'+
     '<p class="betalead">Real sign-in comes later. These test accounts live only in this browser and anyone can use them, so don’t put anything private in them.</p>'+
     '<ul class="betalist">'+betaAccounts().map(function(a){

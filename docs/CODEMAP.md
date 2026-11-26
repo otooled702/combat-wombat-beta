@@ -53,10 +53,10 @@ Functions: `turnIdx`, `after`, `startTurnEffects`, `endTurnEffects`, `beginTurn`
 *11. UI building blocks*
 Functions: `swHTML`, `segHTML`, `pips`, `failPips`
 
-### 12-dm-screen.js  (685 lines, 77 KB)
+### 12-dm-screen.js  (689 lines, 78 KB)
 *12. DM screen*
-Constants: `SET_CATS`, `LOGO_PATHS`, `ICONS`, `RES_TYPES`, `RES_LABEL`
-Functions: `nGroup`, `buildNavHTML`, `buildDMShell`, `narrowNav`, `closeNav`, `navTimerHTML`, `renderNav`, `setTile`, `setPreviewHTML`, `renderDrawer`, `logoSVG`, `logoLockup`, `pushMonitor`, `nowIntoView`, `openMonitor`, `placeMonitor`, `renderTimerPop`, `renderMonMini`, `renderTop`, `sheetPanel`, `resParse`, `resCompose`, `resField`, `resPanel`, `fmtText`, `fmtBox`, `sheetOpen`, `renderParty`, `renderPartyEdit`, `partyListHTML`, `libSummary`, `libRowsHTML`, `renderLibrary`, `condPanel`, `legPop`, `legHTML`, `deathHTML`, `acHTML`, `acPop`, `acShowRow`, `rxHTML`, `readyPanel`, `memberHTML`, `dispSeg`, `rowMenu`, `savePop`, `regroupPop`, `mergeCards`, `closeMenu`, `keepScroll`, `openPop`, `isCollapsed`, `rowHTML`, `renderList`
+Constants: `SET_CATS`, `LOGO_PATHS`, `LOGO_VB`, `WORDMARK_PATHS`, `ICONS`, `RES_TYPES`, `RES_LABEL`
+Functions: `nGroup`, `buildNavHTML`, `buildDMShell`, `narrowNav`, `closeNav`, `navTimerHTML`, `renderNav`, `setTile`, `setPreviewHTML`, `renderDrawer`, `wordmarkSVG`, `logoSVG`, `logoLockup`, `pushMonitor`, `nowIntoView`, `openMonitor`, `placeMonitor`, `renderTimerPop`, `renderMonMini`, `renderTop`, `sheetPanel`, `resParse`, `resCompose`, `resField`, `resPanel`, `fmtText`, `fmtBox`, `sheetOpen`, `renderParty`, `renderPartyEdit`, `partyListHTML`, `libSummary`, `libRowsHTML`, `renderLibrary`, `condPanel`, `legPop`, `legHTML`, `deathHTML`, `acHTML`, `acPop`, `acShowRow`, `rxHTML`, `readyPanel`, `memberHTML`, `dispSeg`, `rowMenu`, `savePop`, `regroupPop`, `mergeCards`, `closeMenu`, `keepScroll`, `openPop`, `isCollapsed`, `rowHTML`, `renderList`
 
 ### 13-combat-monitor.js  (128 lines, 10 KB)
 *13. Combat Monitor*
@@ -147,7 +147,7 @@ Functions: (none at top level)
 - `08-skins.css`: 195 lines, 17 KB. Skins
 - `09-skin-frost.css`: 27 lines, 3 KB. Frost: icy, snowy, light. Frosted-glass cards on a pale blue sky with drifting snow
 - `10-skin-feywild.css`: 53 lines, 4 KB. Feywild: wildly coloured. Violet night, neon pink, cyan and lime, everything glowing
-- `11-left-menu-and-combat-bar.css`: 626 lines, 43 KB. Left menu + combat bar
+- `11-left-menu-and-combat-bar.css`: 630 lines, 44 KB. Left menu + combat bar
 - `13-skin-frost-ice.css`: 16 lines, 18 KB. 
 - `14-contrast.css`: 42 lines, 2 KB. 
 - `15-demo.css`: 105 lines, 8 KB. Beta build only: test-account sign-in and the account row (27c-beta-accounts.js)

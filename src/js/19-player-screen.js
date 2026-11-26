@@ -401,7 +401,7 @@ function renderPhone(force){
   } else {
     var cur=sn.c.filter(function(c){return c.i===sn.tid;})[0], nxt=sn.c.filter(function(c){return c.i===sn.np;})[0];
     var stale=Date.now()-ph.lastSnapAt>45000;
-    var top='<header class="ph-top"><div class="ph-brand">'+logoSVG('sm',"Combat Wombat")+'<span>combat wombat</span></div>'+(sn.r?'<span class="ph-round">Round '+sn.r+'</span>':'<span class="ph-round muted">Not started</span>')+
+    var top='<header class="ph-top"><div class="ph-brand">'+logoSVG('sm')+'<span>'+wordmarkSVG()+'</span></div>'+(sn.r?'<span class="ph-round">Round '+sn.r+'</span>':'<span class="ph-round muted">Not started</span>')+
       '<span class="ph-live'+(stale?' off':'')+'" title="'+(stale?'No recent update':'Live')+'"></span><button class="ph-menubtn" data-pact="menu" aria-label="Menu">\u22ef</button></header>';
     var strip=cur?'<div class="ph-strip"><span class="ph-sn now'+(cur.s==='e'?' foe':'')+'"><small>Now</small><b>'+esc(cur.n)+'</b></span>'+(nxt?'<span class="ph-sn nxt"><small>'+(sn.np===sn.nx?'Up next':'Get ready')+'</small><b>'+esc(nxt.n)+'</b></span>':'')+'</div>':'';
     var me=sn.pz?null:phMine(), body='';

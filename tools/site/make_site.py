@@ -22,7 +22,11 @@ paths = re.search(r"var LOGO_PATHS='(.*?)';", open(os.path.join(ROOT, 'src', 'js
 # Color Spray colours: ink #1A1A1A on white
 paths = (paths.replace('class="lg-k"', 'fill="#1A1A1A"').replace('class="lg-w"', 'fill="#FFFFFF"')
          .replace('class="lg-g1"', 'fill="#5E5E5E"').replace('class="lg-g3"', 'fill="#8C8C8C"'))
-logo = '<svg viewBox="0 0 136.33 142.6" role="img" aria-label="Combat Wombat">%s</svg>' % paths
+dm = open(os.path.join(ROOT, 'src', 'js', '12-dm-screen.js'), encoding='utf-8').read()
+vb = re.search(r"var LOGO_VB='([^']+)'", dm).group(1)
+logo = '<svg viewBox="%s" aria-hidden="true">%s</svg>' % (vb, paths)
+wpaths = re.search(r"var WORDMARK_PATHS='(.*?)';", dm, re.S).group(1)
+wordmark = '<svg viewBox="0 0 1035.49 632.26" role="img" aria-label="Combat Wombat"><g fill="currentColor">%s</g></svg>' % wpaths
 
 for f in ('beta.html', 'demo.html'):
     if not os.path.exists(os.path.join(ROOT, 'dist', f)):
@@ -31,7 +35,7 @@ for f in ('beta.html', 'demo.html'):
 if os.path.isdir(out): shutil.rmtree(out)
 os.makedirs(out)
 page = open(os.path.join(ROOT, 'src', 'site', 'index.html'), encoding='utf-8').read()
-page = page.replace('{{LOGO}}', logo).replace('{{VERSION}}', version).replace('{{REPO}}', repo)
+page = page.replace('{{LOGO}}', logo).replace('{{WORDMARK}}', wordmark).replace('{{VERSION}}', version).replace('{{REPO}}', repo)
 assert '{{' not in page, 'unfilled placeholder in the landing page'
 open(os.path.join(out, 'index.html'), 'w', encoding='utf-8').write(page)
 shutil.copy(os.path.join(ROOT, 'dist', 'beta.html'), os.path.join(out, 'app.html'))
