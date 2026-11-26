@@ -3202,6 +3202,9 @@ def t_round13(b):
         dm.reload(); dm.wait_for_timeout(700); check('a saved %s skin opens as %s' % (old, new), dm.get_attribute('html', 'data-skin') == new, dm.get_attribute('html', 'data-skin'))
     # ---- the name, and the wordmark fits next to the header buttons in every skin
     check('the page is called Combat Wombat', dm.title() == '⚔️ Combat Wombat', dm.title())
+    ic = dm.get_attribute('link[rel=icon]', 'href') or ''
+    from urllib.parse import unquote
+    check('the tab icon is the wombat: a square SVG, dark on light tabs and light on dark ones', dm.get_attribute('link[rel=icon]', 'type') == 'image/svg+xml' and 'M712.19' in unquote(ic) and 'prefers-color-scheme:dark' in unquote(ic) and '997.17 997.17' in unquote(ic), unquote(ic)[:160])
     bad = []
     for sk in qs(('spark', 'sparkd', 'slate', 'daylight', 'medieval', 'frost', 'water', 'forest', 'mountain', 'fire', 'feywild')):
         dm.evaluate("sk=>{const s=JSON.parse(localStorage.getItem('initiative-tracker-v1')); s.settings.skin=sk; localStorage.setItem('initiative-tracker-v1', JSON.stringify(s));}", sk)

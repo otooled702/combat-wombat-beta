@@ -25,6 +25,19 @@ def joined(folder, ext):
     return ''.join(read(folder, f) for f in files), files
 
 DEMO_FLAG = 'var DEMO=false/*@demo*/;'
+
+def favicon_svg():
+    """The browser-tab icon: the wombat mark from 12-dm-screen.js on a square canvas, dark on light tabs and light on dark ones."""
+    src = read('js', '12-dm-screen.js')
+    paths = re.search(r"var LOGO_PATHS='(.*?)';", src, re.S).group(1).replace(' class="lg-k"', '')
+    x0, y0, w, h = (float(v) for v in re.search(r"var LOGO_VB='([^']+)'", src).group(1).split())
+    side = max(w, h); vb = '%g %g %g %g' % (x0 - (side - w) / 2, y0 - (side - h) / 2, side, side)
+    return ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="%s"><style>path{fill:#1A1A1A}'
+            '@media (prefers-color-scheme:dark){path{fill:#F8F8F2}}</style>%s</svg>' % (vb, paths))
+
+def favicon_uri():
+    from urllib.parse import quote
+    return 'data:image/svg+xml,' + quote(favicon_svg(), safe=" =:/'-.,()")
 BETA_FLAG = 'var BETA=false/*@beta*/;'
 
 def build(demo=False, beta=False):
@@ -40,7 +53,7 @@ def build(demo=False, beta=False):
     if beta:
         js = js.replace(BETA_FLAG, 'var BETA=true;')
     out = tpl
-    for key, val in (('{{CSS}}', css), ('{{DEMODATA}}', read('data', 'demo.json') if (demo or beta) else 'null'), ('{{QRLIB}}', read('vendor', 'qrcode-generator-1.4.4.js')), ('{{MMDATA}}', read('data', 'monsters.json')), ('{{SPDATA}}', read('data', 'spells.json')), ('{{JS}}', js)):
+    for key, val in (('{{FAVICON}}', favicon_uri()), ('{{CSS}}', css), ('{{DEMODATA}}', read('data', 'demo.json') if (demo or beta) else 'null'), ('{{QRLIB}}', read('vendor', 'qrcode-generator-1.4.4.js')), ('{{MMDATA}}', read('data', 'monsters.json')), ('{{SPDATA}}', read('data', 'spells.json')), ('{{JS}}', js)):
         if out.count(key) != 1:
             raise SystemExit('template problem: %s appears %d times' % (key, out.count(key)))
         out = out.replace(key, val)

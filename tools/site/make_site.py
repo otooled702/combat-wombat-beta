@@ -41,4 +41,6 @@ open(os.path.join(out, 'index.html'), 'w', encoding='utf-8').write(page)
 shutil.copy(os.path.join(ROOT, 'dist', 'beta.html'), os.path.join(out, 'app.html'))
 shutil.copy(os.path.join(ROOT, 'dist', 'demo.html'), os.path.join(out, 'demo.html'))
 open(os.path.join(out, '.nojekyll'), 'w').close()
-print('site in %s: index.html, app.html, demo.html (version %s, repo %s)' % (os.path.relpath(out, ROOT), version, repo))
+sys.path.insert(0, ROOT); import build                      # the same wombat icon the app uses
+open(os.path.join(out, 'favicon.svg'), 'w', encoding='utf-8').write(build.favicon_svg())
+print('site in %s: index.html, app.html, demo.html, favicon.svg (version %s, repo %s)' % (os.path.relpath(out, ROOT), version, repo))
