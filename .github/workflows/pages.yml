@@ -18,6 +18,8 @@ concurrency:
 
 jobs:
   build:
+    # only the public beta repository has a Pages site; the private development repo skips this
+    if: github.repository == 'otooled702/combat-wombat-beta'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
