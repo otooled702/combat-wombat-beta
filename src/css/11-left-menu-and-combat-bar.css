@@ -606,11 +606,7 @@ body.dm .hpact>[data-delta],body.dm .hpact>[data-mdelta]{width:84px;min-width:0}
 .spdt{font:700 18px var(--fd)}
 .sphint{font-size:12px;color:var(--muted)}
 .spinfo,.spwhy{margin:0}
-.sprow2{grid-template-columns:auto minmax(0,1fr) minmax(0,1.2fr);cursor:pointer}
-.sprow2 input{width:20px;height:20px;margin:0 6px 0 2px}
-.sprow2 .spsum{font-size:13px;color:var(--muted);text-align:right}
 .spintro{margin:6px 2px}
-@media (max-width:760px){.sprow2{grid-template-columns:auto minmax(0,1fr)}.sprow2 .spsum{grid-column:2;text-align:left}}
 .mmisland.spisl{display:flex;flex-direction:row;align-items:center;flex-wrap:wrap;gap:8px;padding:6px 10px}
 .mmisland.spisl select{width:auto;min-width:120px;min-height:34px}
 .mmisland.spisl .mmilab{margin-right:2px}
@@ -647,9 +643,23 @@ body.dm .hpact>[data-delta],body.dm .hpact>[data-mdelta]{width:84px;min-width:0}
 .sptag.t-condition{background:color-mix(in srgb,var(--next) 22%,var(--panel))}
 .sptag.t-utility{background:var(--chip,var(--panel2))}
 .sprec.yours{background:var(--accent);color:var(--accent-ink);border-color:transparent}
-.sprow2{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;align-items:start}
-.sprow2 .spsum{grid-column:1;font-size:13px;color:var(--muted)}
-.sprow2 .spacts{grid-column:2;grid-row:1 / span 2;display:flex;gap:6px;align-self:center}
+/* Spell rows place every part themselves (.mmrow.sprow2 outranks the creature-row rules, which put .mmname in columns 2-4 on phones) */
+.mmrow.sprow2{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;align-items:start}
+.mmrow.sprow2>.mmname{grid-column:1;grid-row:1;min-width:0}
+.mmrow.sprow2>.spsum{grid-column:1;grid-row:2;font-size:13px;color:var(--muted);text-align:left}
+.mmrow.sprow2>.spacts{grid-column:2;grid-row:1 / span 2;display:flex;gap:6px;align-self:start}
+.mmrow.sprow2>.spdesc{grid-column:1 / -1;grid-row:3}
+/* Description toggle and the rules text */
+.spdesc>summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--text);padding:4px 0;width:max-content;max-width:100%}
+.spdesc>summary:focus-visible{outline:2px solid currentColor;outline-offset:2px;border-radius:4px}
+.spdbody{font-size:14px;line-height:21px;padding:4px 0 6px}
+.spdbody p{margin:0 0 8px}.spdbody ul{margin:0 0 8px;padding-left:20px}
+.spfacts{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:6px 14px;margin:0 0 10px}
+.spfacts div{min-width:0}.spfacts dt{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}.spfacts dd{margin:0;overflow-wrap:anywhere}
+.sptblwrap{overflow-x:auto;margin:0 0 8px}
+.sptbl{border-collapse:collapse;font-size:13px;min-width:60%}.sptbl th,.sptbl td{border:1px solid var(--line);padding:3px 8px;text-align:left;vertical-align:top}
+.sphi{border-top:1px solid var(--line);padding-top:8px}
+.spcard .spdesc{margin:2px 0 6px}
 .sptagseg{flex-wrap:wrap}
 .sppane .sptagseg{margin-bottom:8px}
 .spform{display:flex;flex-direction:column;gap:12px;padding:4px 2px 12px}
@@ -664,6 +674,7 @@ body .qrbody.mmbody:has(.spform){overflow-y:auto;padding-bottom:0}
 .spf{display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:600}
 .spf.wide{grid-column:1 / -1}
 .spf input[type=text],.spf select{min-height:40px}
+.spf textarea{width:100%;box-sizing:border-box;font:inherit;font-size:15px;line-height:22px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--text);resize:vertical;margin-bottom:8px}
 .spck{display:inline-flex;flex-direction:row;align-items:center;gap:8px;font-weight:500;min-height:40px}
 .spcls{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:8px;align-items:center}
 .spcl-lab{font-size:13px;font-weight:700}

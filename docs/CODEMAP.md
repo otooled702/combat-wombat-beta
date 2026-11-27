@@ -118,10 +118,10 @@ Functions: `clSetMode`, `renderClone`, `doClone`
 Constants: `AOE_KINDS`, `DMG_TYPES`, `SPELLS`, `SPELL_BY`, `SP_TAG`, `SP_CLASS`, `SP_CLASS_AB`, `SP_SCHOOL`
 Functions: `dmgTypeLabel`, `spellsAll`, `spellGet`, `spTags`, `spTagChips`, `spHasTag`, `spLv`, `spCastTime`, `spEffect`, `spMeta`, `rollDice`, `spParts`, `spCount`, `spCastInfo`, `spDurRounds`, `spellSyncCast`, `spellConfigure`, `spellInput`, `spIsHeal`, `spRaiseMax`, `spHealFull`, `spHealFixed`, `spHealDice`, `spHealText`, `spellRollHeal`, `spellSelect`, `spellRoll`, `spellPickList`, `spellPaneHTML`, `spellAfter`, `aoeNew`, `aoeTargets`, `aoeUsable`, `aoeRole`, `aoeAmt`, `aoeCondName`, `aoeCondText`, `aoeSaveable`, `aoeAttTotal`, `aoeHit`, `aoeHitChip`, `aoeTypeMult`, `aoeAttDamage`, `aoePrev`, `aoePassEff`, `aoeSetRes`, `aoeSelCount`, `aoeReadyCount`, `aoeApplyLabel`, `aoeRefresh`, `aoeRowHTML`, `aoeNameCmp`, `aoeListHTML`, `renderAoe`, `aoeApply`, `aoeReset`, `aoeApplyCond`, `aoeApplyAtt`, `aoeConvertSel`
 
-### 26b-spell-library.js  (172 lines, 14 KB)
+### 26b-spell-library.js  (229 lines, 18 KB)
 *26b. Spell library*
 Constants: `SPL_TAGS`, `SPL_TIMES`, `SPL_DICE`
-Functions: `splEsc`, `splFiltered`, `renderSpellsTab`, `splPer`, `splDraft`, `splFormHTML`, `splUp`, `splBuild`
+Functions: `splEsc`, `spMdInline`, `spMd`, `spInfoHTML`, `spDescHTML`, `splFiltered`, `renderSpellsTab`, `splPer`, `splDraft`, `splFormHTML`, `splUp`, `splBuild`
 
 ### 27-cloud-save.js  (127 lines, 6 KB)
 *27. Cloud save*
@@ -152,7 +152,7 @@ Functions: (none at top level)
 - `08-skins.css`: 195 lines, 17 KB. Skins
 - `09-skin-frost.css`: 27 lines, 3 KB. Frost: icy, snowy, light. Frosted-glass cards on a pale blue sky with drifting snow
 - `10-skin-feywild.css`: 53 lines, 4 KB. Feywild: wildly coloured. Violet night, neon pink, cyan and lime, everything glowing
-- `11-left-menu-and-combat-bar.css`: 673 lines, 47 KB. Left menu + combat bar
+- `11-left-menu-and-combat-bar.css`: 684 lines, 48 KB. Left menu + combat bar
 - `13-skin-frost-ice.css`: 16 lines, 18 KB. 
 - `14-contrast.css`: 42 lines, 2 KB. 
 - `15-demo.css`: 105 lines, 8 KB. Beta build only: test-account sign-in and the account row (27c-beta-accounts.js)
@@ -162,4 +162,4 @@ Functions: (none at top level)
 
 - `demo.json`: 17 KB
 - `monsters.json`: 339 KB
-- `spells.json`: 46 KB
+- `spells.json`: 286 KB

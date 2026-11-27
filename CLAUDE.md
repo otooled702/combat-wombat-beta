@@ -61,6 +61,8 @@ Read this first. `docs/CODEMAP.md` lists every file and function. Search before 
   (`A.sptag`: All, Damage, Healing, Conditions, Utility) filter the picker; All lists every spell (no cap). Tests: `t_custom_spells`, `t_spell_fixes`.
   Healing spells (`hl` dice or number, `hm` add modifier, `hu` upcast, `hf` full, `hx` divided, `hmx` also raises max HP like Aid)
   configure the Heal engine. A plain-number `hl` (Aid, Heal) fills the amount with no roll (`spHealFixed`).
+  Descriptions: `ds` (SRD rules text, light Markdown incl. tables, rendered by `spMd`), `hi` (higher slot / cantrip upgrade), `cm` components,
+  `ri` ritual. Shown by `spDescHTML(x,'lib'|'target')` as a <details> built only when opened; open state in `ui.lib.spdesc` / `ui.spdOpen`. Test: `t_spell_descriptions`.
   Caster DC: stat-block text first ("spell save DC N, +N to hit"), else 8 + proficiency (from CR, +2 if unknown) + casting ability mod.
   Concentration is optional and adds a Concentrating condition with `note` = spell name.
 - Group conditions: a condition on a group can list members in `cd.mem` (ids); none means the whole group. `condTidy(c)` cleans up after

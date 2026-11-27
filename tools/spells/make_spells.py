@@ -56,6 +56,25 @@ def parts_of(d):
 def short_time(t):
     t=(t or '').lower(); return {'action':'A','bonus_action':'BA','reaction':'R'}.get(t,t.replace('minute','min').replace('hour','h'))
 out=[]
+# descriptions missing from the download (SRD 5.2 text)
+DESC_FIX={'Greater Invisibility':'A creature you touch has the Invisible condition until the spell ends.'}
+def tidy_desc(t):
+    """The download squashes tables onto one line ("Table: X | a | b | |---| | c | d |"): give each row its own line."""
+    t=(t or '').replace('\r','').strip()
+    t=re.sub(r'\s*Table:\s*([^|\n]+?)\s*(?=\|)', lambda m: '\n\n**%s**\n' % m.group(1).strip(), t)
+    t=re.sub(r'\|\s+\|', '|\n|', t)
+    # the last row runs into the next sentence: cut it after as many cells as the header has
+    out=[]; ncol=None
+    for line in t.split('\n'):
+        if line.startswith('|'):
+            cells=[c.strip() for c in line.strip().strip('|').split('|')]
+            if ncol is None: ncol=len(cells)
+            elif len(cells)>ncol and not set(''.join(cells))<=set('-: '):
+                out.append('| '+' | '.join(cells[:ncol])+' |'); out.append(''); out.append(' | '.join(cells[ncol:]).strip()); ncol=None; continue
+            out.append(line.rstrip())
+        else:
+            ncol=None; out.append(line)
+    return '\n'.join(out)
 for r in rows:
     n=r['name']; d=r['desc'] or ''; dl=d.lower()
     at='r' if 'ranged spell attack' in dl else ('m' if 'melee spell attack' in dl else 0)
@@ -99,6 +118,13 @@ for r in rows:
     if r['shape_type']: e['sh']=('%s %s ft'%(r['shape_type'],r['shape_size'])) if r['shape_size'] else r['shape_type']
     if n in HEAL:
         h=dict(HEAL[n]); hd=h.pop('hd'); e.update(h)
+    # the rules text (SRD 5.2, CC BY 4.0) for the spell's description: light Markdown, tables put back on their own lines
+    ds=tidy_desc(d) or DESC_FIX.get(n,'')
+    if ds: e['ds']=ds
+    if r.get('higher_level'): e['hi']=tidy_desc(r['higher_level'])
+    comp=[k for k,on in (('V',r['verbal']),('S',r['somatic']),('M',r['material'])) if on]
+    if comp: e['cm']=', '.join(comp)+(' (%s)'%r['material_specified'] if r['material'] and r.get('material_specified') else '')
+    if r.get('ritual'): e['ri']=1
     e['df']=1 if ('dm' in e or 'cd' in e or (n in HEAL and HEAL[n]['hd'])) else 0
     out.append(e)
 json.dump(out,open(os.path.join(ROOT,'src','data','spells.json'),'w'),separators=(',',':'))

@@ -3664,8 +3664,65 @@ def t_spell_fixes(b):
     check('Regenerate rolls 4d8 + 15 (19 to 47)', 19 <= v <= 47, v)
     check('no page errors', not dm._errs, dm._errs); ctx.close()
 
+def t_spell_descriptions(b):
+    """Every spell has its rules text under Description (Library and Target window); spell rows lay out properly on a phone."""
+    data = json.load(open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'src', 'data', 'spells.json'), encoding='utf-8'))
+    check('every SRD spell has a description and components', all(x.get('ds') and x.get('cm') for x in data), [x['n'] for x in data if not x.get('ds')][:5])
+    check('no table is left squashed onto one line', not [x['n'] for x in data if any(l.count('|') > 12 for l in x['ds'].split('\n'))])
+    ctx = b.new_context(viewport={'width': 1440, 'height': 900}, reduced_motion='reduce'); dm = basic_table(ctx)
+    lib_open(dm, 'spells'); dm.wait_for_timeout(300)
+    check('descriptions start closed and are not built until opened', dm.locator('.sprow2 .spdesc[open]').count() == 0 and dm.locator('.sprow2 .spdbody:not(:empty)').count() == 0)
+    dm.fill('[data-spf=q]', 'aid'); dm.wait_for_timeout(250)
+    dm.click('.sprow2[data-spn="Aid"] .spdesc summary'); dm.wait_for_timeout(200)
+    t_ = dm.inner_text('.sprow2[data-spn="Aid"] .spdbody')
+    check('Aid says how many creatures it targets', 'up to three creatures' in t_, t_[:200])
+    check('with casting time, range, components and duration', all(k in t_.upper() for k in ['CASTING TIME', 'RANGE', 'COMPONENTS', 'DURATION']) and 'white cloth' in t_)
+    check('and what a higher slot adds', 'higher-level spell slot' in t_.lower() and 'above 2' in t_)
+    dm.fill('[data-spf=q]', 'ai'); dm.wait_for_timeout(250)
+    check('it stays open while you keep typing in the search', dm.evaluate("""document.querySelector('.sprow2[data-spn="Aid"] .spdesc').open"""))
+    dm.fill('[data-spf=q]', 'augury'); dm.wait_for_timeout(250); dm.click('.sprow2[data-spn="Augury"] .spdesc summary'); dm.wait_for_timeout(200)
+    check('tables are shown as tables (Augury: 4 omens)', dm.locator('.sprow2[data-spn="Augury"] table.sptbl tbody tr').count() == 4 and dm.locator('.sprow2[data-spn="Augury"] th').count() == 2)
+    dm.fill('[data-spf=q]', 'wish'); dm.wait_for_timeout(250); dm.click('.sprow2[data-spn="Wish"] .spdesc summary'); dm.wait_for_timeout(200)
+    check('Markdown is rendered, not shown raw', dm.locator('.sprow2[data-spn="Wish"] .spdbody b i').count() >= 3 and '**' not in dm.inner_text('.sprow2[data-spn="Wish"] .spdbody'))
+    check('the toggle is a real disclosure (keyboard and screen readers)', dm.evaluate("""document.querySelector('.sprow2[data-spn="Wish"] summary').tabIndex""") == 0)
+    # your own spell: components, description, higher levels
+    dm.fill('[data-spf=q]', ''); dm.click('[data-spl=new]'); dm.wait_for_timeout(200)
+    dm.fill('[data-spff=n]', 'Star Shower'); dm.fill('[data-spff=dm]', '2d6'); dm.fill('[data-spff=cm]', 'V, S')
+    dm.fill('[data-spff=ds]', 'Up to **four** creatures you can see are struck by falling stars.'); dm.fill('[data-spff=hi]', 'One more creature per slot level.')
+    dm.click('.spform button[type=submit]'); dm.wait_for_timeout(300)
+    mine = {x['n']: x for x in json.loads(dm.evaluate("localStorage.getItem('initiative-tracker-v1')"))['customSpells']}
+    check('your spell keeps its components, description and higher-level text', mine['Star Shower'].get('cm') == 'V, S' and 'four' in mine['Star Shower'].get('ds', '') and mine['Star Shower'].get('hi'))
+    dm.click('.sprow2[data-spn="Star Shower"] .spdesc summary'); dm.wait_for_timeout(200)
+    check('and shows them, with bold', dm.locator('.sprow2[data-spn="Star Shower"] .spdbody b:text-is("four")').count() == 1 and 'One more creature' in dm.inner_text('.sprow2[data-spn="Star Shower"] .spdbody'))
+    dm.click('[data-spl=tag][data-v=all]'); dm.fill('[data-spf=q]', 'cure'); dm.wait_for_timeout(200); dm.click('.sprow2[data-spn="Cure Wounds"] [data-spl=copy]'); dm.wait_for_timeout(200)
+    check('Edit a copy brings the description along', 'Hit Points' in dm.input_value('[data-spff=ds]') and dm.input_value('[data-spff=cm]').startswith('V, S'))
+    dm.click('[data-spl=cancel]'); lib_close(dm)
+    # Target window
+    tgt(dm); dm.click('[data-aoe=kind][data-v=spell]'); dm.wait_for_timeout(250)
+    dm.fill('[data-spin=q]', 'aid'); dm.wait_for_timeout(250); dm.click('.sprowbtn[data-n="Aid"]'); dm.wait_for_timeout(250)
+    check('the spell card has a Description, closed at first', dm.locator('.spcard .spdesc').count() == 1 and not dm.evaluate("document.querySelector('.spcard .spdesc').open"))
+    dm.click('.spcard .spdesc summary'); dm.wait_for_timeout(200)
+    check('opened, it says how many creatures', 'up to three creatures' in dm.inner_text('.spcard .spdbody'))
+    dm.select_option('[data-spin=slot]', '3'); dm.wait_for_timeout(200)
+    check('it stays open when the window redraws', dm.evaluate("document.querySelector('.spcard .spdesc').open") and 'up to three' in dm.inner_text('.spcard .spdbody'))
+    dm.click('[data-aoe=spChange]'); dm.fill('[data-spin=q]', 'fireball'); dm.wait_for_timeout(250); dm.click('.sprowbtn[data-n="Fireball"]'); dm.wait_for_timeout(250)
+    check('and for the next spell too', dm.evaluate("document.querySelector('.spcard .spdesc').open") and '20-foot-radius' in dm.inner_text('.spcard .spdbody'))
+    errs = dm._errs; ctx.close()
+    # phone: the row parts do not overlap (they used to: the summary in a sliver on the left, the name pushed right)
+    ctx = b.new_context(viewport={'width': 390, 'height': 844}, reduced_motion='reduce'); m = page(ctx, size=(390, 844)); m.goto(URL); m.wait_for_timeout(500)
+    lib_open(m, 'spells'); m.wait_for_timeout(300)
+    g = m.evaluate("""()=>{const r=document.querySelector('.sprow2[data-spn="Aid"]'),q=s=>r.querySelector(s).getBoundingClientRect();const n=q('.mmname'),s=q('.spsum'),a=q('.spacts'),d=q('.spdesc');
+      return {nl:n.left,nr:n.right,sl:s.left,sw:s.width,st:s.top,nb:n.bottom,al:a.left,at:a.top,nt:n.top,dt:d.top,sb:s.bottom,rw:r.getBoundingClientRect().width,rl:r.getBoundingClientRect().left}}""")
+    check('phone: the name starts at the left of the row', g['nl'] - g['rl'] < 30, g)
+    check('phone: the edit button sits to the right of the name, at the top', g['al'] >= g['nr'] - 1 and abs(g['at'] - g['nt']) < 20, g)
+    check('phone: the summary is under the name, full width', g['st'] >= g['nb'] - 1 and abs(g['sl'] - g['nl']) < 2 and g['sw'] > g['rw'] * 0.5, g)
+    check('phone: Description comes last', g['dt'] >= g['sb'] - 1, g)
+    check('phone: no sideways scrolling', not m.evaluate('document.documentElement.scrollWidth>innerWidth+1'))
+    errs += m._errs; ctx.close()
+    check('no page errors', not errs, errs)
+
 SUITE = [t_turn_engine, t_conditions, t_hp_and_death, t_groups, t_reactions_ready_legendary, t_ac_and_display, t_health_display,
-         t_library_clone_undo_images, t_tv, t_privacy, t_skins_and_settings, t_phone, t_phone_stale_tab_and_offline_sheet, t_effects, t_sound, t_colour_blind, t_views_and_names, t_cloud, t_card_and_half, t_rolling, t_clone_dialog, t_aoe, t_studio, t_spark, t_palettes_and_shadows, t_frost_feywild, t_top_bar, t_monitor_layout, t_mobile_dm, t_desktop_unchanged, t_aoe_conditions, t_aoe_conditions_mobile, t_target_attack, t_confirm_end, t_controls_and_labels, t_turn_shading, t_compact_layout, t_neutral_distinct, t_target_list, t_target_layout, t_monster_library, t_library_mobile, t_side_and_screen, t_button_centering, t_builder, t_name_generator, t_builder_mobile, t_card_controls, t_names_setting, t_collapse_cards, t_regroup, t_monitor_sizes, t_open_monitor, t_manage_combat, t_polish_round2, t_menu_width_and_icon, t_monitor_screen, t_monitor_round3, t_skins_round3, t_player_screen, t_round5_dm, t_round5_mobile, t_round5_phone, t_menu_close_x, t_target_round6, t_encounters, t_qr_blur, t_round7, t_campaigns, t_round7_phone_logo, t_library_tabs, t_settings_window, t_rx_hidden_landscape, t_editor_access, t_cards_round8, t_library_round8, t_add_window, t_standard_npcs, t_round9, t_round10, t_round11, t_round12, t_spells, t_lr_not_spent_on_heal, t_round13, t_round13_phone, t_round13_canvas, t_contrast_all_skins, t_demo, t_beta_accounts, t_round14, t_round14_touch, t_custom_spells, t_target_spell_layout, t_spell_fixes]
+         t_library_clone_undo_images, t_tv, t_privacy, t_skins_and_settings, t_phone, t_phone_stale_tab_and_offline_sheet, t_effects, t_sound, t_colour_blind, t_views_and_names, t_cloud, t_card_and_half, t_rolling, t_clone_dialog, t_aoe, t_studio, t_spark, t_palettes_and_shadows, t_frost_feywild, t_top_bar, t_monitor_layout, t_mobile_dm, t_desktop_unchanged, t_aoe_conditions, t_aoe_conditions_mobile, t_target_attack, t_confirm_end, t_controls_and_labels, t_turn_shading, t_compact_layout, t_neutral_distinct, t_target_list, t_target_layout, t_monster_library, t_library_mobile, t_side_and_screen, t_button_centering, t_builder, t_name_generator, t_builder_mobile, t_card_controls, t_names_setting, t_collapse_cards, t_regroup, t_monitor_sizes, t_open_monitor, t_manage_combat, t_polish_round2, t_menu_width_and_icon, t_monitor_screen, t_monitor_round3, t_skins_round3, t_player_screen, t_round5_dm, t_round5_mobile, t_round5_phone, t_menu_close_x, t_target_round6, t_encounters, t_qr_blur, t_round7, t_campaigns, t_round7_phone_logo, t_library_tabs, t_settings_window, t_rx_hidden_landscape, t_editor_access, t_cards_round8, t_library_round8, t_add_window, t_standard_npcs, t_round9, t_round10, t_round11, t_round12, t_spells, t_lr_not_spent_on_heal, t_round13, t_round13_phone, t_round13_canvas, t_contrast_all_skins, t_demo, t_beta_accounts, t_round14, t_round14_touch, t_custom_spells, t_target_spell_layout, t_spell_fixes, t_spell_descriptions]
 if __name__ == '__main__':
     only = sys.argv[2:] if len(sys.argv) > 2 else None
     with sync_playwright() as p:

@@ -15,7 +15,7 @@ var DEMO=false/*@demo*/;
 /* The beta build (dist/beta.html) adds test accounts that live only in this browser: each has its own
    storage, and the "free" one behaves exactly like the demo. See 27c-beta-accounts.js. */
 var BETA=false/*@beta*/;
-var APP_VERSION='0.9.0-beta.5';
+var APP_VERSION='0.9.0-beta.6';
 var betaAcct=BETA?betaCurrent():null;
 if(betaAcct&&betaAcct.plan==='free')DEMO=true;
 var KEY=BETA?'cw-beta-'+(betaAcct?betaAcct.id:'signed-out'):(DEMO?'combat-wombat-demo':'initiative-tracker-v1');

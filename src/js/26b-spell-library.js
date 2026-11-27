@@ -11,6 +11,47 @@ var SPL_TIMES=[['A','Action'],['BA','Bonus action'],['R','Reaction'],['1min','1 
 var SPL_DICE=/^\d+(d\d+)?([+-]\d+(d\d+)?)*$/;
 
 function splEsc(v){return esc(v==null?'':String(v));}
+
+/* ---- Descriptions: the SRD rules text (light Markdown: paragraphs, **bold**, *italic*, "- " bullets, | tables |) ---- */
+function spMdInline(t){
+  return esc(t).replace(/\*\*_(.+?)_\*\*|_\*\*(.+?)\*\*_|\*\*\*(.+?)\*\*\*/g,function(m,a,b,c){return '<b><i>'+(a||b||c)+'</i></b>';})
+    .replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/(^|[^\w*])\*([^*\n]+?)\*(?!\w)/g,'$1<i>$2</i>').replace(/(^|[^\w])_([^_\n]+?)_(?!\w)/g,'$1<i>$2</i>');
+}
+function spMd(t){
+  var out=[], lines=String(t||'').split('\n'), i=0;
+  while(i<lines.length){
+    var ln=lines[i].trim();
+    if(!ln){i++;continue;}
+    if(ln.charAt(0)==='|'){
+      var rows=[]; while(i<lines.length&&lines[i].trim().charAt(0)==='|'){rows.push(lines[i].trim());i++;}
+      var cells=function(r){return r.replace(/^\||\|$/g,'').split('|').map(function(c){return c.trim();});};
+      var body=rows.filter(function(r,k){return !(k===1&&/^[|\-:\s]+$/.test(r));});
+      out.push('<div class="sptblwrap"><table class="sptbl"><thead><tr>'+cells(body[0]).map(function(c){return '<th scope="col">'+spMdInline(c)+'</th>';}).join('')+'</tr></thead><tbody>'+
+        body.slice(1).map(function(r){return '<tr>'+cells(r).map(function(c){return '<td>'+spMdInline(c)+'</td>';}).join('')+'</tr>';}).join('')+'</tbody></table></div>');
+      continue;
+    }
+    if(/^[-*] /.test(ln)){
+      var items=[]; while(i<lines.length&&/^[-*] /.test(lines[i].trim())){items.push(lines[i].trim().slice(2));i++;}
+      out.push('<ul>'+items.map(function(x){return '<li>'+spMdInline(x)+'</li>';}).join('')+'</ul>'); continue;
+    }
+    out.push('<p>'+spMdInline(ln.replace(/^#+\s*/,''))+'</p>'); i++;
+  }
+  return out.join('');
+}
+/* The facts line (casting time, range, components, duration), the description, and what a higher slot or level adds. */
+function spInfoHTML(x){
+  var facts=[['Casting time',spCastTime(x)+(x.ri?' or ritual':'')],['Range',x.r],['Area',x.sh],['Components',x.cm],['Duration',(x.co?'Concentration, up to ':'')+(x.du||'')]]
+    .filter(function(f){return f[1];});
+  var hi=x.hi?'<p class="sphi"><b>'+(x.l===0?'Cantrip upgrade.':'Using a higher-level spell slot.')+'</b> '+spMdInline(x.hi)+'</p>':'';
+  return '<dl class="spfacts">'+facts.map(function(f){return '<div><dt>'+f[0]+'</dt><dd>'+splEsc(f[1])+'</dd></div>';}).join('')+'</dl>'+
+    (x.ds?'<div class="sptext">'+spMd(x.ds)+'</div>':'<p class="help">No description yet.'+(x.custom?' Add one with Edit.':'')+'</p>')+hi;
+}
+/* A Description toggle. Its text is only built when it is opened (the Library lists 339 spells), and the open ones stay open
+   across redraws: ui.spdOpen holds the Target window's choice, ui.lib.spdesc the spells opened in the Library. */
+function spDescHTML(x,where){
+  var open=where==='target'?!!ui.spdOpen:!!(ui.lib&&ui.lib.spdesc&&ui.lib.spdesc[x.n]);
+  return '<details class="spdesc" data-spd="'+where+'" data-n="'+splEsc(x.n)+'"'+(open?' open':'')+'><summary>Description</summary><div class="spdbody">'+(open?spInfoHTML(x):'')+'</div></details>';
+}
 function splFiltered(){
   var L=ui.lib, q=(L.spq||'').trim().toLowerCase(), lv=L.splv==null?'':L.splv, cl=L.spcl||'', tag=L.sptag||'all';
   return spellsAll().filter(function(x){
@@ -33,7 +74,7 @@ function renderSpellsTab(el,head){
       '<button type="button" class="btn small iconbtn" data-spl="del" data-n="'+splEsc(x.n)+'" aria-label="Delete '+splEsc(x.n)+'" title="Delete">×</button>':
       '<button type="button" class="btn small iconbtn" data-spl="copy" data-n="'+splEsc(x.n)+'" aria-label="Edit a copy of '+splEsc(x.n)+'" title="Edit a copy: make your own version">'+ICONS.pencil+'</button>';
     return '<div class="mmrow sprow2" data-spn="'+splEsc(x.n)+'"><span class="mmname static"><span class="mmtitle"><b>'+splEsc(x.n)+'</b>'+(x.custom?'<em class="sprec yours">yours</em>':'')+(x.co?'<em class="sprec">concentration</em>':'')+'</span>'+
-      '<small>'+splEsc(meta)+'</small>'+spTagChips(x)+'</span><span class="spsum">'+splEsc(spEffect(x)||'No damage, healing or condition')+'</span><span class="spacts">'+acts+'</span></div>';
+      '<small>'+splEsc(meta)+'</small>'+spTagChips(x)+'</span><span class="spsum">'+splEsc(spEffect(x)||'No damage, healing or condition')+'</span><span class="spacts">'+acts+'</span>'+spDescHTML(x,'lib')+'</div>';
   }).join('');
   el.innerHTML=head+'<div class="mmctl"><input type="search" class="mmsearch" data-spf="q" placeholder="Search spells…" value="'+splEsc(L.spq||'')+'" aria-label="Search spells" autocomplete="off">'+
     '<button type="button" class="btn small mmnew" data-spl="new" aria-label="New spell">+ New<span class="mmnewx">\u00a0spell</span></button>'+
@@ -60,7 +101,8 @@ function splDraft(x,mode){
   return {mode:mode, orig:mode==='edit'?x.n:null, base:mode==='copy'?x.n:(x.base||null),
     n:mode==='copy'?x.n+' (custom)':(x.n||''), l:x.l==null?1:x.l, s:x.s||'Evo', t:x.t||'A', r:x.r||'', du:x.du||'Instant', co:!!x.co, cl:(x.cl||[]).slice(),
     at:x.at||'', sv:x.sv||'', ok:x.ok||'half', dm:(x.dp&&x.dp[0])?x.dp[0][0]:(x.dm||''), dt:(x.dp&&x.dp[0])?x.dp[0][1]:((x.dt&&x.dt[0])||'fire'), dper:splPer(x.dm,x.up,x.l),
-    cd:(x.cd&&x.cd[0])||'', hl:x.hf==='full'?'':(x.hl||''), hm:!!x.hm, hmx:!!x.hmx, hper:splPer(x.hl,x.hu,x.l), hf:x.hf==='full', dp:mode==='copy'&&x.dp?x.dp:null, err:''};
+    cd:(x.cd&&x.cd[0])||'', hl:x.hf==='full'?'':(x.hl||''), hm:!!x.hm, hmx:!!x.hmx, hper:splPer(x.hl,x.hu,x.l), hf:x.hf==='full', dp:mode==='copy'&&x.dp?x.dp:null,
+    cm:x.cm||'', ds:x.ds||'', hi:x.hi||'', sh:x.sh||'', ri:!!x.ri, err:''};
 }
 function splFormHTML(F){
   var opt=function(v,cur,l){return '<option value="'+splEsc(v)+'"'+(String(cur)===String(v)?' selected':'')+'>'+splEsc(l)+'</option>';};
@@ -76,6 +118,7 @@ function splFormHTML(F){
       fld('t','Casting time','<select data-spff="t" name="t">'+SPL_TIMES.map(function(o){return opt(o[0],F.t,o[1]);}).join('')+'</select>')+
       fld('r','Range',txt('r',F.r,'Example: 60 feet'))+
       fld('du','Duration',txt('du',F.du,'Example: 1 minute'))+
+      fld('cm','Components',txt('cm',F.cm,'Example: V, S, M (a feather)'))+
       '<label class="spf spck"><input type="checkbox" data-spff="co" name="co"'+(F.co?' checked':'')+'><span>Concentration</span></label>'+
     '</div><div class="spcls" role="group" aria-label="Classes"><span class="spcl-lab">Classes</span>'+Object.keys(SP_CLASS).map(function(k){return '<label class="spck"><input type="checkbox" name="cl" value="'+k+'"'+(F.cl.indexOf(k)>=0?' checked':'')+'><span>'+SP_CLASS[k]+'</span></label>';}).join('')+'</div></fieldset>'+
     '<fieldset><legend>To hit or save</legend><div class="spfgrid">'+
@@ -94,6 +137,10 @@ function splFormHTML(F){
       '<label class="spf spck"><input type="checkbox" data-spff="hmx" name="hmx"'+(F.hmx?' checked':'')+'><span>Also raises maximum hit points (like Aid)</span></label>'+
       '<label class="spf spck"><input type="checkbox" data-spff="hf" name="hf"'+(F.hf?' checked':'')+'><span>Heals to full hit points</span></label>'+
     '</div></fieldset>'+
+    '<fieldset><legend>Description</legend><p class="help">Shown under Description in the Library and the Target window. Plain text; **bold** works.</p>'+
+      '<label class="spf"><span>What the spell does</span><textarea data-spff="ds" name="ds" rows="5">'+splEsc(F.ds)+'</textarea></label>'+
+      '<label class="spf"><span>'+(Number(F.l)===0?'Cantrip upgrade':'Using a higher-level spell slot')+'</span><textarea data-spff="hi" name="hi" rows="2">'+splEsc(F.hi)+'</textarea></label>'+
+    '</fieldset>'+
     '<div class="spfbtns"><button type="submit" class="btn primary">Save spell</button><button type="button" class="btn" data-spl="cancel">Cancel</button></div></form>';
 }
 function splUp(base,per,l){
@@ -119,6 +166,8 @@ function splBuild(f,F){
   var bad=[['Damage dice',dm],['More damage per slot level',dper],['Healing',hl],['More healing per slot level',hper]].filter(function(p){return p[1]&&!SPL_DICE.test(p[1]);})[0];
   if(bad)return {err:bad[0]+': use dice like 2d8 or a number like 10.'};
   var x={id:F.id||uid(),custom:true,n:n,l:l,s:g('s'),cl:Array.prototype.map.call(f.querySelectorAll('[name=cl]:checked'),function(i){return i.value;}),t:g('t'),r:g('r'),du:g('du')||'Instant',co:ck('co')};
+  ['cm','ds','hi'].forEach(function(k){var v=g(k); if(v)x[k]=v.slice(0,6000);});
+  if(F.sh)x.sh=F.sh; if(F.ri)x.ri=1;
   if(F.base)x.base=F.base;
   var at=g('at'), sv=g('sv'); if(at)x.at=at; if(sv)x.sv=sv;
   if(dm){
@@ -134,6 +183,14 @@ function splBuild(f,F){
 }
 
 {
+  // <details> fires "toggle" on itself only (it does not bubble), so listen while it travels down
+  document.addEventListener('toggle',function(e){
+    var d=e.target; if(!d||!d.classList||!d.classList.contains('spdesc'))return;
+    var x=spellGet(d.dataset.n); if(!x)return;
+    if(d.open){var b=d.querySelector('.spdbody'); if(b&&!b.firstChild)b.innerHTML=spInfoHTML(x);}
+    if(d.dataset.spd==='target')ui.spdOpen=d.open;
+    else if(ui.lib){ui.lib.spdesc=ui.lib.spdesc||{}; if(d.open)ui.lib.spdesc[x.n]=1; else delete ui.lib.spdesc[x.n];}
+  },true);
   document.addEventListener('click',function(e){
     var b=e.target.closest&&e.target.closest('[data-spl]'); if(!b||!ui.lib)return;
     var L=ui.lib, n=b.dataset.n;
