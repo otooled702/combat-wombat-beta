@@ -58,8 +58,9 @@ Read this first. `docs/CODEMAP.md` lists every file and function. Search before 
 - Spells: `SPELLS` from `spells.json` plus your own in `state.customSpells` (`spellsAll()`, look up by name with `spellGet(n)`, never `SPELL_BY`).
   Tags are derived, not stored (`spTags`: damage, heal, condition, else utility). Library > Spells (`26b-spell-library.js`) filters by tag,
   makes new spells and edits copies (`custom:true`, `base` = original name; SRD spells are never changed). The Target window's tag chips
-  (`A.sptag`) filter the picker; All hides utility spells. Test: `t_custom_spells`.
-  Healing spells (`hl` dice or number, `hm` add modifier, `hu` upcast, `hf` full, `hx` divided) configure the Heal engine.
+  (`A.sptag`: All, Damage, Healing, Conditions, Utility) filter the picker; All lists every spell (no cap). Tests: `t_custom_spells`, `t_spell_fixes`.
+  Healing spells (`hl` dice or number, `hm` add modifier, `hu` upcast, `hf` full, `hx` divided, `hmx` also raises max HP like Aid)
+  configure the Heal engine. A plain-number `hl` (Aid, Heal) fills the amount with no roll (`spHealFixed`).
   Caster DC: stat-block text first ("spell save DC N, +N to hit"), else 8 + proficiency (from CR, +2 if unknown) + casting ability mod.
   Concentration is optional and adds a Concentrating condition with `note` = spell name.
 - Group conditions: a condition on a group can list members in `cd.mem` (ids); none means the whole group. `condTidy(c)` cleans up after

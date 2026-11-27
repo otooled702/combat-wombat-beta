@@ -20,7 +20,7 @@ function spellGet(n){if(!n)return null; var c=(state.customSpells||[]).filter(fu
 var SP_TAG={damage:'Damage',heal:'Healing',condition:'Condition',utility:'Utility'};
 function spTags(x){var t=[]; if(x.dm)t.push('damage'); if(x.hl||x.hf)t.push('heal'); if(x.cd&&x.cd.length)t.push('condition'); if(!t.length)t.push('utility'); return t;}
 function spTagChips(x){return '<span class="sptags">'+spTags(x).map(function(k){return '<span class="sptag t-'+k+'">'+SP_TAG[k]+'</span>';}).join('')+'</span>';}
-function spHasTag(x,tag){var t=spTags(x); return tag==='all'?t.indexOf('utility')<0:t.indexOf(tag)>=0;}
+function spHasTag(x,tag){return tag==='all'||spTags(x).indexOf(tag)>=0;}
 var SP_CLASS={Bd:'Bard',Cl:'Cleric',Dr:'Druid',Pa:'Paladin',Rn:'Ranger',So:'Sorcerer',Wl:'Warlock',Wz:'Wizard'};
 var SP_CLASS_AB={Bd:'cha',Pa:'cha',So:'cha',Wl:'cha',Cl:'wis',Dr:'wis',Rn:'wis',Wz:'int'};
 var SP_SCHOOL={Abj:'Abjuration',Con:'Conjuration',Div:'Divination',Enc:'Enchantment',Evo:'Evocation',Ill:'Illusion',Nec:'Necromancy',Tra:'Transmutation'};
@@ -33,6 +33,7 @@ function spEffect(x){
   if(x.dm){var d=x.dp?x.dp.map(function(p){return p[0]+' '+p[1];}).join(' + '):x.dm+(x.dt&&x.dt.length===1?' '+x.dt[0]:''); bits.push(d+(x.ok==='half'?' (half on save)':''));}
   if(x.cd&&x.cd.length)bits.push(x.cd.join(' / '));
   if(x.hf==='full')bits.push('Heals to full');
+  else if(x.hl&&x.hmx)bits.push('Raises max HP by '+x.hl);
   else if(x.hl)bits.push('Heals '+x.hl+(x.hm?' + modifier':'')+(x.hx?', divided':''));
   return bits.join(' \u00b7 ');
 }
@@ -92,7 +93,7 @@ function spellSyncCast(){
 }
 function spellConfigure(){
   var A=ui.aoe, q=A.sp, x=spellGet(q.n), at=A.att, parts=spParts(x,q);
-  if(spIsHeal(x)){A.kind='heal'; A.lastHeal='heal'; at.use=false; A.sv=false; A.amt=''; q.info=''; spellSyncCast(); return;}
+  if(spIsHeal(x)){A.kind='heal'; A.lastHeal='heal'; at.use=false; A.sv=false; A.amt=spHealFixed(x)?spHealDice(x,q):''; q.info=''; spellSyncCast(); return;}
   A.kind=(x.dm||!(x.cd&&x.cd.length))?'dmg':'cond';
   at.use=!!x.at; at.roll=''; at.hit={}; at.info='';
   at.lines=parts.length?parts.map(function(p){return {amt:'',type:p.type,sv:p.sv};}):[{amt:'',type:'untyped',sv:true}];
@@ -121,11 +122,16 @@ function spellInput(t,kind){
 
 /* Healing spells: dice (or a fixed number) plus the caster's spellcasting modifier, more with a higher slot. */
 function spIsHeal(x){return !!(x&&(x.hl||x.hf));}
+/* Aid-style spells (hmx) raise the Hit Point maximum by the amount, and current Hit Points with it. */
+function spRaiseMax(){var A=ui.aoe, x=A&&A.spellTab&&A.sp?spellGet(A.sp.n):null; return !!(x&&x.hmx&&A.kind==='heal');}
 function spHealFull(){var A=ui.aoe, x=A&&A.spellTab&&A.sp?spellGet(A.sp.n):null; return !!(x&&x.hf==='full'&&A.kind==='heal');}
+/* A fixed amount (Aid 5, Heal 70) needs no roll: it fills the amount box and follows the slot level. */
+function spHealFixed(x){return !!(x&&!x.hx&&!x.hm&&x.hf!=='full'&&/^\d+$/.test(String(x.hl||'')));}
 function spHealDice(x,q){return (x.hu&&x.hu[String(q.slot)])||x.hl||'';}
 function spHealText(x,q){
   if(x.hf==='full')return 'Back to full hit points';
-  var d=spHealDice(x,q); if(!x.hm)return d+(x.hx?' hit points, divided between the targets':' hit points');
+  var d=spHealDice(x,q); if(x.hmx)return '+'+d+' maximum and current hit points';
+  if(!x.hm)return d+(x.hx?' hit points, divided between the targets':' hit points');
   var info=spCastInfo(x,q.caster), md=info&&info.mod!=null?info.mod:null;
   return d+(md==null?' + spellcasting modifier':(md<0?' \u2212 '+(-md):' + '+md)+' '+info.modAb);
 }
@@ -162,13 +168,13 @@ function spellPickList(A){
   var list=spellsAll().filter(function(x){return spHasTag(x,tag)&&(lv===''||String(x.l)===String(lv))&&(!q||x.n.toLowerCase().indexOf(q)>=0||(x.cd||[]).join(' ').toLowerCase().indexOf(q)>=0||(x.dt||[]).join(' ').indexOf(q)>=0);});
   if(!q&&lv===''){var r=rec.map(function(n){return spellGet(n);}).filter(function(x){return x&&spHasTag(x,tag);}); list=r.concat(list.filter(function(x){return r.indexOf(x)<0;}));}
   var row=function(x,i){return '<button type="button" class="sprowbtn" data-aoe="spPick" data-n="'+esc(x.n)+'"><span class="spn"><b>'+esc(x.n)+'</b>'+((!q&&lv===''&&i<rec.length&&rec.indexOf(x.n)>=0)?'<em class="sprec">recent</em>':'')+'</span><small>'+esc(spLv(x))+' \u00b7 '+esc(spEffect(x)||(SP_SCHOOL[x.s]||x.s))+'</small>'+(x.custom?'<em class="sprec yours">yours</em>':'')+'</button>';};
-  return list.length?list.slice(0,80).map(row).join('')+(list.length>80?'<p class="help">Showing 80 of '+list.length+'. Type to narrow it down.</p>':''):'<p class="help">No spell matches. Try another tag, or make your own in the Library, under Spells.</p>';
+  return list.length?list.map(row).join(''):'<p class="help">No spell matches. Try another tag, or make your own in the Library, under Spells.</p>';
 }
 function spellPaneHTML(A){
   var q=A.sp, opt=function(v,on,l){return '<option value="'+esc(v)+'"'+(on?' selected':'')+'>'+esc(l)+'</option>';};
   if(!q){
     var tg=A.sptag||'all';
-    return '<div class="sppane"><div class="seg sm sptagseg" role="radiogroup" aria-label="Show spells that">'+[['all','All'],['damage','Damage'],['heal','Healing'],['condition','Conditions']].map(function(o){return '<button type="button" role="radio" aria-checked="'+(tg===o[0])+'" data-aoe="sptag" data-v="'+o[0]+'">'+o[1]+'</button>';}).join('')+'</div><div class="spsearch"><input type="search" data-spin="q" placeholder="Search spells\u2026" value="'+esc(A.spq||'')+'" aria-label="Search spells" autocomplete="off"><select data-spin="lv" aria-label="Spell level">'+opt('',(A.splv==null||A.splv==='') ,'All levels')+opt('0',A.splv==='0','Cantrips')+[1,2,3,4,5,6,7,8,9].map(function(l){return opt(String(l),A.splv===String(l),'Level '+l);}).join('')+'</select></div><div class="splist" id="splist">'+spellPickList(A)+'</div></div>';
+    return '<div class="sppane"><div class="seg sm sptagseg" role="radiogroup" aria-label="Show spells that">'+[['all','All'],['damage','Damage'],['heal','Healing'],['condition','Conditions'],['utility','Utility']].map(function(o){return '<button type="button" role="radio" aria-checked="'+(tg===o[0])+'" data-aoe="sptag" data-v="'+o[0]+'">'+o[1]+'</button>';}).join('')+'</div><div class="spsearch"><input type="search" data-spin="q" placeholder="Search spells\u2026" value="'+esc(A.spq||'')+'" aria-label="Search spells" autocomplete="off"><select data-spin="lv" aria-label="Spell level">'+opt('',(A.splv==null||A.splv==='') ,'All levels')+opt('0',A.splv==='0','Cantrips')+[1,2,3,4,5,6,7,8,9].map(function(l){return opt(String(l),A.splv===String(l),'Level '+l);}).join('')+'</select></div><div class="splist" id="splist">'+spellPickList(A)+'</div></div>';
   }
   var x=spellGet(q.n), parts=spParts(x,q), hasUp=x.l>0&&((x.up&&Object.keys(x.up).length)||x.x||(x.hu&&Object.keys(x.hu).length)), hasTier=x.l===0&&((x.cu&&x.cu.length)||x.xt);
   var casters='<option value="">No caster</option>'+state.combatants.map(function(c){return opt(c.id,q.caster===c.id,c.name);}).join('');
@@ -181,7 +187,7 @@ function spellPaneHTML(A){
   return '<div class="sppane"><div class="spcard"><div class="sphead"><b>'+esc(x.n)+'</b><button type="button" class="btn small ghost" data-aoe="spChange">Change spell</button></div><p class="spmeta">'+esc(spMeta(x))+'</p>'+
     '<div class="sprow"><label class="spctl">Caster<select data-spin="caster" aria-label="Caster">'+casters+'</select></label>'+(x.co&&q.caster?'<label class="spck"><input type="checkbox" data-spin="conc"'+(q.conc?' checked':'')+'><span>Concentrating</span></label>':'')+
     ((hasUp||hasTier||x.x||x.xt||typeSel||condSel)?(hasUp?'<label class="spctl">Cast at<select data-spin="slot">'+slots+'</select></label>':'')+(hasTier?'<label class="spctl">Caster level<select data-spin="tier">'+tiers.map(function(t){return opt(t[0],String(q.tier||0)===t[0],t[1]);}).join('')+'</select></label>':'')+((x.x||x.xt)?'<label class="spctl">'+cntLabel+'<input type="number" min="1" max="20" data-spin="cnt" value="'+esc(q.cnt)+'"></label>':'')+typeSel+condSel:'')+'</div>'+
-    (spIsHeal(x)?'<div class="sprow spdice"><span class="spdt">'+esc(spHealText(x,q))+'</span>'+(x.hf==='full'?'':'<button type="button" class="btn small" data-aoe="spRoll">'+(x.hx?'Split between the targets':'\ud83c\udfb2 Roll healing')+'</button><span class="sphint">or type the amount below</span>')+'</div>'+(q.info?'<p class="help spinfo">'+esc(q.info)+'</p>':'')+(x.n==='Power Word Heal'?'<p class="help spwhy">It also ends Charmed, Frightened, Paralyzed, Poisoned and Stunned: remove those with the Condition tab.</p>':''):'')+
+    (spIsHeal(x)?'<div class="sprow spdice"><span class="spdt">'+esc(spHealText(x,q))+'</span>'+(x.hf==='full'||spHealFixed(x)?'':'<button type="button" class="btn small" data-aoe="spRoll">'+(x.hx?'Split between the targets':'\ud83c\udfb2 Roll healing')+'</button><span class="sphint">or type the amount below</span>')+'</div>'+(q.info?'<p class="help spinfo">'+esc(q.info)+'</p>':'')+(x.n==='Power Word Heal'?'<p class="help spwhy">It also ends Charmed, Frightened, Paralyzed, Poisoned and Stunned: remove those with the Condition tab.</p>':''):'')+
     (x.dm?'<div class="sprow spdice"><span class="spdt">'+esc(diceTxt)+'</span><button type="button" class="btn small" data-aoe="spRoll">\ud83c\udfb2 Roll damage</button><span class="sphint">or type the damage below</span></div>'+(q.info?'<p class="help spinfo">'+esc(q.info)+'</p>':''):'')+
     (x.sv&&q.how?'<p class="help spwhy">Save DC '+esc(A.dc||'?')+' \u2014 '+esc(q.how)+'. Change it below if it\u2019s different.</p>':'')+
     (x.cd&&x.cd.length&&x.dm?'<p class="help spwhy">Anyone who fails the save also gets '+esc(A.cond.name)+'.</p>':'')+'</div></div>';
@@ -280,6 +286,7 @@ function aoePrev(t){
   if(t.hp==null)return 'HP not tracked';
   if(A.sel[t.k]&&spHealFull())return t.max!=null?t.hp+' \u2192 '+Math.max(t.hp,t.max):'no max HP';
   if(!A.sel[t.k]||!aoeAmt())return '';
+  if(A.kind==='heal'&&spRaiseMax())return t.max!=null?t.hp+'/'+t.max+' \u2192 '+(t.hp+v)+'/'+(t.max+v):t.hp+' \u2192 '+(t.hp+v);
   if(A.kind==='heal')return t.hp+' \u2192 '+Math.min(t.max!=null?t.max:Infinity,t.hp+v);
   return 'Temp HP '+Math.max(t.temp,v);
 }
@@ -384,6 +391,7 @@ function renderAoe(soft){
         '<button type="button" class="btn small ghost" data-aoe="addline">+ Add damage</button></div>'+
       '<label class="aoechk"><input type="checkbox" data-aoein="ares"'+(at.res?' checked':'')+'> Apply resistances, immunities and vulnerabilities from stats</label>'+atkSection+'</div>';
   }else if(spHealFull())top2='<p class="help aoefull">Each selected creature goes back to its full hit points.</p>';
+  else if(spRaiseMax())top2='<p class="help aoefull">Raises each selected creature\u2019s maximum and current hit points by this amount.</p><div class="aoeamt"><input type="number" min="1" data-aoein="amt" placeholder="Amount" value="'+esc(A.amt)+'" aria-label="Amount"></div>';
   else top2='<div class="aoeamt">'+segOf('healmode',A.kind,[['heal','Heal'],['temp','Temp HP']],'Healing or temporary hit points')+'<input type="number" min="1" data-aoein="amt" placeholder="Amount" value="'+esc(A.amt)+'" aria-label="Amount"></div>';
   var saves='';
   if(aoeSaveable()){
@@ -405,7 +413,7 @@ function aoeApply(){
   var A=ui.aoe;
   if(A.kind==='cond'){aoeApplyCond();return;}
   if(A.kind==='dmg'){aoeApplyAtt();return;}
-  var amt=aoeAmt(), full=spHealFull();
+  var amt=aoeAmt(), full=spHealFull(), raise=spRaiseMax();
   if(!amt&&!full){toast('Enter an amount first');return;}
   var T=aoeTargets().filter(function(t){return A.sel[t.k]&&t.hp!=null;});
   if(!T.length){toast('Select at least one creature');return;}
@@ -416,10 +424,11 @@ function aoeApply(){
       var v=full?(t.max!=null?Math.max(0,t.max-t.hp):0):amt;
       if(full&&!v)return;
       hit++;
+      if(kind==='heal'&&raise){var o=t.m||t.c; if(o.maxHp!=null)o.maxHp+=v;}
       if(kind==='heal'){if(t.m)memHeal(t.m,v); else hpHeal(t.c,v);}
       else {if(t.m)memTemp(t.m,v); else hpTemp(t.c,v);}
     });
-    notes.unshift((full?label+' to full':label+' '+amt)+': '+hit+' of '+T.length+' affected');
+    notes.unshift((full?label+' to full':raise?'Max HP +'+amt:label+' '+amt)+': '+hit+' of '+T.length+' affected');
   });
 }
 

@@ -653,6 +653,11 @@ body.dm .hpact>[data-delta],body.dm .hpact>[data-mdelta]{width:84px;min-width:0}
 .sptagseg{flex-wrap:wrap}
 .sppane .sptagseg{margin-bottom:8px}
 .spform{display:flex;flex-direction:column;gap:12px;padding:4px 2px 12px}
+/* the Library body normally clips (its list scrolls); the spell form is taller than the window, so the body scrolls instead,
+   and Save / Cancel stay pinned at the bottom where they can always be reached */
+body .qrbody.mmbody:has(.spform){overflow-y:auto;padding-bottom:0}
+.mmbody .spform{flex:0 0 auto;padding-bottom:0}
+.spform .spfbtns{position:sticky;bottom:0;z-index:2;background:var(--panel);padding:10px 0 12px;border-top:1px solid var(--line)}
 .spform fieldset{border:1px solid var(--line);border-radius:14px;padding:10px 14px 14px;margin:0}
 .spform legend{font-weight:700;padding:0 6px}
 .spfgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px 14px;align-items:end}

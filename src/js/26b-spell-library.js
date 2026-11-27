@@ -60,7 +60,7 @@ function splDraft(x,mode){
   return {mode:mode, orig:mode==='edit'?x.n:null, base:mode==='copy'?x.n:(x.base||null),
     n:mode==='copy'?x.n+' (custom)':(x.n||''), l:x.l==null?1:x.l, s:x.s||'Evo', t:x.t||'A', r:x.r||'', du:x.du||'Instant', co:!!x.co, cl:(x.cl||[]).slice(),
     at:x.at||'', sv:x.sv||'', ok:x.ok||'half', dm:(x.dp&&x.dp[0])?x.dp[0][0]:(x.dm||''), dt:(x.dp&&x.dp[0])?x.dp[0][1]:((x.dt&&x.dt[0])||'fire'), dper:splPer(x.dm,x.up,x.l),
-    cd:(x.cd&&x.cd[0])||'', hl:x.hf==='full'?'':(x.hl||''), hm:!!x.hm, hper:splPer(x.hl,x.hu,x.l), hf:x.hf==='full', dp:mode==='copy'&&x.dp?x.dp:null, err:''};
+    cd:(x.cd&&x.cd[0])||'', hl:x.hf==='full'?'':(x.hl||''), hm:!!x.hm, hmx:!!x.hmx, hper:splPer(x.hl,x.hu,x.l), hf:x.hf==='full', dp:mode==='copy'&&x.dp?x.dp:null, err:''};
 }
 function splFormHTML(F){
   var opt=function(v,cur,l){return '<option value="'+splEsc(v)+'"'+(String(cur)===String(v)?' selected':'')+'>'+splEsc(l)+'</option>';};
@@ -91,6 +91,7 @@ function splFormHTML(F){
       fld('hl','Healing dice or amount',txt('hl',F.hl,'Example: 2d8'))+
       fld('hper','More healing per slot level above',txt('hper',F.hper,'Example: 2d8'))+
       '<label class="spf spck"><input type="checkbox" data-spff="hm" name="hm"'+(F.hm?' checked':'')+'><span>Add the caster’s spellcasting modifier to healing</span></label>'+
+      '<label class="spf spck"><input type="checkbox" data-spff="hmx" name="hmx"'+(F.hmx?' checked':'')+'><span>Also raises maximum hit points (like Aid)</span></label>'+
       '<label class="spf spck"><input type="checkbox" data-spff="hf" name="hf"'+(F.hf?' checked':'')+'><span>Heals to full hit points</span></label>'+
     '</div></fieldset>'+
     '<div class="spfbtns"><button type="submit" class="btn primary">Save spell</button><button type="button" class="btn" data-spl="cancel">Cancel</button></div></form>';
@@ -128,7 +129,7 @@ function splBuild(f,F){
   }
   var cd=g('cd'); if(cd)x.cd=[cd];
   if(hf)x.hf='full';
-  else if(hl){x.hl=hl; if(ck('hm'))x.hm=1; var hu=splUp(hl,hper,l); if(hu)x.hu=hu;}
+  else if(hl){x.hl=hl; if(ck('hm'))x.hm=1; if(ck('hmx'))x.hmx=1; var hu=splUp(hl,hper,l); if(hu)x.hu=hu;}
   return {spell:x};
 }
 

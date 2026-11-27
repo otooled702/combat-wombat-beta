@@ -3041,7 +3041,7 @@ def t_spells(b):
     counts = {}
     for tg in ('damage', 'heal', 'condition', 'utility'):
         dm.click('[data-spl=tag][data-v=%s]' % tg); dm.wait_for_timeout(150); counts[tg] = int(dm.inner_text('#spcount'))
-    check('filtering by tag: 68 damage, 8 healing, 36 condition, 233 utility', counts == {'damage': 68, 'heal': 8, 'condition': 36, 'utility': 233}, counts)
+    check('filtering by tag: 68 damage, 10 healing (Aid and Regenerate too), 36 condition, 231 utility', counts == {'damage': 68, 'heal': 10, 'condition': 36, 'utility': 231}, counts)
     dm.click('[data-spl=tag][data-v=damage]'); dm.wait_for_timeout(150)
     check('the Damage tag shows only damage spells', all('Damage' in t for t in dm.locator('#splibList .sprow2 .sptags').all_inner_texts()))
     dm.click('[data-spl=tag][data-v=all]'); dm.wait_for_timeout(150)
@@ -3057,9 +3057,11 @@ def t_spells(b):
     dm.click('#dock [data-act=targetOpen]'); dm.wait_for_timeout(300); dm.click('[data-aoe=kind][data-v=spell]'); dm.wait_for_timeout(300)
     check('the Spells tab is selected and shows a search box and a spell list', dm.get_attribute('[data-aoe=kind][data-v=spell]', 'aria-checked') == 'true' and dm.locator('[data-spin=q]').is_visible() and dm.locator('.sprowbtn').count() > 20)
     check('Apply waits for a spell to be chosen', dm.locator('.aoeapply').is_disabled())
-    check('All lists damage, healing and condition spells, not utility ones', dm.locator('.sprowbtn[data-n="Alarm"]').count() == 0 and dm.locator('.sprowbtn[data-n="Fireball"]').count() == 1)
+    check('All lists every spell, utility ones too', dm.locator('.sprowbtn[data-n="Alarm"]').count() == 1 and dm.locator('.sprowbtn[data-n="Fireball"]').count() == 1 and dm.locator('.sprowbtn[data-n="Aid"]').count() == 1)
+    dm.click('[data-aoe=sptag][data-v=utility]'); dm.wait_for_timeout(200)
+    check('the Utility chip shows only utility spells', dm.locator('.sprowbtn[data-n="Alarm"]').count() == 1 and dm.locator('.sprowbtn[data-n="Fireball"]').count() == 0 and dm.locator('.sprowbtn[data-n="Aid"]').count() == 0)
     dm.click('[data-aoe=sptag][data-v=heal]'); dm.wait_for_timeout(200)
-    check('the Healing chip shows only healing spells', dm.locator('.sprowbtn').count() == 8 and dm.locator('.sprowbtn[data-n="Cure Wounds"]').count() == 1, dm.locator('.sprowbtn').count())
+    check('the Healing chip shows only healing spells, Aid included', dm.locator('.sprowbtn').count() == 10 and dm.locator('.sprowbtn[data-n="Aid"]').count() == 1 and dm.locator('.sprowbtn[data-n="Cure Wounds"]').count() == 1, dm.locator('.sprowbtn').count())
     dm.click('[data-aoe=sptag][data-v=damage]'); dm.wait_for_timeout(200)
     check('the Damage chip shows only damage spells', dm.locator('.sprowbtn[data-n="Cure Wounds"]').count() == 0 and dm.locator('.sprowbtn[data-n="Fireball"]').count() == 1)
     dm.click('[data-aoe=sptag][data-v=all]'); dm.wait_for_timeout(200)
@@ -3195,7 +3197,7 @@ def t_round13(b):
     dm.click('.aoeapply'); dm.wait_for_timeout(300); check('it brings Rowan back to full', cmb('Rowan')['hp'] == 24, cmb('Rowan')['hp'])
     lib_open(dm, 'spells'); dm.wait_for_timeout(300); dm.click('[data-spl=tag][data-v=heal]'); dm.wait_for_timeout(200)
     healing = sorted(x.strip() for x in dm.locator('#splibList .sprow2 b').all_inner_texts())
-    check('the combat healing spells are tagged Healing (Prayer of Healing too)', healing == sorted(['Cure Wounds', 'Healing Word', 'Mass Cure Wounds', 'Mass Healing Word', 'Heal', 'Mass Heal', 'Power Word Heal', 'Prayer of Healing']), healing)
+    check('the healing spells are tagged Healing (Prayer of Healing, Aid and Regenerate too)', healing == sorted(['Aid', 'Cure Wounds', 'Healing Word', 'Mass Cure Wounds', 'Mass Healing Word', 'Heal', 'Mass Heal', 'Power Word Heal', 'Prayer of Healing', 'Regenerate']), healing)
     check('the Library says spells are tagged by what they do', 'tags come from what a spell does' in dm.inner_text('.spintro').lower())
     lib_close(dm)
     # ---- skins: Watercolor and Chalkboard are gone; tables saved with them open in the closest skin
@@ -3607,7 +3609,7 @@ def t_target_spell_layout(b):
           return {q:q.width,row:row.width,gap:f.top-l.bottom,lh:l.height}}""")
         check('%dx%d: the search box takes most of the row (%d of %d px)' % (size[0], size[1], g['q'], g['row']), g['q'] >= g['row'] * 0.5, g)
         check('%dx%d: the spell list reaches down to Apply (gap %d px)' % (size[0], size[1], g['gap']), 0 <= g['gap'] <= 40 and g['lh'] >= 200, g)
-        check('%dx%d: the tag chips are shown' % size, dm.locator('[data-aoe=sptag]').count() == 4)
+        check('%dx%d: the five tag chips are shown' % size, dm.locator('[data-aoe=sptag]').count() == 5)
         errs += dm._errs; ctx.close()
     ctx = b.new_context(viewport={'width': 390, 'height': 844}, reduced_motion='reduce'); m = basic_table(ctx)
     tgt(m); m.click('[data-aoe=kind][data-v=spell]'); m.wait_for_timeout(300)
@@ -3617,8 +3619,53 @@ def t_target_spell_layout(b):
     errs += m._errs; ctx.close()
     check('no page errors', not errs, errs)
 
+def t_spell_fixes(b):
+    """Aid raises max and current HP; Regenerate heals; the spell form scrolls with Save and Cancel always reachable."""
+    ctx = b.new_context(viewport={'width': 1185, 'height': 898}, reduced_motion='reduce'); dm = basic_table(ctx)
+    st = lambda: json.loads(dm.evaluate("localStorage.getItem('initiative-tracker-v1')"))
+    who = lambda n: [c for c in st()['combatants'] if c['name'] == n][0]
+    # the form in the Library
+    lib_open(dm, 'spells'); dm.fill('[data-spf=q]', 'aid'); dm.wait_for_timeout(250)
+    check('Aid is tagged Healing in the Library', [x.strip() for x in dm.locator('.sprow2[data-spn="Aid"] .sptag').all_inner_texts()] == ['Healing'])
+    dm.click('.sprow2[data-spn="Aid"] [data-spl=copy]'); dm.wait_for_timeout(250)
+    g = dm.evaluate("()=>{const b=document.querySelector('.mmbody'),k=document.querySelector('.spfbtns').getBoundingClientRect(),r=b.getBoundingClientRect();return {sh:b.scrollHeight,ch:b.clientHeight,ov:getComputedStyle(b).overflowY,kb:k.bottom,rb:r.bottom,kt:k.top}}")
+    check('the form is taller than the window here, and the window scrolls', g['sh'] > g['ch'] and g['ov'] == 'auto', g)
+    check('Save and Cancel are on screen before scrolling', g['kt'] >= 0 and g['kb'] <= g['rb'] + 1, g)
+    hit = dm.evaluate("()=>{const k=document.querySelector('.spfbtns button[type=submit]').getBoundingClientRect();const e=document.elementFromPoint(k.left+k.width/2,k.top+k.height/2);return !!(e&&e.closest('button[type=submit]'))}")
+    check('and nothing covers Save', hit)
+    dm.mouse.move(600, 500); dm.mouse.wheel(0, 3000); dm.wait_for_timeout(250)
+    check('scrolling reaches the healing fields', dm.locator('[data-spff=hl]').is_visible() and dm.evaluate("document.querySelector('.mmbody').scrollTop") > 0)
+    check('a copy of Aid keeps "Also raises maximum hit points"', dm.is_checked('[data-spff=hmx]') and dm.input_value('[data-spff=hl]') == '5' and dm.input_value('[data-spff=hper]') == '5')
+    dm.click('[data-spl=cancel]'); dm.wait_for_timeout(200); check('Cancel leaves the form', dm.locator('.spform').count() == 0 and dm.locator('.sprow2').count() > 0)
+    lib_close(dm)
+    # Aid in the Target window
+    tgt(dm); dm.click('[data-aoe=kind][data-v=spell]'); dm.wait_for_timeout(250)
+    check('Aid is listed under All', dm.locator('.sprowbtn[data-n="Aid"]').count() == 1)
+    dm.fill('[data-spin=q]', 'aid'); dm.wait_for_timeout(250); dm.click('.sprowbtn[data-n="Aid"]'); dm.wait_for_timeout(300)
+    check('picking Aid fills in 5, with nothing to roll', dm.input_value('[data-aoein=amt]') == '5' and dm.locator('[data-aoe=spRoll]').count() == 0 and 'maximum' in dm.inner_text('.spdt'))
+    dm.select_option('[data-spin=slot]', '4'); dm.wait_for_timeout(200)
+    check('cast with a level 4 slot it gives 15', dm.input_value('[data-aoein=amt]') == '15', dm.input_value('[data-aoein=amt]'))
+    dm.select_option('[data-spin=slot]', '2'); dm.wait_for_timeout(200)
+    r0, a0 = who('Rowan'), who('Alric')
+    mpick(dm, 'none'); dm.click('.aoerow:has(b:text-is("Rowan")) .aoename'); dm.click('.aoerow:has(b:text-is("Alric")) .aoename'); dm.wait_for_timeout(200)
+    prev = dm.inner_text('.aoerow:has(b:text-is("Rowan"))')
+    check('the preview shows max HP going up too', '%d/%d' % (r0['hp'] + 5, r0['maxHp'] + 5) in prev, prev)
+    dm.click('.aoeapply'); dm.wait_for_timeout(300)
+    r1, a1 = who('Rowan'), who('Alric')
+    check('Aid raises maximum and current HP by 5, even at full HP', r1['maxHp'] == r0['maxHp'] + 5 and r1['hp'] == r0['hp'] + 5 and a1['maxHp'] == a0['maxHp'] + 5 and a1['hp'] == a0['hp'] + 5, (r0, r1))
+    undo(dm); dm.wait_for_timeout(300); r2 = who('Rowan')
+    check('one Undo puts both back', r2['maxHp'] == r0['maxHp'] and r2['hp'] == r0['hp'])
+    # Regenerate is a healing spell with a roll
+    tgt(dm); dm.click('[data-aoe=kind][data-v=spell]'); dm.wait_for_timeout(250)
+    # the window reopens on the last spell picked
+    if dm.locator('[data-aoe=spChange]').count(): dm.click('[data-aoe=spChange]'); dm.wait_for_timeout(200)
+    dm.click('[data-aoe=sptag][data-v=heal]'); dm.fill('[data-spin=q]', 'regen'); dm.wait_for_timeout(250); dm.click('.sprowbtn[data-n="Regenerate"]'); dm.wait_for_timeout(250)
+    dm.click('[data-aoe=spRoll]'); dm.wait_for_timeout(200); v = int(dm.input_value('[data-aoein=amt]') or 0)
+    check('Regenerate rolls 4d8 + 15 (19 to 47)', 19 <= v <= 47, v)
+    check('no page errors', not dm._errs, dm._errs); ctx.close()
+
 SUITE = [t_turn_engine, t_conditions, t_hp_and_death, t_groups, t_reactions_ready_legendary, t_ac_and_display, t_health_display,
-         t_library_clone_undo_images, t_tv, t_privacy, t_skins_and_settings, t_phone, t_phone_stale_tab_and_offline_sheet, t_effects, t_sound, t_colour_blind, t_views_and_names, t_cloud, t_card_and_half, t_rolling, t_clone_dialog, t_aoe, t_studio, t_spark, t_palettes_and_shadows, t_frost_feywild, t_top_bar, t_monitor_layout, t_mobile_dm, t_desktop_unchanged, t_aoe_conditions, t_aoe_conditions_mobile, t_target_attack, t_confirm_end, t_controls_and_labels, t_turn_shading, t_compact_layout, t_neutral_distinct, t_target_list, t_target_layout, t_monster_library, t_library_mobile, t_side_and_screen, t_button_centering, t_builder, t_name_generator, t_builder_mobile, t_card_controls, t_names_setting, t_collapse_cards, t_regroup, t_monitor_sizes, t_open_monitor, t_manage_combat, t_polish_round2, t_menu_width_and_icon, t_monitor_screen, t_monitor_round3, t_skins_round3, t_player_screen, t_round5_dm, t_round5_mobile, t_round5_phone, t_menu_close_x, t_target_round6, t_encounters, t_qr_blur, t_round7, t_campaigns, t_round7_phone_logo, t_library_tabs, t_settings_window, t_rx_hidden_landscape, t_editor_access, t_cards_round8, t_library_round8, t_add_window, t_standard_npcs, t_round9, t_round10, t_round11, t_round12, t_spells, t_lr_not_spent_on_heal, t_round13, t_round13_phone, t_round13_canvas, t_contrast_all_skins, t_demo, t_beta_accounts, t_round14, t_round14_touch, t_custom_spells, t_target_spell_layout]
+         t_library_clone_undo_images, t_tv, t_privacy, t_skins_and_settings, t_phone, t_phone_stale_tab_and_offline_sheet, t_effects, t_sound, t_colour_blind, t_views_and_names, t_cloud, t_card_and_half, t_rolling, t_clone_dialog, t_aoe, t_studio, t_spark, t_palettes_and_shadows, t_frost_feywild, t_top_bar, t_monitor_layout, t_mobile_dm, t_desktop_unchanged, t_aoe_conditions, t_aoe_conditions_mobile, t_target_attack, t_confirm_end, t_controls_and_labels, t_turn_shading, t_compact_layout, t_neutral_distinct, t_target_list, t_target_layout, t_monster_library, t_library_mobile, t_side_and_screen, t_button_centering, t_builder, t_name_generator, t_builder_mobile, t_card_controls, t_names_setting, t_collapse_cards, t_regroup, t_monitor_sizes, t_open_monitor, t_manage_combat, t_polish_round2, t_menu_width_and_icon, t_monitor_screen, t_monitor_round3, t_skins_round3, t_player_screen, t_round5_dm, t_round5_mobile, t_round5_phone, t_menu_close_x, t_target_round6, t_encounters, t_qr_blur, t_round7, t_campaigns, t_round7_phone_logo, t_library_tabs, t_settings_window, t_rx_hidden_landscape, t_editor_access, t_cards_round8, t_library_round8, t_add_window, t_standard_npcs, t_round9, t_round10, t_round11, t_round12, t_spells, t_lr_not_spent_on_heal, t_round13, t_round13_phone, t_round13_canvas, t_contrast_all_skins, t_demo, t_beta_accounts, t_round14, t_round14_touch, t_custom_spells, t_target_spell_layout, t_spell_fixes]
 if __name__ == '__main__':
     only = sys.argv[2:] if len(sys.argv) > 2 else None
     with sync_playwright() as p:

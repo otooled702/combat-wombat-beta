@@ -31,7 +31,7 @@ TYPE_OPTS={'Chromatic Orb':['acid','cold','fire','lightning','poison','thunder']
 SINGLE={'Acid Arrow':('4d4','acid'),'Spirit Guardians':('3d8','radiant'),'Storm of Vengeance':('2d6','thunder'),'Tsunami':('6d10','bludgeoning'),'Vitriolic Sphere':('10d4','acid'),'Wall of Ice':('10d6','cold'),'Wall of Thorns':('7d8','piercing'),'Weird':('10d10','psychic')}
 TYPE_OPTS.update({'Spirit Guardians':['radiant','necrotic'],'Wall of Thorns':['piercing','slashing']})
 # healing spells (SRD 5.2): hl = dice or a fixed number, hm = add the caster's spellcasting modifier,
-# hu = amount when cast with a higher slot, hf = 'full' (back to full hit points), hx = amount is divided between the targets.
+# hu = amount when cast with a higher slot, hmx = also raises the Hit Point maximum by the amount, hf = 'full' (back to full hit points), hx = amount is divided between the targets.
 # hd = in combat by default (Prayer of Healing takes 10 minutes, so it stays out).
 def _up(base_lv, n, die, step):
     return {str(l): '%dd%d' % (n + step * (l - base_lv), die) for l in range(base_lv + 1, 10)}
@@ -42,6 +42,9 @@ HEAL={'Cure Wounds':{'hl':'2d8','hm':1,'hu':_up(1,2,8,2),'hd':1},
       'Prayer of Healing':{'hl':'2d8','hm':1,'hu':_up(2,2,8,1),'hd':0},
       'Heal':{'hl':'70','hu':{str(l):str(70+10*(l-6)) for l in range(7,10)},'hd':1},
       'Mass Heal':{'hl':'700','hx':1,'hd':1},
+      # Aid raises the Hit Point maximum as well as current Hit Points (hmx); +5 per slot above 2
+      'Aid':{'hl':'5','hmx':1,'hu':{str(l):str(5*(l-1)) for l in range(3,10)},'hd':1},
+      'Regenerate':{'hl':'4d8+15','hd':0},
       'Power Word Heal':{'hf':'full','hd':1}}
 COUNT={'Magic Missile':{'x':3,'xl':1,'xb':1},'Scorching Ray':{'x':3,'xl':1,'xb':2},'Eldritch Blast':{'xt':[1,2,3,4]}}
 def parts_of(d):
