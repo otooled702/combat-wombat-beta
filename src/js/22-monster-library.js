@@ -382,7 +382,7 @@ function renderLib(){
       '<label class="check"><input type="checkbox" class="tgl" data-mmf="leg"'+(L.leg?' checked':'')+'>Legendary only</label>'+
       '<div class="mmfbtns"><button type="button" class="btn small ghost" data-mm="fclear"'+(act.length?'':' disabled')+'>Clear all</button><button type="button" class="btn small" data-mm="filters">Done</button></div></div>':'';
   var chip=function(act_,on,label,title){return '<button type="button" class="chipbtn mmopt'+(on?' on':'')+'" data-mm="'+act_+'" aria-pressed="'+!!on+'" title="'+title+'">'+(on?'<span class="mmck" aria-hidden="true">\u2713</span>':'')+label+'</button>';};
-  el.innerHTML=head+'<div class="mmctl"><input type="search" class="mmsearch" data-mmsearch placeholder="Search name, type, size or CR\u2026" value="'+esc(L.q)+'" aria-label="Search creatures" autocomplete="off">'+(L.tab==='book'?'<button type="button" class="btn small mmnew" data-mm="new" aria-label="New creature">+ New<span class="mmnewx"> creature</span></button>':'')+
+  el.innerHTML=head+'<div class="mmctl"><input type="search" class="mmsearch" data-mmsearch placeholder="Search name, type, size or CR\u2026" value="'+esc(L.q)+'" aria-label="Search creatures" autocomplete="off">'+(L.tab==='book'?'<button type="button" class="btn small mmnew" data-mm="new" aria-label="New creature">+ New<span class="mmnewx">\u00a0creature</span></button>':'')+
       '<div class="mmbar">'+
         '<div class="mmisland mmfisl"><span class="mmfwrap"><button type="button" class="btn small mmfbtn'+(act.length?' on':'')+'" data-mm="filters" aria-expanded="'+!!L.fopen+'" aria-haspopup="dialog">'+ICONS.filter+'<span>Filters</span>'+(act.length?'<span class="mmcnt">'+act.length+'</span>':'')+'</button>'+pop+'</span>'+
           act.map(function(a){return '<button type="button" class="mmfsum" data-mm="unf" data-v="'+a[0]+'" aria-label="Remove filter '+esc(a[1])+'" title="Remove this filter">'+esc(a[1])+' <span aria-hidden="true">\u00d7</span></button>';}).join('')+'</div>'+
@@ -428,11 +428,6 @@ document.addEventListener('click',function(e){
     case 'exp':L.exp[k]=!L.exp[k];mmRenderList(true);return;
     case 'qty':{var q0=parseInt(L.qty[k]||1,10)||1, q1=Math.max(1,Math.min(20,q0+parseInt(t.dataset.d,10))); L.qty[k]=q1; var qi=document.querySelector('[data-mmq="'+String(k).replace(/"/g,'\\"')+'"]'); if(qi)qi.value=q1; return;}
     case 'star':if(m){var ix=state.stars.indexOf(k); if(ix>=0){state.stars.splice(ix,1); delete state.folderOf[k];} else state.stars.push(k); persist(); mmRenderList(true); renderFolderBar(); updateLibCounts();} return;
-    case 'spshow':L.spshow=t.dataset.v; renderLib(); return;
-    case 'spinc':case 'spexc':{
-      var shown=SPELLS.filter(function(x){var q2=(L.spq||'').trim().toLowerCase(), lv2=L.splv==null?'':L.splv, cl2=L.spcl||''; if(q2&&x.n.toLowerCase().indexOf(q2)<0)return false; if(lv2!==''&&String(x.l)!==String(lv2))return false; if(cl2&&(x.cl||[]).indexOf(cl2)<0)return false; var inc=spellIncluded(x); return !L.spshow||L.spshow==='all'||(L.spshow==='in'?inc:!inc);});
-      shown.forEach(function(x){var want=(a==='spinc'); if(want===!!x.df)delete state.spellOpt[x.n]; else state.spellOpt[x.n]=want;}); persist(); renderLib(); return;}
-    case 'sprst':state.spellOpt={}; persist(); renderLib(); return;
     case 'stdgrp':{var gv=t.dataset.v; L.npcOpen[gv]=!L.npcOpen[gv]; renderStdNpcs(); var gb=document.querySelector('.stdgrp[data-v="'+gv.replace(/"/g,'\\"')+'"]'); if(gb)gb.focus(); return;}
     case 'stdstar':{var si2=parseInt(String(k).slice(4),10), r2=STD_NPCS[si2], b2=stdBase(si2); if(!r2||!b2)return;
       if(stdIsSaved(si2)){var lc2=r2[0].toLowerCase(); toast('Removed '+r2[0]+' from your NPCs',true); mutate(function(){var gone=state.library.filter(function(x){return monSrc(x)==='npc'&&x.name.toLowerCase()===lc2;}).map(function(x){return x.id;}); state.library=state.library.filter(function(x){return gone.indexOf(x.id)<0;}); state.stars=state.stars.filter(function(s3){return gone.indexOf(s3.slice(3))<0;});});}
@@ -463,10 +458,7 @@ document.addEventListener('click',function(e){
   if(L.fmenu&&!(e.target.closest&&e.target.closest('.mmfwrap'))){L.fmenu=null; L.fmenuNew=false; mmRenderList(true);}
 },true);
 document.addEventListener('change',function(e){
-  var t=e.target; if(t.dataset&&t.dataset.spinc!==undefined){
-    var x=SPELL_BY[t.dataset.spinc]; if(x){ if(t.checked===!!x.df)delete state.spellOpt[x.n]; else state.spellOpt[x.n]=t.checked; persist(); var ce=document.getElementById('spcount'); if(ce)ce.textContent=SPELLS.filter(spellIncluded).length; if(ui.lib&&ui.lib.spshow&&ui.lib.spshow!=='all')renderLib(); }
-    return;
-  }
+  var t=e.target;
   if(t.dataset&&t.dataset.spf!==undefined&&ui.lib){var L2=ui.lib; if(t.dataset.spf==='lv')L2.splv=t.value; else if(t.dataset.spf==='cl')L2.spcl=t.value; renderLib(); return;}
   if(t.dataset&&t.dataset.spin!==undefined&&ui.aoe){ spellInput(t,'change'); return; }
   if(!t.dataset||t.dataset.rck===undefined)return;

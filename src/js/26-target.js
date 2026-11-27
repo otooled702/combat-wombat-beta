@@ -13,10 +13,17 @@ function dmgTypeLabel(ty){return ty==='untyped'?'Unspecified':cap(ty);}
 /* ---------- Spells (SRD 5.2) ---------- */
 var SPELLS=[]; try{SPELLS=JSON.parse(document.getElementById('spdata').textContent);}catch(e){}
 var SPELL_BY={}; SPELLS.forEach(function(x){SPELL_BY[x.n]=x;});
+/* Spells are the SRD list plus the DM's own (state.customSpells, same shape, custom:true). Always look them up here. */
+function spellsAll(){return SPELLS.concat(state.customSpells||[]);}
+function spellGet(n){if(!n)return null; var c=(state.customSpells||[]).filter(function(x){return x.n===n;})[0]; return c||SPELL_BY[n]||null;}
+/* Tags come from what a spell does, so they are always right, for your own spells too. */
+var SP_TAG={damage:'Damage',heal:'Healing',condition:'Condition',utility:'Utility'};
+function spTags(x){var t=[]; if(x.dm)t.push('damage'); if(x.hl||x.hf)t.push('heal'); if(x.cd&&x.cd.length)t.push('condition'); if(!t.length)t.push('utility'); return t;}
+function spTagChips(x){return '<span class="sptags">'+spTags(x).map(function(k){return '<span class="sptag t-'+k+'">'+SP_TAG[k]+'</span>';}).join('')+'</span>';}
+function spHasTag(x,tag){var t=spTags(x); return tag==='all'?t.indexOf('utility')<0:t.indexOf(tag)>=0;}
 var SP_CLASS={Bd:'Bard',Cl:'Cleric',Dr:'Druid',Pa:'Paladin',Rn:'Ranger',So:'Sorcerer',Wl:'Warlock',Wz:'Wizard'};
 var SP_CLASS_AB={Bd:'cha',Pa:'cha',So:'cha',Wl:'cha',Cl:'wis',Dr:'wis',Rn:'wis',Wz:'int'};
 var SP_SCHOOL={Abj:'Abjuration',Con:'Conjuration',Div:'Divination',Enc:'Enchantment',Evo:'Evocation',Ill:'Illusion',Nec:'Necromancy',Tra:'Transmutation'};
-function spellIncluded(x){var o=state.spellOpt&&state.spellOpt[x.n]; return o===undefined?!!x.df:!!o;}
 function spLv(x){return x.l===0?'Cantrip':'Level '+x.l;}
 function spCastTime(x){return {A:'Action',BA:'Bonus action',R:'Reaction'}[x.t]||x.t;}
 function spEffect(x){
@@ -78,13 +85,13 @@ function spDurRounds(du){
   var n=parseInt(m[1],10), u=m[2].toLowerCase(), r=u==='round'?n:(u==='minute'?n*10:n*600); return r<=100?r:null;
 }
 function spellSyncCast(){
-  var A=ui.aoe; if(!A.sp)return; var x=SPELL_BY[A.sp.n], info=spCastInfo(x,A.sp.caster);
+  var A=ui.aoe; if(!A.sp)return; var x=spellGet(A.sp.n), info=spCastInfo(x,A.sp.caster);
   A.sp.how=info&&info.how||'';
   if(A.sp.dcAuto&&x.sv)A.dc=(info&&info.dc!=null)?String(info.dc):'';
   if(A.sp.atkAuto&&x.at)A.att.mod=(info&&info.atk!=null)?String(info.atk):'0';
 }
 function spellConfigure(){
-  var A=ui.aoe, q=A.sp, x=SPELL_BY[q.n], at=A.att, parts=spParts(x,q);
+  var A=ui.aoe, q=A.sp, x=spellGet(q.n), at=A.att, parts=spParts(x,q);
   if(spIsHeal(x)){A.kind='heal'; A.lastHeal='heal'; at.use=false; A.sv=false; A.amt=''; q.info=''; spellSyncCast(); return;}
   A.kind=(x.dm||!(x.cd&&x.cd.length))?'dmg':'cond';
   at.use=!!x.at; at.roll=''; at.hit={}; at.info='';
@@ -101,7 +108,7 @@ function spellInput(t,kind){
   if(k==='q'){if(kind!=='input')return; A.spq=t.value; var lst=document.getElementById('splist'); if(lst)lst.innerHTML=spellPickList(A); return;}
   if(k==='lv'){A.splv=t.value; var l2=document.getElementById('splist'); if(l2)l2.innerHTML=spellPickList(A); return;}
   if(!A.sp||kind!=='change')return;
-  var q=A.sp, x=SPELL_BY[q.n];
+  var q=A.sp, x=spellGet(q.n);
   if(k==='caster'){q.caster=t.value; A.lastCaster=t.value; if(!t.value)q.conc=false; spellSyncCast();}
   else if(k==='conc')q.conc=t.checked;
   else if(k==='slot'){q.slot=parseInt(t.value,10); q.cnt=spCount(x,q); spellConfigure();}
@@ -114,7 +121,7 @@ function spellInput(t,kind){
 
 /* Healing spells: dice (or a fixed number) plus the caster's spellcasting modifier, more with a higher slot. */
 function spIsHeal(x){return !!(x&&(x.hl||x.hf));}
-function spHealFull(){var A=ui.aoe, x=A&&A.spellTab&&A.sp?SPELL_BY[A.sp.n]:null; return !!(x&&x.hf==='full'&&A.kind==='heal');}
+function spHealFull(){var A=ui.aoe, x=A&&A.spellTab&&A.sp?spellGet(A.sp.n):null; return !!(x&&x.hf==='full'&&A.kind==='heal');}
 function spHealDice(x,q){return (x.hu&&x.hu[String(q.slot)])||x.hl||'';}
 function spHealText(x,q){
   if(x.hf==='full')return 'Back to full hit points';
@@ -123,7 +130,7 @@ function spHealText(x,q){
   return d+(md==null?' + spellcasting modifier':(md<0?' \u2212 '+(-md):' + '+md)+' '+info.modAb);
 }
 function spellRollHeal(){
-  var A=ui.aoe, q=A.sp, x=SPELL_BY[q.n]; if(x.hf==='full')return;
+  var A=ui.aoe, q=A.sp, x=spellGet(q.n); if(x.hf==='full')return;
   var d=spHealDice(x,q);
   if(x.hx){var n=Math.max(1,aoeSelCount()); A.amt=String(Math.floor(parseInt(d,10)/n)); q.info=d+' divided between '+n+(n===1?' target':' targets')+' = '+A.amt+' each'; return;}
   var info=x.hm?spCastInfo(x,q.caster):null, md=info&&info.mod!=null?info.mod:0;
@@ -131,14 +138,14 @@ function spellRollHeal(){
   q.info=d+(x.hm?' + '+(info&&info.mod!=null?'mod':'0 (no caster: add the modifier yourself)'):'')+': '+r.text+' = '+A.amt;
 }
 function spellSelect(name){
-  var A=ui.aoe, x=SPELL_BY[name]; if(!x)return; var prev=A.sp||{};
+  var A=ui.aoe, x=spellGet(name); if(!x)return; var prev=A.sp||{};
   A.sp={n:name,slot:x.l||0,tier:0,cnt:1,caster:prev.caster||A.lastCaster||'',conc:false,dcAuto:true,atkAuto:true,type:(x.dt&&x.dt[0])||'untyped',info:'',how:''};
   A.sp.cnt=spCount(x,A.sp);
   state.spellRecent=[name].concat((state.spellRecent||[]).filter(function(y){return y!==name;})).slice(0,8); persist();
   spellConfigure();
 }
 function spellRoll(){
-  var A=ui.aoe, q=A.sp; if(!q)return; var x=SPELL_BY[q.n];
+  var A=ui.aoe, q=A.sp; if(!q)return; var x=spellGet(q.n);
   if(spIsHeal(x)){spellRollHeal(); return;}
   var parts=spParts(x,q); if(!parts.length)return;
   var lines=[];
@@ -151,17 +158,19 @@ function spellRoll(){
 }
 function spellPickList(A){
   var q=(A.spq||'').trim().toLowerCase(), lv=A.splv==null?'':A.splv, rec=state.spellRecent||[];
-  var list=SPELLS.filter(function(x){return spellIncluded(x)&&(lv===''||String(x.l)===String(lv))&&(!q||x.n.toLowerCase().indexOf(q)>=0||(x.cd||[]).join(' ').toLowerCase().indexOf(q)>=0||(x.dt||[]).join(' ').indexOf(q)>=0);});
-  if(!q&&lv===''){var r=rec.map(function(n){return SPELL_BY[n];}).filter(function(x){return x&&spellIncluded(x);}); list=r.concat(list.filter(function(x){return r.indexOf(x)<0;}));}
-  var row=function(x,i){return '<button type="button" class="sprowbtn" data-aoe="spPick" data-n="'+esc(x.n)+'"><span class="spn"><b>'+esc(x.n)+'</b>'+((!q&&lv===''&&i<rec.length&&rec.indexOf(x.n)>=0)?'<em class="sprec">recent</em>':'')+'</span><small>'+esc(spLv(x))+' \u00b7 '+esc(spEffect(x)||(SP_SCHOOL[x.s]||x.s))+'</small></button>';};
-  return list.length?list.slice(0,80).map(row).join('')+(list.length>80?'<p class="help">Showing 80 of '+list.length+'. Type to narrow it down.</p>':''):'<p class="help">No spell matches. Spells are chosen for combat in the Library, under Spells.</p>';
+  var tag=A.sptag||'all';
+  var list=spellsAll().filter(function(x){return spHasTag(x,tag)&&(lv===''||String(x.l)===String(lv))&&(!q||x.n.toLowerCase().indexOf(q)>=0||(x.cd||[]).join(' ').toLowerCase().indexOf(q)>=0||(x.dt||[]).join(' ').indexOf(q)>=0);});
+  if(!q&&lv===''){var r=rec.map(function(n){return spellGet(n);}).filter(function(x){return x&&spHasTag(x,tag);}); list=r.concat(list.filter(function(x){return r.indexOf(x)<0;}));}
+  var row=function(x,i){return '<button type="button" class="sprowbtn" data-aoe="spPick" data-n="'+esc(x.n)+'"><span class="spn"><b>'+esc(x.n)+'</b>'+((!q&&lv===''&&i<rec.length&&rec.indexOf(x.n)>=0)?'<em class="sprec">recent</em>':'')+'</span><small>'+esc(spLv(x))+' \u00b7 '+esc(spEffect(x)||(SP_SCHOOL[x.s]||x.s))+'</small>'+(x.custom?'<em class="sprec yours">yours</em>':'')+'</button>';};
+  return list.length?list.slice(0,80).map(row).join('')+(list.length>80?'<p class="help">Showing 80 of '+list.length+'. Type to narrow it down.</p>':''):'<p class="help">No spell matches. Try another tag, or make your own in the Library, under Spells.</p>';
 }
 function spellPaneHTML(A){
   var q=A.sp, opt=function(v,on,l){return '<option value="'+esc(v)+'"'+(on?' selected':'')+'>'+esc(l)+'</option>';};
   if(!q){
-    return '<div class="sppane"><div class="spsearch"><input type="search" data-spin="q" placeholder="Search spells\u2026" value="'+esc(A.spq||'')+'" aria-label="Search spells" autocomplete="off"><select data-spin="lv" aria-label="Spell level">'+opt('',(A.splv==null||A.splv==='') ,'All levels')+opt('0',A.splv==='0','Cantrips')+[1,2,3,4,5,6,7,8,9].map(function(l){return opt(String(l),A.splv===String(l),'Level '+l);}).join('')+'</select></div><div class="splist" id="splist">'+spellPickList(A)+'</div></div>';
+    var tg=A.sptag||'all';
+    return '<div class="sppane"><div class="seg sm sptagseg" role="radiogroup" aria-label="Show spells that">'+[['all','All'],['damage','Damage'],['heal','Healing'],['condition','Conditions']].map(function(o){return '<button type="button" role="radio" aria-checked="'+(tg===o[0])+'" data-aoe="sptag" data-v="'+o[0]+'">'+o[1]+'</button>';}).join('')+'</div><div class="spsearch"><input type="search" data-spin="q" placeholder="Search spells\u2026" value="'+esc(A.spq||'')+'" aria-label="Search spells" autocomplete="off"><select data-spin="lv" aria-label="Spell level">'+opt('',(A.splv==null||A.splv==='') ,'All levels')+opt('0',A.splv==='0','Cantrips')+[1,2,3,4,5,6,7,8,9].map(function(l){return opt(String(l),A.splv===String(l),'Level '+l);}).join('')+'</select></div><div class="splist" id="splist">'+spellPickList(A)+'</div></div>';
   }
-  var x=SPELL_BY[q.n], parts=spParts(x,q), hasUp=x.l>0&&((x.up&&Object.keys(x.up).length)||x.x||(x.hu&&Object.keys(x.hu).length)), hasTier=x.l===0&&((x.cu&&x.cu.length)||x.xt);
+  var x=spellGet(q.n), parts=spParts(x,q), hasUp=x.l>0&&((x.up&&Object.keys(x.up).length)||x.x||(x.hu&&Object.keys(x.hu).length)), hasTier=x.l===0&&((x.cu&&x.cu.length)||x.xt);
   var casters='<option value="">No caster</option>'+state.combatants.map(function(c){return opt(c.id,q.caster===c.id,c.name);}).join('');
   var diceTxt=parts.map(function(p){return p.dice+(p.type!=='untyped'?' '+p.type:'');}).join(' + ')+(q.cnt>1?' \u00d7 '+q.cnt:'');
   var tiers=hasTier?[1,5,11,17].map(function(l,i){return [String(i),'Level '+l+(i<3?'\u2013'+([4,10,16][i]):'+')];}):[];
@@ -178,7 +187,7 @@ function spellPaneHTML(A){
     (x.cd&&x.cd.length&&x.dm?'<p class="help spwhy">Anyone who fails the save also gets '+esc(A.cond.name)+'.</p>':'')+'</div></div>';
 }
 function spellAfter(A,fails){
-  var x=A.spellTab&&A.sp?SPELL_BY[A.sp.n]:null; if(!x)return;
+  var x=A.spellTab&&A.sp?spellGet(A.sp.n):null; if(!x)return;
   if(x.cd&&x.cd.length&&A.kind==='dmg'&&A.cond&&A.cond.name){
     (fails||[]).forEach(function(t){var cd=makeCond(t.c,A.cond,A.cond.name); t.c.conditions=t.c.conditions.filter(function(y){return y.name!==A.cond.name;}); t.c.conditions.push(cd); notes.push(t.name+' is '+A.cond.name);});
   }
@@ -187,22 +196,6 @@ function spellAfter(A,fails){
       c.conditions=c.conditions.filter(function(y){return y.name!=='Concentrating';}); var cd2=makeCond(c,{dur:'manual'},'Concentrating'); cd2.note=x.n; c.conditions.push(cd2);
       notes.push(c.name+' concentrates on '+x.n+(had&&had.note&&had.note!==x.n?' (no longer on '+had.note+')':''));}
   }
-}
-function renderSpellsTab(el,head){
-  var L=ui.lib, q=(L.spq||'').trim().toLowerCase(), show=L.spshow||'all', lv=L.splv==null?'':L.splv, cl=L.spcl||'';
-  var list=SPELLS.filter(function(x){
-    if(q&&x.n.toLowerCase().indexOf(q)<0)return false; if(lv!==''&&String(x.l)!==String(lv))return false; if(cl&&(x.cl||[]).indexOf(cl)<0)return false;
-    var inc=spellIncluded(x); return show==='all'||(show==='in'?inc:!inc);});
-  var inAll=SPELLS.filter(spellIncluded).length, opt=function(v,on,l){return '<option value="'+esc(v)+'"'+(on?' selected':'')+'>'+esc(l)+'</option>';};
-  var rows=list.map(function(x){var inc=spellIncluded(x);
-    return '<label class="mmrow sprow2" data-spn="'+esc(x.n)+'"><input type="checkbox" data-spinc="'+esc(x.n)+'"'+(inc?' checked':'')+' aria-label="Include '+esc(x.n)+' in combat"><span class="mmname static"><span class="mmtitle"><b>'+esc(x.n)+'</b>'+(x.co?'<em class="sprec">concentration</em>':'')+'</span><small>'+esc(spLv(x))+' \u00b7 '+esc(SP_SCHOOL[x.s]||x.s)+' \u00b7 '+esc((x.cl||[]).map(function(k){return SP_CLASS[k];}).join(', '))+'</small></span><span class="spsum">'+esc(spEffect(x)||'No damage or condition')+'</span></label>';}).join('');
-  el.innerHTML=head+'<div class="mmctl"><input type="search" class="mmsearch" data-spf="q" placeholder="Search spells\u2026" value="'+esc(L.spq||'')+'" aria-label="Search spells" autocomplete="off">'+
-    '<div class="mmbar"><div class="mmisland spisl" role="group" aria-label="Show"><span class="mmilab">Show</span><div class="seg sm" role="radiogroup" aria-label="Which spells">'+[['all','All'],['in','In combat'],['out','Not in combat']].map(function(o){return '<button type="button" role="radio" aria-checked="'+(show===o[0])+'" data-mm="spshow" data-v="'+o[0]+'">'+o[1]+'</button>';}).join('')+'</div></div>'+
-    '<div class="mmisland spisl" role="group" aria-label="Filter"><span class="mmilab">Filter</span><select data-spf="lv" aria-label="Level">'+opt('',lv==='','All levels')+opt('0',lv==='0','Cantrips')+[1,2,3,4,5,6,7,8,9].map(function(l){return opt(String(l),lv===String(l),'Level '+l);}).join('')+'</select><select data-spf="cl" aria-label="Class">'+opt('',cl==='','All classes')+Object.keys(SP_CLASS).map(function(k){return opt(k,cl===k,SP_CLASS[k]);}).join('')+'</select></div>'+
-    '<div class="mmisland spisl" role="group" aria-label="Choose in bulk"><span class="mmilab">In combat</span><button type="button" class="btn small" data-mm="spinc">Include these</button><button type="button" class="btn small" data-mm="spexc">Remove these</button><button type="button" class="btn small ghost" data-mm="sprst">Reset to default</button></div></div></div>'+
-    '<p class="help spintro"><b id="spcount">'+inAll+'</b> of '+SPELLS.length+' spells are in combat. Tick the spells you want in the Target window\u2019s Spells tab. By default that\u2019s the ones that do damage, heal, or put a condition on a creature.</p>'+
-    '<div class="mmlist" id="splibList">'+(rows||'<p class="help">No spell matches.</p>')+'</div>'+
-    '<p class="mmfoot">Spell data from the System Reference Document 5.2 \u00a9 Wizards of the Coast LLC, licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>. Not affiliated with or endorsed by Wizards of the Coast.</p></div></div>';
 }
 
 function aoeNew(){return {amt:'',kind:'dmg',sel:{},eff:{},res:{},lr:{},dc:'',ab:'dex',adv:'n',onSave:'half',sv:false,
@@ -433,7 +426,7 @@ function aoeApply(){
 /* After applying: keep the options, clear the selection and numbers, and close the window. */
 function aoeReset(){
   var A=ui.aoe;
-  ui.aoe=Object.assign(aoeNew(),{kind:A.kind,spellTab:A.spellTab,sp:A.sp?Object.assign({},A.sp,{conc:false,info:''}):null,lastCaster:A.lastCaster,dc:A.sp?A.dc:'',spq:A.spq,splv:A.splv,lastHeal:A.lastHeal,ab:A.ab,adv:A.adv,onSave:A.onSave,sv:A.sv,cond:A.cond,condOp:A.condOp,
+  ui.aoe=Object.assign(aoeNew(),{kind:A.kind,spellTab:A.spellTab,sptag:A.sptag,sp:A.sp?Object.assign({},A.sp,{conc:false,info:''}):null,lastCaster:A.lastCaster,dc:A.sp?A.dc:'',spq:A.spq,splv:A.splv,lastHeal:A.lastHeal,ab:A.ab,adv:A.adv,onSave:A.onSave,sv:A.sv,cond:A.cond,condOp:A.condOp,
     att:{use:A.att.use,roll:'',mod:A.att.mod,adv:A.att.adv,info:'',lines:A.att.lines.map(function(l){return {amt:'',type:l.type,sv:l.sv};}),res:A.att.res,hit:{}}});
   ui.aoeOpen=false; renderAoe();
 }
@@ -512,6 +505,7 @@ document.addEventListener('click',function(e){
       if((A.kind==='cond')!==(nk==='cond'))aoeConvertSel(nk==='cond');
       A.kind=nk;break;
     case 'healmode':A.kind=v;A.lastHeal=v;break;
+    case 'sptag':A.sptag=v; break;
     case 'spPick':spellSelect(t.dataset.n); break;
     case 'spChange':A.lastCaster=A.sp?A.sp.caster:''; A.sp=null; A.spq=''; A.splv=''; A.sel=A.sel||{}; break;
     case 'spRoll':spellRoll(); break;

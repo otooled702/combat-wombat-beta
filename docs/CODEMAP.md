@@ -33,7 +33,7 @@ Functions: `blankSheet`, `ensureSheet`, `hasSheet`, `sheetSummary`, `modText`, `
 *6. Timer*
 Functions: `timerMs`, `timerRun`, `timerReset`, `timerWhole`, `timerLen`, `timerTurn`, `timerInfo`, `tick`
 
-### 07-change-tracking.js  (33 lines, 1 KB)
+### 07-change-tracking.js  (34 lines, 1 KB)
 *7. Change tracking*
 Functions: `mutate`, `undo`, `toast`
 
@@ -95,7 +95,7 @@ Functions: `askConfirm`, `refreshSummary`, `closeTopLayer`, `nmTextW`, `syncFrom
 *21. Self-test*
 Functions: `runSelfTests`
 
-### 22-monster-library.js  (533 lines, 52 KB)
+### 22-monster-library.js  (525 lines, 51 KB)
 *22. Monster library*
 Constants: `ADD_TYPES`, `STD_NPCS`, `LIB_OPT_DEFAULT`, `SIZES`
 Functions: `crText`, `mmSrdByName`, `libLegacyMeta`, `libMigrate`, `mmData`, `mmIsLegendary`, `libNew`, `mmMod`, `mmFiltered`, `mmSort`, `mmSheet`, `mmLeg`, `mmAdd`, `mmDetailHTML`, `addFormsHTML`, `blankDraft`, `addStripHTML`, `renderAdd`, `addGo`, `libSetTab`, `stdIsSaved`, `stdBase`, `stdAdd`, `stdRowHTML`, `renderStdNpcs`, `parseCR`, `mmKey`, `isStarred`, `mmTypes`, `hbAsMm`, `mmAll`, `mmByKey`, `mmStarCount`, `updateLibCounts`, `hbAdd`, `hbDetailHTML`, `folderMenuHTML`, `mmRowHTML`, `folderNameOf`, `mmListHTML`, `mmRenderList`, `mmTabsHTML`, `mmFormHTML`, `renderLibForm`, `mmInitHTML`, `renderLibInit`, `renderFolderBar`, `filterSummary`, `renderLib`, `libAddNow`, `folderCreate`
@@ -113,10 +113,15 @@ Functions: `doEndCombat`, `encKey`, `encCampaigns`, `encDefaultName`, `encSaveNo
 *25. Clone dialog*
 Functions: `clSetMode`, `renderClone`, `doClone`
 
-### 26-target.js  (586 lines, 45 KB)
+### 26-target.js  (580 lines, 43 KB)
 *26. Target*
-Constants: `AOE_KINDS`, `DMG_TYPES`, `SPELLS`, `SPELL_BY`, `SP_CLASS`, `SP_CLASS_AB`, `SP_SCHOOL`
-Functions: `dmgTypeLabel`, `spellIncluded`, `spLv`, `spCastTime`, `spEffect`, `spMeta`, `rollDice`, `spParts`, `spCount`, `spCastInfo`, `spDurRounds`, `spellSyncCast`, `spellConfigure`, `spellInput`, `spIsHeal`, `spHealFull`, `spHealDice`, `spHealText`, `spellRollHeal`, `spellSelect`, `spellRoll`, `spellPickList`, `spellPaneHTML`, `spellAfter`, `renderSpellsTab`, `aoeNew`, `aoeTargets`, `aoeUsable`, `aoeRole`, `aoeAmt`, `aoeCondName`, `aoeCondText`, `aoeSaveable`, `aoeAttTotal`, `aoeHit`, `aoeHitChip`, `aoeTypeMult`, `aoeAttDamage`, `aoePrev`, `aoePassEff`, `aoeSetRes`, `aoeSelCount`, `aoeReadyCount`, `aoeApplyLabel`, `aoeRefresh`, `aoeRowHTML`, `aoeNameCmp`, `aoeListHTML`, `renderAoe`, `aoeApply`, `aoeReset`, `aoeApplyCond`, `aoeApplyAtt`, `aoeConvertSel`
+Constants: `AOE_KINDS`, `DMG_TYPES`, `SPELLS`, `SPELL_BY`, `SP_TAG`, `SP_CLASS`, `SP_CLASS_AB`, `SP_SCHOOL`
+Functions: `dmgTypeLabel`, `spellsAll`, `spellGet`, `spTags`, `spTagChips`, `spHasTag`, `spLv`, `spCastTime`, `spEffect`, `spMeta`, `rollDice`, `spParts`, `spCount`, `spCastInfo`, `spDurRounds`, `spellSyncCast`, `spellConfigure`, `spellInput`, `spIsHeal`, `spHealFull`, `spHealDice`, `spHealText`, `spellRollHeal`, `spellSelect`, `spellRoll`, `spellPickList`, `spellPaneHTML`, `spellAfter`, `aoeNew`, `aoeTargets`, `aoeUsable`, `aoeRole`, `aoeAmt`, `aoeCondName`, `aoeCondText`, `aoeSaveable`, `aoeAttTotal`, `aoeHit`, `aoeHitChip`, `aoeTypeMult`, `aoeAttDamage`, `aoePrev`, `aoePassEff`, `aoeSetRes`, `aoeSelCount`, `aoeReadyCount`, `aoeApplyLabel`, `aoeRefresh`, `aoeRowHTML`, `aoeNameCmp`, `aoeListHTML`, `renderAoe`, `aoeApply`, `aoeReset`, `aoeApplyCond`, `aoeApplyAtt`, `aoeConvertSel`
+
+### 26b-spell-library.js  (171 lines, 14 KB)
+*26b. Spell library*
+Constants: `SPL_TAGS`, `SPL_TIMES`, `SPL_DICE`
+Functions: `splEsc`, `splFiltered`, `renderSpellsTab`, `splPer`, `splDraft`, `splFormHTML`, `splUp`, `splBuild`
 
 ### 27-cloud-save.js  (127 lines, 6 KB)
 *27. Cloud save*
@@ -141,13 +146,13 @@ Functions: (none at top level)
 - `02-base-and-controls.css`: 27 lines, 1 KB. Base
 - `03-shared-components.css`: 92 lines, 7 KB. Shared components
 - `04-dm-screen.css`: 203 lines, 13 KB. DM screen
-- `05-studio-finish.css`: 476 lines, 34 KB. Studio finish
+- `05-studio-finish.css`: 477 lines, 34 KB. Studio finish
 - `06-combat-monitor.css`: 164 lines, 13 KB. Combat Monitor
 - `07-phone-view.css`: 177 lines, 14 KB. Phone view
 - `08-skins.css`: 195 lines, 17 KB. Skins
 - `09-skin-frost.css`: 27 lines, 3 KB. Frost: icy, snowy, light. Frosted-glass cards on a pale blue sky with drifting snow
 - `10-skin-feywild.css`: 53 lines, 4 KB. Feywild: wildly coloured. Violet night, neon pink, cyan and lime, everything glowing
-- `11-left-menu-and-combat-bar.css`: 638 lines, 44 KB. Left menu + combat bar
+- `11-left-menu-and-combat-bar.css`: 668 lines, 46 KB. Left menu + combat bar
 - `13-skin-frost-ice.css`: 16 lines, 18 KB. 
 - `14-contrast.css`: 42 lines, 2 KB. 
 - `15-demo.css`: 105 lines, 8 KB. Beta build only: test-account sign-in and the account row (27c-beta-accounts.js)

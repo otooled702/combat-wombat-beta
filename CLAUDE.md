@@ -55,7 +55,10 @@ Read this first. `docs/CODEMAP.md` lists every file and function. Search before 
 - Damage: typed lines (`att.lines`, default type "untyped" shown as "Unspecified"), optional attack roll (`att.use`, d20 + modifier),
   optional saving throw (`A.sv`: DC, ability, success half/none). A save halves/cancels lines marked `sv`, and always cancels a condition.
 - Apply is one undo step. Legendary Resistance on a failed save is spent when applying (damage and condition paths).
-- Spells: `SPELLS` from `spells.json`; Library > Spells tab ticks which are "in combat" (`state.spellOpt`, default = has damage, a condition, or combat healing).
+- Spells: `SPELLS` from `spells.json` plus your own in `state.customSpells` (`spellsAll()`, look up by name with `spellGet(n)`, never `SPELL_BY`).
+  Tags are derived, not stored (`spTags`: damage, heal, condition, else utility). Library > Spells (`26b-spell-library.js`) filters by tag,
+  makes new spells and edits copies (`custom:true`, `base` = original name; SRD spells are never changed). The Target window's tag chips
+  (`A.sptag`) filter the picker; All hides utility spells. Test: `t_custom_spells`.
   Healing spells (`hl` dice or number, `hm` add modifier, `hu` upcast, `hf` full, `hx` divided) configure the Heal engine.
   Caster DC: stat-block text first ("spell save DC N, +N to hit"), else 8 + proficiency (from CR, +2 if unknown) + casting ability mod.
   Concentration is optional and adds a Concentrating condition with `note` = spell name.
@@ -84,7 +87,7 @@ Read this first. `docs/CODEMAP.md` lists every file and function. Search before 
 
 ## Known limits and ideas
 - Library is SRD only (the full Monster Manual and Player's Handbook are copyrighted). Builder: simplified standard array, no point buy/subclasses.
-- Spells not done: custom-spell form, Constitution-save prompt when a concentrating caster is hurt, spells with several different effects do not scale
+- Spells not done: several damage types or conditions in your own spells (the form takes one of each), Constitution-save prompt when a concentrating caster is hurt, spells with several different effects do not scale
   with slot level, Magic Missile-style spells apply the full dart count to each selected target.
 - Images are base64 in localStorage (large uploads can hit the quota).
 - Environment gotchas (chat sandbox): one CPU core, background jobs die between turns, no version history. Use git and Claude Code where possible.

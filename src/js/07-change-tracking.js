@@ -21,6 +21,7 @@ function undo(){
   if(!undoStack.length)return;
   var settings=state.settings, timer=state.timer, images=state.images, rev=state.rev, ep=state.ep; state=JSON.parse(undoStack.pop()); state.settings=settings; state.timer=timer; state.images=images; state.rev=rev; state.ep=ep;
   persist(); toast('Undid last change'); render();
+  if(ui.lib&&ui.lib.open)renderLib();   // render() leaves the Library window alone; Undo from its toast must show the result
 }
 
 function toast(msg,undoable){

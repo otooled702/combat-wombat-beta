@@ -4,13 +4,13 @@
    ================================================================ */
 
 var LIB_OK=false;
-function fresh(){return {v:2,libV:2,stars:[],folders:[],folderOf:{},rev:0,ep:uid(),party:[],library:[],encounters:[],encName:null,encCamp:null,images:{},claims:{},opSeen:[],combatants:[],round:0,started:false,paused:false,rfi:false,turnId:null,seq:0,
+function fresh(){return {v:2,libV:2,customSpells:[],stars:[],folders:[],folderOf:{},rev:0,ep:uid(),party:[],library:[],encounters:[],encName:null,encCamp:null,images:{},claims:{},opSeen:[],combatants:[],round:0,started:false,paused:false,rfi:false,turnId:null,seq:0,
   settings:{trackPC:true,trackNPC:true,pcHp:'exact',npcHp:'status',autoStats:false,cardMode:'scroll',crowd:'shrink',skin:'spark',skinV:2,fontSize:'normal',reactionReset:'turn',rxShow:'pc',acShow:'default',imgShow:'on',phoneEdit:true,tvQr:false,sfxTv:true,sfxDm:false,sfxVol:'med',sfxTurn:true,sfxHit:true,sfxEnd:true,sfxCond:true,sfxTimer:true,fxFlash:true,fxNums:'pc',cbMarks:false,showNames:true},
   timer:{mode:'off',scope:'turn',secs:60,cmins:60,showPlayers:true,elapsed:0,startedAt:null,running:false}};}
 
 /* Fills in whatever a saved table is missing. Local saves and the account copy both come through here,
    so a new saved field needs its default in this one place. */
-var LIST_FIELDS=['party','library','encounters','combatants','stars','folders','opSeen','spellRecent'], MAP_FIELDS=['folderOf','images','claims','spellOpt'];
+var LIST_FIELDS=['party','library','encounters','combatants','stars','folders','opSeen','spellRecent','customSpells'], MAP_FIELDS=['folderOf','images','claims','spellOpt'];
 function normalise(s){
   var out=Object.assign(fresh(),s);
   out.settings=Object.assign(fresh().settings,s.settings||{});

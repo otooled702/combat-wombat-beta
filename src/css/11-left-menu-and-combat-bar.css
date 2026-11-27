@@ -570,6 +570,9 @@ body.dm .hpact>[data-delta],body.dm .hpact>[data-mdelta]{width:84px;min-width:0}
   .aoemodal .aoeright{order:-1}
   .aoectl{display:flex;flex-direction:column}
   .aoectl .aoefoot{grid-column:auto;position:sticky;bottom:0;margin-top:auto;background:var(--panel);z-index:2}
+  /* the spell list fills the column down to Apply instead of stopping at a fixed height */
+  .aoectl .sppane{flex:1 0 auto}
+  .aoectl .splist{flex:1 1 0;min-height:220px;max-height:none}
 }
 @media (max-width:860px){.aoectl .aoefoot{position:sticky;bottom:0;background:var(--panel);z-index:2}}
 .aoedlh{display:grid;grid-template-columns:84px 1fr;gap:8px;font-size:12px;font-weight:500;color:var(--muted)}
@@ -584,7 +587,8 @@ body.dm .hpact>[data-delta],body.dm .hpact>[data-mdelta]{width:84px;min-width:0}
 
 /* Spells */
 .sppane{display:flex;flex-direction:column;gap:10px;margin-bottom:10px}
-.spsearch{display:flex;gap:8px}.spsearch input{flex:1;min-width:0}
+.spsearch{display:flex;gap:8px}.spsearch input{flex:1 1 auto;min-width:0;width:auto}
+.spsearch select{flex:0 0 auto;width:auto;max-width:45%}   /* a general select{width:100%} squeezed the search box to nothing */
 .splist{display:flex;flex-direction:column;gap:6px;max-height:340px;overflow:auto;padding-right:2px}
 .sprowbtn{display:flex;flex-direction:column;align-items:flex-start;gap:2px;width:100%;text-align:left;padding:8px 12px;border:var(--bw,1.5px) solid var(--line);border-radius:12px;background:var(--panel);color:var(--text);cursor:pointer;font:inherit}
 .sprowbtn:hover{background:color-mix(in srgb,var(--text) 6%,var(--panel))}
@@ -635,3 +639,29 @@ body.dm .hpact>[data-delta],body.dm .hpact>[data-mdelta]{width:84px;min-width:0}
 .startbtn{white-space:nowrap}
 .rfidot.off{visibility:hidden;animation:none}
 .rfiverb{display:inline-block;min-width:3em;text-align:center}
+/* spells: tags, your own spells, and the spell form */
+.sptags{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.sptag{display:inline-block;padding:1px 8px;border-radius:99px;border:1px solid var(--line);font-size:11.5px;font-weight:700;color:var(--text);background:var(--panel)}
+.sptag.t-damage{background:color-mix(in srgb,var(--danger) 14%,var(--panel))}
+.sptag.t-heal{background:color-mix(in srgb,var(--ok) 16%,var(--panel))}
+.sptag.t-condition{background:color-mix(in srgb,var(--next) 22%,var(--panel))}
+.sptag.t-utility{background:var(--chip,var(--panel2))}
+.sprec.yours{background:var(--accent);color:var(--accent-ink);border-color:transparent}
+.sprow2{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;align-items:start}
+.sprow2 .spsum{grid-column:1;font-size:13px;color:var(--muted)}
+.sprow2 .spacts{grid-column:2;grid-row:1 / span 2;display:flex;gap:6px;align-self:center}
+.sptagseg{flex-wrap:wrap}
+.sppane .sptagseg{margin-bottom:8px}
+.spform{display:flex;flex-direction:column;gap:12px;padding:4px 2px 12px}
+.spform fieldset{border:1px solid var(--line);border-radius:14px;padding:10px 14px 14px;margin:0}
+.spform legend{font-weight:700;padding:0 6px}
+.spfgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px 14px;align-items:end}
+.spf{display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:600}
+.spf.wide{grid-column:1 / -1}
+.spf input[type=text],.spf select{min-height:40px}
+.spck{display:inline-flex;flex-direction:row;align-items:center;gap:8px;font-weight:500;min-height:40px}
+.spcls{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:8px;align-items:center}
+.spcl-lab{font-size:13px;font-weight:700}
+.spfhead h3{margin:0 0 4px}
+.sperr{margin:0;padding:8px 12px;border-radius:10px;border:1px solid var(--danger);color:var(--danger);font-weight:600;background:color-mix(in srgb,var(--danger) 8%,var(--panel))}
+.spfbtns{display:flex;gap:10px;flex-wrap:wrap}

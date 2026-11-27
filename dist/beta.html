@@ -839,6 +839,7 @@ body.dm .row.collapsed .r-init input{width:40px;height:40px;font-size:17px}
 body.dm .ctl .densityseg button{padding-left:8px!important;padding-right:8px!important;font-size:12px}
 body.dm .ctl{gap:6px}
 
+.aoemodal .aoelist{align-content:start}   /* rows keep their height when there are only a few creatures */
 /* ============================================================
    Combat Monitor
    The read-only table view for the second monitor.
@@ -2022,6 +2023,9 @@ body.dm .hpact>[data-delta],body.dm .hpact>[data-mdelta]{width:84px;min-width:0}
   .aoemodal .aoeright{order:-1}
   .aoectl{display:flex;flex-direction:column}
   .aoectl .aoefoot{grid-column:auto;position:sticky;bottom:0;margin-top:auto;background:var(--panel);z-index:2}
+  /* the spell list fills the column down to Apply instead of stopping at a fixed height */
+  .aoectl .sppane{flex:1 0 auto}
+  .aoectl .splist{flex:1 1 0;min-height:220px;max-height:none}
 }
 @media (max-width:860px){.aoectl .aoefoot{position:sticky;bottom:0;background:var(--panel);z-index:2}}
 .aoedlh{display:grid;grid-template-columns:84px 1fr;gap:8px;font-size:12px;font-weight:500;color:var(--muted)}
@@ -2036,7 +2040,8 @@ body.dm .hpact>[data-delta],body.dm .hpact>[data-mdelta]{width:84px;min-width:0}
 
 /* Spells */
 .sppane{display:flex;flex-direction:column;gap:10px;margin-bottom:10px}
-.spsearch{display:flex;gap:8px}.spsearch input{flex:1;min-width:0}
+.spsearch{display:flex;gap:8px}.spsearch input{flex:1 1 auto;min-width:0;width:auto}
+.spsearch select{flex:0 0 auto;width:auto;max-width:45%}   /* a general select{width:100%} squeezed the search box to nothing */
 .splist{display:flex;flex-direction:column;gap:6px;max-height:340px;overflow:auto;padding-right:2px}
 .sprowbtn{display:flex;flex-direction:column;align-items:flex-start;gap:2px;width:100%;text-align:left;padding:8px 12px;border:var(--bw,1.5px) solid var(--line);border-radius:12px;background:var(--panel);color:var(--text);cursor:pointer;font:inherit}
 @media (hover:hover){.sprowbtn:hover{background:color-mix(in srgb,var(--text) 6%,var(--panel))}}
@@ -2087,6 +2092,32 @@ body.dm .hpact>[data-delta],body.dm .hpact>[data-mdelta]{width:84px;min-width:0}
 .startbtn{white-space:nowrap}
 .rfidot.off{visibility:hidden;animation:none}
 .rfiverb{display:inline-block;min-width:3em;text-align:center}
+/* spells: tags, your own spells, and the spell form */
+.sptags{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.sptag{display:inline-block;padding:1px 8px;border-radius:99px;border:1px solid var(--line);font-size:11.5px;font-weight:700;color:var(--text);background:var(--panel)}
+.sptag.t-damage{background:color-mix(in srgb,var(--danger) 14%,var(--panel))}
+.sptag.t-heal{background:color-mix(in srgb,var(--ok) 16%,var(--panel))}
+.sptag.t-condition{background:color-mix(in srgb,var(--next) 22%,var(--panel))}
+.sptag.t-utility{background:var(--chip,var(--panel2))}
+.sprec.yours{background:var(--accent);color:var(--accent-ink);border-color:transparent}
+.sprow2{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;align-items:start}
+.sprow2 .spsum{grid-column:1;font-size:13px;color:var(--muted)}
+.sprow2 .spacts{grid-column:2;grid-row:1 / span 2;display:flex;gap:6px;align-self:center}
+.sptagseg{flex-wrap:wrap}
+.sppane .sptagseg{margin-bottom:8px}
+.spform{display:flex;flex-direction:column;gap:12px;padding:4px 2px 12px}
+.spform fieldset{border:1px solid var(--line);border-radius:14px;padding:10px 14px 14px;margin:0}
+.spform legend{font-weight:700;padding:0 6px}
+.spfgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px 14px;align-items:end}
+.spf{display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:600}
+.spf.wide{grid-column:1 / -1}
+.spf input[type=text],.spf select{min-height:40px}
+.spck{display:inline-flex;flex-direction:row;align-items:center;gap:8px;font-weight:500;min-height:40px}
+.spcls{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:8px;align-items:center}
+.spcl-lab{font-size:13px;font-weight:700}
+.spfhead h3{margin:0 0 4px}
+.sperr{margin:0;padding:8px 12px;border-radius:10px;border:1px solid var(--danger);color:var(--danger);font-weight:600;background:color-mix(in srgb,var(--danger) 8%,var(--panel))}
+.spfbtns{display:flex;gap:10px;flex-wrap:wrap}
 /* Mockup: Frost ice streaks instead of straight stripes */
 :root[data-skin="frost"]{
   --ice:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%222400%22 height=%221500%22%3E%3Cdefs%3E%3Cfilter id=%22s%22 x=%22-50%25%22 y=%22-50%25%22 width=%22200%25%22 height=%22200%25%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.0012 0.022%22 numOctaves=%223%22 seed=%224%22/%3E%3CfeColorMatrix values=%220 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 2.2 -1.22%22/%3E%3C/filter%3E%3Cfilter id=%22h%22 x=%220%22 y=%220%22 width=%22100%25%22 height=%22100%25%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.0035%22 numOctaves=%224%22 seed=%229%22/%3E%3CfeColorMatrix values=%220 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.2 -0.5%22/%3E%3C/filter%3E%3CradialGradient id=%22g%22%3E%3Cstop offset=%220%22 stop-color=%22%23fff%22/%3E%3Cstop offset=%22.75%22 stop-color=%22%23fff%22 stop-opacity=%22.55%22/%3E%3Cstop offset=%221%22 stop-color=%22%23fff%22 stop-opacity=%220%22/%3E%3C/radialGradient%3E%3Cmask id=%22fade%22%3E%3Crect width=%222400%22 height=%221500%22 fill=%22url(%23g)%22/%3E%3C/mask%3E%3C/defs%3E%3Cg transform=%22rotate(-62 1200.0 750.0)%22%3E%3Crect x=%22-2400%22 y=%22-1500%22 width=%227200%22 height=%224500%22 filter=%22url(%23s)%22/%3E%3C/g%3E%3Crect width=%222400%22 height=%221500%22 filter=%22url(%23h)%22 opacity=%22.55%22/%3E%3Cpath d=%22M1622.8 -63.0 L1632.4 -88.5 L1641.4 -114.4 L1650.1 -142.1 L1661.2 -169.8 L1668.5 -194.5 L1678.5 -224.5 L1691.0 -251.0 L1699.8 -276.9 L1706.8 -305.0 L1719.1 -330.2 L1728.3 -356.8 L1738.7 -382.5 L1747.4 -410.0 L1757.6 -437.8 L1764.5 -463.9 L1774.2 -490.4 L1802.4 -510.7 L1810.9 -536.6 L1822.6 -564.0 L1834.7 -590.4 L1841.3 -615.8 L1855.9 -641.6 L1863.8 -668.7 L1868.2 -699.5 L1915.1 -709.9 L1930.1 -736.5 L1940.5 -758.8 L1953.6 -787.4 L1963.2 -810.6%22 transform=%22translate(1.2 1.4)%22 stroke=%22%235E8FB8%22 stroke-opacity=%220.14%22 stroke-width=%220.64%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M1622.8 -63.0 L1632.4 -88.5 L1641.4 -114.4 L1650.1 -142.1 L1661.2 -169.8 L1668.5 -194.5 L1678.5 -224.5 L1691.0 -251.0 L1699.8 -276.9 L1706.8 -305.0 L1719.1 -330.2 L1728.3 -356.8 L1738.7 -382.5 L1747.4 -410.0 L1757.6 -437.8 L1764.5 -463.9 L1774.2 -490.4 L1802.4 -510.7 L1810.9 -536.6 L1822.6 -564.0 L1834.7 -590.4 L1841.3 -615.8 L1855.9 -641.6 L1863.8 -668.7 L1868.2 -699.5 L1915.1 -709.9 L1930.1 -736.5 L1940.5 -758.8 L1953.6 -787.4 L1963.2 -810.6%22 stroke=%22%23fff%22 stroke-opacity=%220.39%22 stroke-width=%220.8%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M-167.6 1378.1 L-152.1 1354.9 L-139.9 1331.4 L-123.6 1306.3 L-108.7 1282.6 L-96.1 1255.5 L-82.4 1230.9 L-66.2 1206.4 L-53.9 1180.3 L-40.2 1159.4 L-28.3 1131.5 L-11.8 1110.2 L1.4 1081.9 L17.6 1058.9 L27.9 1035.4 L43.4 1010.5 L56.2 987.1 L72.3 962.3 L84.5 936.4 L100.9 911.3 L112.8 885.4 L127.4 862.5 L142.6 838.5 L154.2 812.3%22 transform=%22translate(1.2 1.4)%22 stroke=%22%235E8FB8%22 stroke-opacity=%220.20%22 stroke-width=%220.64%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M-167.6 1378.1 L-152.1 1354.9 L-139.9 1331.4 L-123.6 1306.3 L-108.7 1282.6 L-96.1 1255.5 L-82.4 1230.9 L-66.2 1206.4 L-53.9 1180.3 L-40.2 1159.4 L-28.3 1131.5 L-11.8 1110.2 L1.4 1081.9 L17.6 1058.9 L27.9 1035.4 L43.4 1010.5 L56.2 987.1 L72.3 962.3 L84.5 936.4 L100.9 911.3 L112.8 885.4 L127.4 862.5 L142.6 838.5 L154.2 812.3%22 stroke=%22%23fff%22 stroke-opacity=%220.58%22 stroke-width=%220.8%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M-122.8 331.7 L-110.7 306.6 L-97.2 277.9 L-89.2 251.0 L-76.1 227.9 L-65.5 200.6 L-55.9 174.4 L-41.6 148.6 L-33.0 122.6 L-19.0 97.2 L-9.5 70.9 L0.8 41.1 L15.3 17.9 L26.2 -7.5 L35.4 -35.6 L45.2 -60.0 L58.8 -86.3 L71.5 -113.0 L80.1 -141.5 L92.8 -167.9 L102.1 -191.2 L114.8 -218.8 L125.9 -243.6 L137.7 -271.5 L139.5 -303.3 L150.4 -327.6 L163.1 -354.6 L174.0 -378.9 L185.0 -407.6 L196.9 -432.8 L207.8 -457.3%22 transform=%22translate(1.2 1.4)%22 stroke=%22%235E8FB8%22 stroke-opacity=%220.28%22 stroke-width=%221.44%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M-122.8 331.7 L-110.7 306.6 L-97.2 277.9 L-89.2 251.0 L-76.1 227.9 L-65.5 200.6 L-55.9 174.4 L-41.6 148.6 L-33.0 122.6 L-19.0 97.2 L-9.5 70.9 L0.8 41.1 L15.3 17.9 L26.2 -7.5 L35.4 -35.6 L45.2 -60.0 L58.8 -86.3 L71.5 -113.0 L80.1 -141.5 L92.8 -167.9 L102.1 -191.2 L114.8 -218.8 L125.9 -243.6 L137.7 -271.5 L139.5 -303.3 L150.4 -327.6 L163.1 -354.6 L174.0 -378.9 L185.0 -407.6 L196.9 -432.8 L207.8 -457.3%22 stroke=%22%23fff%22 stroke-opacity=%220.79%22 stroke-width=%221.8%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M577.5 765.5 L588.2 741.4 L601.9 715.8 L611.8 688.0 L623.2 663.4 L634.8 636.1 L649.2 613.2 L659.4 584.5 L671.8 560.9 L685.7 532.7 L694.7 509.3 L707.5 482.4 L718.1 456.4 L731.7 432.2 L744.0 404.7 L754.2 381.7 L769.5 352.4 L781.6 327.1 L793.2 304.3 L805.8 276.7 L815.9 251.3 L826.8 227.0 L841.5 198.9 L798.8 153.2 L808.5 124.4 L886.5 130.0 L897.2 103.6 L913.7 76.1 L926.0 52.2 L935.2 25.9 L948.0 2.0 L959.4 -27.0 L975.9 -50.3 L986.0 -75.1 L999.4 -101.1 L1013.2 -127.7 L1022.3 -153.6 L1037.0 -179.4 L1050.5 -201.8 L1088.4 -216.0%22 transform=%22translate(1.2 1.4)%22 stroke=%22%235E8FB8%22 stroke-opacity=%220.26%22 stroke-width=%221.04%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M577.5 765.5 L588.2 741.4 L601.9 715.8 L611.8 688.0 L623.2 663.4 L634.8 636.1 L649.2 613.2 L659.4 584.5 L671.8 560.9 L685.7 532.7 L694.7 509.3 L707.5 482.4 L718.1 456.4 L731.7 432.2 L744.0 404.7 L754.2 381.7 L769.5 352.4 L781.6 327.1 L793.2 304.3 L805.8 276.7 L815.9 251.3 L826.8 227.0 L841.5 198.9 L798.8 153.2 L808.5 124.4 L886.5 130.0 L897.2 103.6 L913.7 76.1 L926.0 52.2 L935.2 25.9 L948.0 2.0 L959.4 -27.0 L975.9 -50.3 L986.0 -75.1 L999.4 -101.1 L1013.2 -127.7 L1022.3 -153.6 L1037.0 -179.4 L1050.5 -201.8 L1088.4 -216.0%22 stroke=%22%23fff%22 stroke-opacity=%220.74%22 stroke-width=%221.3%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M478.0 355.3 L489.6 333.1 L503.3 304.3 L514.7 279.1 L525.3 252.8 L537.2 224.6 L547.2 200.4 L541.3 166.3 L551.4 141.5 L561.4 115.0 L568.8 88.5 L579.7 59.9 L612.1 41.3 L622.8 12.8 L632.4 -10.5 L644.8 -37.9 L655.2 -63.8 L663.4 -92.6 L674.7 -115.8 L688.0 -143.1 L698.4 -172.2 L710.6 -196.3 L721.2 -224.6 L730.4 -250.9 L743.5 -276.6 L755.6 -301.7 L764.5 -327.2 L776.1 -353.7 L730.3 -400.4 L740.7 -430.7 L710.5 -466.9 L716.6 -495.2 L725.1 -524.4 L731.6 -548.1 L738.5 -577.9 L750.4 -605.4 L754.8 -630.7 L764.2 -661.8 L773.5 -689.3 L779.3 -713.5 L785.8 -740.9 L792.6 -772.3%22 transform=%22translate(1.2 1.4)%22 stroke=%22%235E8FB8%22 stroke-opacity=%220.19%22 stroke-width=%221.04%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M478.0 355.3 L489.6 333.1 L503.3 304.3 L514.7 279.1 L525.3 252.8 L537.2 224.6 L547.2 200.4 L541.3 166.3 L551.4 141.5 L561.4 115.0 L568.8 88.5 L579.7 59.9 L612.1 41.3 L622.8 12.8 L632.4 -10.5 L644.8 -37.9 L655.2 -63.8 L663.4 -92.6 L674.7 -115.8 L688.0 -143.1 L698.4 -172.2 L710.6 -196.3 L721.2 -224.6 L730.4 -250.9 L743.5 -276.6 L755.6 -301.7 L764.5 -327.2 L776.1 -353.7 L730.3 -400.4 L740.7 -430.7 L710.5 -466.9 L716.6 -495.2 L725.1 -524.4 L731.6 -548.1 L738.5 -577.9 L750.4 -605.4 L754.8 -630.7 L764.2 -661.8 L773.5 -689.3 L779.3 -713.5 L785.8 -740.9 L792.6 -772.3%22 stroke=%22%23fff%22 stroke-opacity=%220.53%22 stroke-width=%221.3%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M852.4 29.0 L865.7 6.3 L877.0 -20.0 L890.3 -46.9 L903.3 -70.0 L919.8 -98.2 L937.0 -121.4 L950.0 -145.6 L965.4 -170.1 L989.7 -185.9 L1004.1 -213.5 L1020.2 -235.3 L1037.4 -260.0 L1051.3 -285.5 L1065.3 -309.3 L1082.2 -332.7 L1096.7 -355.7 L1112.6 -382.5 L1128.6 -404.5 L1141.7 -427.7 L1157.8 -454.1 L1173.1 -478.0 L1189.5 -502.6 L1244.8 -495.5 L1261.4 -518.4 L1279.7 -543.0 L1296.6 -564.0 L1311.7 -586.4 L1331.2 -611.3 L1349.0 -631.9 L1364.4 -655.6 L1383.8 -679.7 L1464.4 -650.4 L1481.3 -670.5 L1499.0 -690.9 L1521.0 -713.4 L1540.4 -737.3 L1555.5 -758.4 L1574.7 -777.1 L1596.3 -799.2 L1616.0 -822.3 L1635.8 -843.2 L1654.2 -865.3 L1674.1 -885.3%22 transform=%22translate(1.2 1.4)%22 stroke=%22%235E8FB8%22 stroke-opacity=%220.20%22 stroke-width=%220.64%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M852.4 29.0 L865.7 6.3 L877.0 -20.0 L890.3 -46.9 L903.3 -70.0 L919.8 -98.2 L937.0 -121.4 L950.0 -145.6 L965.4 -170.1 L989.7 -185.9 L1004.1 -213.5 L1020.2 -235.3 L1037.4 -260.0 L1051.3 -285.5 L1065.3 -309.3 L1082.2 -332.7 L1096.7 -355.7 L1112.6 -382.5 L1128.6 -404.5 L1141.7 -427.7 L1157.8 -454.1 L1173.1 -478.0 L1189.5 -502.6 L1244.8 -495.5 L1261.4 -518.4 L1279.7 -543.0 L1296.6 -564.0 L1311.7 -586.4 L1331.2 -611.3 L1349.0 -631.9 L1364.4 -655.6 L1383.8 -679.7 L1464.4 -650.4 L1481.3 -670.5 L1499.0 -690.9 L1521.0 -713.4 L1540.4 -737.3 L1555.5 -758.4 L1574.7 -777.1 L1596.3 -799.2 L1616.0 -822.3 L1635.8 -843.2 L1654.2 -865.3 L1674.1 -885.3%22 stroke=%22%23fff%22 stroke-opacity=%220.56%22 stroke-width=%220.8%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M2488.9 1136.7 L2502.6 1113.0 L2514.8 1089.7 L2524.1 1061.6 L2539.1 1035.5 L2551.5 1011.3 L2564.7 984.9 L2573.6 959.0 L2586.0 936.7 L2597.7 908.0 L2612.0 885.7 L2622.9 856.9 L2634.0 830.7 L2642.0 805.4 L2654.0 779.8 L2662.0 754.1 L2672.9 727.1 L2686.0 699.9 L2696.0 673.9 L2711.7 647.4 L2720.0 622.6 L2734.3 597.2 L2740.8 572.1 L2752.2 546.2 L2753.9 514.8 L2696.9 465.9 L2708.3 438.8%22 transform=%22translate(1.2 1.4)%22 stroke=%22%235E8FB8%22 stroke-opacity=%220.18%22 stroke-width=%220.80%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M2488.9 1136.7 L2502.6 1113.0 L2514.8 1089.7 L2524.1 1061.6 L2539.1 1035.5 L2551.5 1011.3 L2564.7 984.9 L2573.6 959.0 L2586.0 936.7 L2597.7 908.0 L2612.0 885.7 L2622.9 856.9 L2634.0 830.7 L2642.0 805.4 L2654.0 779.8 L2662.0 754.1 L2672.9 727.1 L2686.0 699.9 L2696.0 673.9 L2711.7 647.4 L2720.0 622.6 L2734.3 597.2 L2740.8 572.1 L2752.2 546.2 L2753.9 514.8 L2696.9 465.9 L2708.3 438.8%22 stroke=%22%23fff%22 stroke-opacity=%220.50%22 stroke-width=%221%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M1891.9 1109.3 L1901.8 1085.4 L1910.8 1059.3 L1925.0 1031.6 L1936.6 1007.4 L1945.1 979.4 L1971.1 960.9 L1984.4 936.6 L2000.5 910.4 L2012.4 883.5 L2027.2 859.9 L2038.7 834.6 L2051.9 810.4 L2067.1 787.0 L2079.7 758.2 L2096.5 733.7 L2109.6 710.9 L2121.2 683.8 L2134.6 658.7 L2148.0 633.6 L2164.8 608.3 L2147.8 570.6 L2159.5 544.6 L2112.5 491.7 L2119.9 467.7 L2128.1 439.6 L2138.3 410.5 L2147.8 386.0 L2159.6 356.5 L2169.4 331.2 L2148.9 298.0 L2202.0 284.1 L2209.8 255.5 L2218.4 227.3 L2230.1 202.3 L2240.9 174.5 L2250.9 148.9 L2262.4 123.4 L2268.3 97.0 L2279.9 67.1 L2291.6 43.2 L2299.8 17.8 L2308.8 -12.5 L2320.6 -38.1 L2328.6 -66.2 L2341.6 -91.4 L2352.2 -116.6 L2359.6 -145.8 L2368.4 -171.5 L2381.6 -196.3 L2391.8 -226.4 L2399.5 -250.6%22 transform=%22translate(1.2 1.4)%22 stroke=%22%235E8FB8%22 stroke-opacity=%220.26%22 stroke-width=%220.48%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M1891.9 1109.3 L1901.8 1085.4 L1910.8 1059.3 L1925.0 1031.6 L1936.6 1007.4 L1945.1 979.4 L1971.1 960.9 L1984.4 936.6 L2000.5 910.4 L2012.4 883.5 L2027.2 859.9 L2038.7 834.6 L2051.9 810.4 L2067.1 787.0 L2079.7 758.2 L2096.5 733.7 L2109.6 710.9 L2121.2 683.8 L2134.6 658.7 L2148.0 633.6 L2164.8 608.3 L2147.8 570.6 L2159.5 544.6 L2112.5 491.7 L2119.9 467.7 L2128.1 439.6 L2138.3 410.5 L2147.8 386.0 L2159.6 356.5 L2169.4 331.2 L2148.9 298.0 L2202.0 284.1 L2209.8 255.5 L2218.4 227.3 L2230.1 202.3 L2240.9 174.5 L2250.9 148.9 L2262.4 123.4 L2268.3 97.0 L2279.9 67.1 L2291.6 43.2 L2299.8 17.8 L2308.8 -12.5 L2320.6 -38.1 L2328.6 -66.2 L2341.6 -91.4 L2352.2 -116.6 L2359.6 -145.8 L2368.4 -171.5 L2381.6 -196.3 L2391.8 -226.4 L2399.5 -250.6%22 stroke=%22%23fff%22 stroke-opacity=%220.76%22 stroke-width=%220.6%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M247.6 1292.6 L264.7 1267.7 L277.4 1245.3 L290.7 1220.1 L308.6 1195.3 L322.5 1171.3 L334.3 1149.8 L351.0 1124.6 L365.4 1101.2 L379.3 1077.3 L399.9 1056.1 L416.3 1033.5 L430.1 1008.4 L445.0 984.8 L460.5 961.0 L473.7 940.4 L490.7 913.9 L505.3 894.2 L522.5 870.9 L537.4 843.8 L551.1 823.5 L564.8 799.2 L579.5 773.7 L595.0 752.5 L613.0 725.7 L628.6 702.4 L641.9 679.3 L612.3 632.7 L629.0 604.8 L639.1 581.8 L653.7 558.8 L668.2 534.3 L683.5 508.7 L696.2 482.5 L708.7 458.4 L721.6 433.1 L733.4 411.4 L749.5 387.6 L763.2 360.1 L678.6 290.0 L691.3 265.5%22 transform=%22translate(1.2 1.4)%22 stroke=%22%235E8FB8%22 stroke-opacity=%220.22%22 stroke-width=%220.64%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M247.6 1292.6 L264.7 1267.7 L277.4 1245.3 L290.7 1220.1 L308.6 1195.3 L322.5 1171.3 L334.3 1149.8 L351.0 1124.6 L365.4 1101.2 L379.3 1077.3 L399.9 1056.1 L416.3 1033.5 L430.1 1008.4 L445.0 984.8 L460.5 961.0 L473.7 940.4 L490.7 913.9 L505.3 894.2 L522.5 870.9 L537.4 843.8 L551.1 823.5 L564.8 799.2 L579.5 773.7 L595.0 752.5 L613.0 725.7 L628.6 702.4 L641.9 679.3 L612.3 632.7 L629.0 604.8 L639.1 581.8 L653.7 558.8 L668.2 534.3 L683.5 508.7 L696.2 482.5 L708.7 458.4 L721.6 433.1 L733.4 411.4 L749.5 387.6 L763.2 360.1 L678.6 290.0 L691.3 265.5%22 stroke=%22%23fff%22 stroke-opacity=%220.63%22 stroke-width=%220.8%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M1388.0 377.3 L1398.5 349.2 L1412.3 323.0 L1428.2 300.2 L1433.4 270.3 L1445.9 242.9 L1456.7 218.8 L1466.6 192.0 L1475.8 163.3 L1463.0 128.7 L1471.1 103.3 L1480.0 75.0 L1490.5 48.6 L1498.8 20.5 L1519.1 -2.7 L1526.3 -31.4 L1537.2 -59.9 L1543.1 -83.1 L1554.4 -114.1 L1564.8 -137.7%22 transform=%22translate(1.2 1.4)%22 stroke=%22%235E8FB8%22 stroke-opacity=%220.16%22 stroke-width=%220.48%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M1388.0 377.3 L1398.5 349.2 L1412.3 323.0 L1428.2 300.2 L1433.4 270.3 L1445.9 242.9 L1456.7 218.8 L1466.6 192.0 L1475.8 163.3 L1463.0 128.7 L1471.1 103.3 L1480.0 75.0 L1490.5 48.6 L1498.8 20.5 L1519.1 -2.7 L1526.3 -31.4 L1537.2 -59.9 L1543.1 -83.1 L1554.4 -114.1 L1564.8 -137.7%22 stroke=%22%23fff%22 stroke-opacity=%220.47%22 stroke-width=%220.6%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M2006.6 794.8 L2019.5 770.5 L2030.1 743.4 L2044.2 715.6 L2054.1 689.3 L2067.3 665.4 L2080.6 638.5 L2091.2 614.3 L2103.1 587.1 L2112.6 561.4 L2146.0 544.0 L2163.4 520.6 L2173.4 494.4 L2190.1 472.5 L2201.6 447.2 L2218.9 423.4 L2229.6 398.8 L2247.4 370.7 L2257.7 345.5 L2274.8 323.4 L2288.0 297.0 L2299.6 274.3 L2314.6 248.0 L2298.9 208.9 L2311.8 184.5 L2326.9 157.4 L2325.6 126.7 L2339.0 100.0 L2351.9 72.3 L2361.1 46.2 L2376.0 24.8 L2385.5 -2.5 L2397.7 -30.2 L2408.9 -53.3 L2420.8 -80.1 L2432.6 -106.2 L2447.7 -131.6 L2459.2 -158.9%22 transform=%22translate(1.2 1.4)%22 stroke=%22%235E8FB8%22 stroke-opacity=%220.26%22 stroke-width=%221.04%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M2006.6 794.8 L2019.5 770.5 L2030.1 743.4 L2044.2 715.6 L2054.1 689.3 L2067.3 665.4 L2080.6 638.5 L2091.2 614.3 L2103.1 587.1 L2112.6 561.4 L2146.0 544.0 L2163.4 520.6 L2173.4 494.4 L2190.1 472.5 L2201.6 447.2 L2218.9 423.4 L2229.6 398.8 L2247.4 370.7 L2257.7 345.5 L2274.8 323.4 L2288.0 297.0 L2299.6 274.3 L2314.6 248.0 L2298.9 208.9 L2311.8 184.5 L2326.9 157.4 L2325.6 126.7 L2339.0 100.0 L2351.9 72.3 L2361.1 46.2 L2376.0 24.8 L2385.5 -2.5 L2397.7 -30.2 L2408.9 -53.3 L2420.8 -80.1 L2432.6 -106.2 L2447.7 -131.6 L2459.2 -158.9%22 stroke=%22%23fff%22 stroke-opacity=%220.75%22 stroke-width=%221.3%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M1607.5 506.4 L1619.9 483.7 L1636.3 454.7 L1648.1 431.7 L1662.0 408.6 L1675.5 381.2 L1689.5 356.0 L1701.3 332.7 L1715.4 306.2 L1730.2 282.8 L1744.2 258.3 L1754.9 231.2 L1767.8 209.4 L1780.8 183.2 L1794.1 156.0 L1808.1 131.6 L1824.2 106.7 L1835.6 80.6 L1848.9 56.5 L1861.6 30.7 L1876.9 5.7 L1890.8 -16.2 L1903.3 -40.5 L1916.7 -65.3 L1929.7 -93.1 L1941.1 -117.1 L1957.0 -140.0 L1969.1 -165.8 L1984.4 -191.7 L2049.5 -184.7 L2066.4 -210.1 L2131.9 -200.4 L2145.7 -220.5 L2162.4 -244.8 L2180.4 -268.2 L2195.3 -288.4 L2213.5 -311.4 L2233.2 -336.6 L2249.8 -356.9 L2265.3 -381.8 L2279.6 -405.3 L2298.9 -425.4 L2313.5 -449.8 L2334.0 -469.6 L2350.9 -494.6%22 transform=%22translate(1.2 1.4)%22 stroke=%22%235E8FB8%22 stroke-opacity=%220.25%22 stroke-width=%220.48%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3Cpath d=%22M1607.5 506.4 L1619.9 483.7 L1636.3 454.7 L1648.1 431.7 L1662.0 408.6 L1675.5 381.2 L1689.5 356.0 L1701.3 332.7 L1715.4 306.2 L1730.2 282.8 L1744.2 258.3 L1754.9 231.2 L1767.8 209.4 L1780.8 183.2 L1794.1 156.0 L1808.1 131.6 L1824.2 106.7 L1835.6 80.6 L1848.9 56.5 L1861.6 30.7 L1876.9 5.7 L1890.8 -16.2 L1903.3 -40.5 L1916.7 -65.3 L1929.7 -93.1 L1941.1 -117.1 L1957.0 -140.0 L1969.1 -165.8 L1984.4 -191.7 L2049.5 -184.7 L2066.4 -210.1 L2131.9 -200.4 L2145.7 -220.5 L2162.4 -244.8 L2180.4 -268.2 L2195.3 -288.4 L2213.5 -311.4 L2233.2 -336.6 L2249.8 -356.9 L2265.3 -381.8 L2279.6 -405.3 L2298.9 -425.4 L2313.5 -449.8 L2334.0 -469.6 L2350.9 -494.6%22 stroke=%22%23fff%22 stroke-opacity=%220.71%22 stroke-width=%220.6%22 fill=%22none%22 stroke-linecap=%22round%22 mask=%22url(%23fade)%22/%3E%3C/svg%3E");
@@ -4642,7 +4673,7 @@ var DEMO=false/*@demo*/;
 /* The beta build (dist/beta.html) adds test accounts that live only in this browser: each has its own
    storage, and the "free" one behaves exactly like the demo. See 27c-beta-accounts.js. */
 var BETA=true;
-var APP_VERSION='0.9.0-beta.3';
+var APP_VERSION='0.9.0-beta.4';
 var betaAcct=BETA?betaCurrent():null;
 if(betaAcct&&betaAcct.plan==='free')DEMO=true;
 var KEY=BETA?'cw-beta-'+(betaAcct?betaAcct.id:'signed-out'):(DEMO?'combat-wombat-demo':'initiative-tracker-v1');
@@ -4749,13 +4780,13 @@ var bc=null; try{bc=new BroadcastChannel(KEY);}catch(e){}
    ================================================================ */
 
 var LIB_OK=false;
-function fresh(){return {v:2,libV:2,stars:[],folders:[],folderOf:{},rev:0,ep:uid(),party:[],library:[],encounters:[],encName:null,encCamp:null,images:{},claims:{},opSeen:[],combatants:[],round:0,started:false,paused:false,rfi:false,turnId:null,seq:0,
+function fresh(){return {v:2,libV:2,customSpells:[],stars:[],folders:[],folderOf:{},rev:0,ep:uid(),party:[],library:[],encounters:[],encName:null,encCamp:null,images:{},claims:{},opSeen:[],combatants:[],round:0,started:false,paused:false,rfi:false,turnId:null,seq:0,
   settings:{trackPC:true,trackNPC:true,pcHp:'exact',npcHp:'status',autoStats:false,cardMode:'scroll',crowd:'shrink',skin:'spark',skinV:2,fontSize:'normal',reactionReset:'turn',rxShow:'pc',acShow:'default',imgShow:'on',phoneEdit:true,tvQr:false,sfxTv:true,sfxDm:false,sfxVol:'med',sfxTurn:true,sfxHit:true,sfxEnd:true,sfxCond:true,sfxTimer:true,fxFlash:true,fxNums:'pc',cbMarks:false,showNames:true},
   timer:{mode:'off',scope:'turn',secs:60,cmins:60,showPlayers:true,elapsed:0,startedAt:null,running:false}};}
 
 /* Fills in whatever a saved table is missing. Local saves and the account copy both come through here,
    so a new saved field needs its default in this one place. */
-var LIST_FIELDS=['party','library','encounters','combatants','stars','folders','opSeen','spellRecent'], MAP_FIELDS=['folderOf','images','claims','spellOpt'];
+var LIST_FIELDS=['party','library','encounters','combatants','stars','folders','opSeen','spellRecent','customSpells'], MAP_FIELDS=['folderOf','images','claims','spellOpt'];
 function normalise(s){
   var out=Object.assign(fresh(),s);
   out.settings=Object.assign(fresh().settings,s.settings||{});
@@ -4960,6 +4991,7 @@ function undo(){
   if(!undoStack.length)return;
   var settings=state.settings, timer=state.timer, images=state.images, rev=state.rev, ep=state.ep; state=JSON.parse(undoStack.pop()); state.settings=settings; state.timer=timer; state.images=images; state.rev=rev; state.ep=ep;
   persist(); toast('Undid last change'); render();
+  if(ui.lib&&ui.lib.open)renderLib();   // render() leaves the Library window alone; Undo from its toast must show the result
 }
 
 function toast(msg,undoable){
@@ -8124,7 +8156,7 @@ function renderLib(){
       '<label class="check"><input type="checkbox" class="tgl" data-mmf="leg"'+(L.leg?' checked':'')+'>Legendary only</label>'+
       '<div class="mmfbtns"><button type="button" class="btn small ghost" data-mm="fclear"'+(act.length?'':' disabled')+'>Clear all</button><button type="button" class="btn small" data-mm="filters">Done</button></div></div>':'';
   var chip=function(act_,on,label,title){return '<button type="button" class="chipbtn mmopt'+(on?' on':'')+'" data-mm="'+act_+'" aria-pressed="'+!!on+'" title="'+title+'">'+(on?'<span class="mmck" aria-hidden="true">\u2713</span>':'')+label+'</button>';};
-  el.innerHTML=head+'<div class="mmctl"><input type="search" class="mmsearch" data-mmsearch placeholder="Search name, type, size or CR\u2026" value="'+esc(L.q)+'" aria-label="Search creatures" autocomplete="off">'+(L.tab==='book'?'<button type="button" class="btn small mmnew" data-mm="new" aria-label="New creature">+ New<span class="mmnewx"> creature</span></button>':'')+
+  el.innerHTML=head+'<div class="mmctl"><input type="search" class="mmsearch" data-mmsearch placeholder="Search name, type, size or CR\u2026" value="'+esc(L.q)+'" aria-label="Search creatures" autocomplete="off">'+(L.tab==='book'?'<button type="button" class="btn small mmnew" data-mm="new" aria-label="New creature">+ New<span class="mmnewx">\u00a0creature</span></button>':'')+
       '<div class="mmbar">'+
         '<div class="mmisland mmfisl"><span class="mmfwrap"><button type="button" class="btn small mmfbtn'+(act.length?' on':'')+'" data-mm="filters" aria-expanded="'+!!L.fopen+'" aria-haspopup="dialog">'+ICONS.filter+'<span>Filters</span>'+(act.length?'<span class="mmcnt">'+act.length+'</span>':'')+'</button>'+pop+'</span>'+
           act.map(function(a){return '<button type="button" class="mmfsum" data-mm="unf" data-v="'+a[0]+'" aria-label="Remove filter '+esc(a[1])+'" title="Remove this filter">'+esc(a[1])+' <span aria-hidden="true">\u00d7</span></button>';}).join('')+'</div>'+
@@ -8170,11 +8202,6 @@ document.addEventListener('click',function(e){
     case 'exp':L.exp[k]=!L.exp[k];mmRenderList(true);return;
     case 'qty':{var q0=parseInt(L.qty[k]||1,10)||1, q1=Math.max(1,Math.min(20,q0+parseInt(t.dataset.d,10))); L.qty[k]=q1; var qi=document.querySelector('[data-mmq="'+String(k).replace(/"/g,'\\"')+'"]'); if(qi)qi.value=q1; return;}
     case 'star':if(m){var ix=state.stars.indexOf(k); if(ix>=0){state.stars.splice(ix,1); delete state.folderOf[k];} else state.stars.push(k); persist(); mmRenderList(true); renderFolderBar(); updateLibCounts();} return;
-    case 'spshow':L.spshow=t.dataset.v; renderLib(); return;
-    case 'spinc':case 'spexc':{
-      var shown=SPELLS.filter(function(x){var q2=(L.spq||'').trim().toLowerCase(), lv2=L.splv==null?'':L.splv, cl2=L.spcl||''; if(q2&&x.n.toLowerCase().indexOf(q2)<0)return false; if(lv2!==''&&String(x.l)!==String(lv2))return false; if(cl2&&(x.cl||[]).indexOf(cl2)<0)return false; var inc=spellIncluded(x); return !L.spshow||L.spshow==='all'||(L.spshow==='in'?inc:!inc);});
-      shown.forEach(function(x){var want=(a==='spinc'); if(want===!!x.df)delete state.spellOpt[x.n]; else state.spellOpt[x.n]=want;}); persist(); renderLib(); return;}
-    case 'sprst':state.spellOpt={}; persist(); renderLib(); return;
     case 'stdgrp':{var gv=t.dataset.v; L.npcOpen[gv]=!L.npcOpen[gv]; renderStdNpcs(); var gb=document.querySelector('.stdgrp[data-v="'+gv.replace(/"/g,'\\"')+'"]'); if(gb)gb.focus(); return;}
     case 'stdstar':{var si2=parseInt(String(k).slice(4),10), r2=STD_NPCS[si2], b2=stdBase(si2); if(!r2||!b2)return;
       if(stdIsSaved(si2)){var lc2=r2[0].toLowerCase(); toast('Removed '+r2[0]+' from your NPCs',true); mutate(function(){var gone=state.library.filter(function(x){return monSrc(x)==='npc'&&x.name.toLowerCase()===lc2;}).map(function(x){return x.id;}); state.library=state.library.filter(function(x){return gone.indexOf(x.id)<0;}); state.stars=state.stars.filter(function(s3){return gone.indexOf(s3.slice(3))<0;});});}
@@ -8205,10 +8232,7 @@ document.addEventListener('click',function(e){
   if(L.fmenu&&!(e.target.closest&&e.target.closest('.mmfwrap'))){L.fmenu=null; L.fmenuNew=false; mmRenderList(true);}
 },true);
 document.addEventListener('change',function(e){
-  var t=e.target; if(t.dataset&&t.dataset.spinc!==undefined){
-    var x=SPELL_BY[t.dataset.spinc]; if(x){ if(t.checked===!!x.df)delete state.spellOpt[x.n]; else state.spellOpt[x.n]=t.checked; persist(); var ce=document.getElementById('spcount'); if(ce)ce.textContent=SPELLS.filter(spellIncluded).length; if(ui.lib&&ui.lib.spshow&&ui.lib.spshow!=='all')renderLib(); }
-    return;
-  }
+  var t=e.target;
   if(t.dataset&&t.dataset.spf!==undefined&&ui.lib){var L2=ui.lib; if(t.dataset.spf==='lv')L2.splv=t.value; else if(t.dataset.spf==='cl')L2.spcl=t.value; renderLib(); return;}
   if(t.dataset&&t.dataset.spin!==undefined&&ui.aoe){ spellInput(t,'change'); return; }
   if(!t.dataset||t.dataset.rck===undefined)return;
@@ -8646,10 +8670,17 @@ function dmgTypeLabel(ty){return ty==='untyped'?'Unspecified':cap(ty);}
 /* ---------- Spells (SRD 5.2) ---------- */
 var SPELLS=[]; try{SPELLS=JSON.parse(document.getElementById('spdata').textContent);}catch(e){}
 var SPELL_BY={}; SPELLS.forEach(function(x){SPELL_BY[x.n]=x;});
+/* Spells are the SRD list plus the DM's own (state.customSpells, same shape, custom:true). Always look them up here. */
+function spellsAll(){return SPELLS.concat(state.customSpells||[]);}
+function spellGet(n){if(!n)return null; var c=(state.customSpells||[]).filter(function(x){return x.n===n;})[0]; return c||SPELL_BY[n]||null;}
+/* Tags come from what a spell does, so they are always right, for your own spells too. */
+var SP_TAG={damage:'Damage',heal:'Healing',condition:'Condition',utility:'Utility'};
+function spTags(x){var t=[]; if(x.dm)t.push('damage'); if(x.hl||x.hf)t.push('heal'); if(x.cd&&x.cd.length)t.push('condition'); if(!t.length)t.push('utility'); return t;}
+function spTagChips(x){return '<span class="sptags">'+spTags(x).map(function(k){return '<span class="sptag t-'+k+'">'+SP_TAG[k]+'</span>';}).join('')+'</span>';}
+function spHasTag(x,tag){var t=spTags(x); return tag==='all'?t.indexOf('utility')<0:t.indexOf(tag)>=0;}
 var SP_CLASS={Bd:'Bard',Cl:'Cleric',Dr:'Druid',Pa:'Paladin',Rn:'Ranger',So:'Sorcerer',Wl:'Warlock',Wz:'Wizard'};
 var SP_CLASS_AB={Bd:'cha',Pa:'cha',So:'cha',Wl:'cha',Cl:'wis',Dr:'wis',Rn:'wis',Wz:'int'};
 var SP_SCHOOL={Abj:'Abjuration',Con:'Conjuration',Div:'Divination',Enc:'Enchantment',Evo:'Evocation',Ill:'Illusion',Nec:'Necromancy',Tra:'Transmutation'};
-function spellIncluded(x){var o=state.spellOpt&&state.spellOpt[x.n]; return o===undefined?!!x.df:!!o;}
 function spLv(x){return x.l===0?'Cantrip':'Level '+x.l;}
 function spCastTime(x){return {A:'Action',BA:'Bonus action',R:'Reaction'}[x.t]||x.t;}
 function spEffect(x){
@@ -8711,13 +8742,13 @@ function spDurRounds(du){
   var n=parseInt(m[1],10), u=m[2].toLowerCase(), r=u==='round'?n:(u==='minute'?n*10:n*600); return r<=100?r:null;
 }
 function spellSyncCast(){
-  var A=ui.aoe; if(!A.sp)return; var x=SPELL_BY[A.sp.n], info=spCastInfo(x,A.sp.caster);
+  var A=ui.aoe; if(!A.sp)return; var x=spellGet(A.sp.n), info=spCastInfo(x,A.sp.caster);
   A.sp.how=info&&info.how||'';
   if(A.sp.dcAuto&&x.sv)A.dc=(info&&info.dc!=null)?String(info.dc):'';
   if(A.sp.atkAuto&&x.at)A.att.mod=(info&&info.atk!=null)?String(info.atk):'0';
 }
 function spellConfigure(){
-  var A=ui.aoe, q=A.sp, x=SPELL_BY[q.n], at=A.att, parts=spParts(x,q);
+  var A=ui.aoe, q=A.sp, x=spellGet(q.n), at=A.att, parts=spParts(x,q);
   if(spIsHeal(x)){A.kind='heal'; A.lastHeal='heal'; at.use=false; A.sv=false; A.amt=''; q.info=''; spellSyncCast(); return;}
   A.kind=(x.dm||!(x.cd&&x.cd.length))?'dmg':'cond';
   at.use=!!x.at; at.roll=''; at.hit={}; at.info='';
@@ -8734,7 +8765,7 @@ function spellInput(t,kind){
   if(k==='q'){if(kind!=='input')return; A.spq=t.value; var lst=document.getElementById('splist'); if(lst)lst.innerHTML=spellPickList(A); return;}
   if(k==='lv'){A.splv=t.value; var l2=document.getElementById('splist'); if(l2)l2.innerHTML=spellPickList(A); return;}
   if(!A.sp||kind!=='change')return;
-  var q=A.sp, x=SPELL_BY[q.n];
+  var q=A.sp, x=spellGet(q.n);
   if(k==='caster'){q.caster=t.value; A.lastCaster=t.value; if(!t.value)q.conc=false; spellSyncCast();}
   else if(k==='conc')q.conc=t.checked;
   else if(k==='slot'){q.slot=parseInt(t.value,10); q.cnt=spCount(x,q); spellConfigure();}
@@ -8747,7 +8778,7 @@ function spellInput(t,kind){
 
 /* Healing spells: dice (or a fixed number) plus the caster's spellcasting modifier, more with a higher slot. */
 function spIsHeal(x){return !!(x&&(x.hl||x.hf));}
-function spHealFull(){var A=ui.aoe, x=A&&A.spellTab&&A.sp?SPELL_BY[A.sp.n]:null; return !!(x&&x.hf==='full'&&A.kind==='heal');}
+function spHealFull(){var A=ui.aoe, x=A&&A.spellTab&&A.sp?spellGet(A.sp.n):null; return !!(x&&x.hf==='full'&&A.kind==='heal');}
 function spHealDice(x,q){return (x.hu&&x.hu[String(q.slot)])||x.hl||'';}
 function spHealText(x,q){
   if(x.hf==='full')return 'Back to full hit points';
@@ -8756,7 +8787,7 @@ function spHealText(x,q){
   return d+(md==null?' + spellcasting modifier':(md<0?' \u2212 '+(-md):' + '+md)+' '+info.modAb);
 }
 function spellRollHeal(){
-  var A=ui.aoe, q=A.sp, x=SPELL_BY[q.n]; if(x.hf==='full')return;
+  var A=ui.aoe, q=A.sp, x=spellGet(q.n); if(x.hf==='full')return;
   var d=spHealDice(x,q);
   if(x.hx){var n=Math.max(1,aoeSelCount()); A.amt=String(Math.floor(parseInt(d,10)/n)); q.info=d+' divided between '+n+(n===1?' target':' targets')+' = '+A.amt+' each'; return;}
   var info=x.hm?spCastInfo(x,q.caster):null, md=info&&info.mod!=null?info.mod:0;
@@ -8764,14 +8795,14 @@ function spellRollHeal(){
   q.info=d+(x.hm?' + '+(info&&info.mod!=null?'mod':'0 (no caster: add the modifier yourself)'):'')+': '+r.text+' = '+A.amt;
 }
 function spellSelect(name){
-  var A=ui.aoe, x=SPELL_BY[name]; if(!x)return; var prev=A.sp||{};
+  var A=ui.aoe, x=spellGet(name); if(!x)return; var prev=A.sp||{};
   A.sp={n:name,slot:x.l||0,tier:0,cnt:1,caster:prev.caster||A.lastCaster||'',conc:false,dcAuto:true,atkAuto:true,type:(x.dt&&x.dt[0])||'untyped',info:'',how:''};
   A.sp.cnt=spCount(x,A.sp);
   state.spellRecent=[name].concat((state.spellRecent||[]).filter(function(y){return y!==name;})).slice(0,8); persist();
   spellConfigure();
 }
 function spellRoll(){
-  var A=ui.aoe, q=A.sp; if(!q)return; var x=SPELL_BY[q.n];
+  var A=ui.aoe, q=A.sp; if(!q)return; var x=spellGet(q.n);
   if(spIsHeal(x)){spellRollHeal(); return;}
   var parts=spParts(x,q); if(!parts.length)return;
   var lines=[];
@@ -8784,17 +8815,19 @@ function spellRoll(){
 }
 function spellPickList(A){
   var q=(A.spq||'').trim().toLowerCase(), lv=A.splv==null?'':A.splv, rec=state.spellRecent||[];
-  var list=SPELLS.filter(function(x){return spellIncluded(x)&&(lv===''||String(x.l)===String(lv))&&(!q||x.n.toLowerCase().indexOf(q)>=0||(x.cd||[]).join(' ').toLowerCase().indexOf(q)>=0||(x.dt||[]).join(' ').indexOf(q)>=0);});
-  if(!q&&lv===''){var r=rec.map(function(n){return SPELL_BY[n];}).filter(function(x){return x&&spellIncluded(x);}); list=r.concat(list.filter(function(x){return r.indexOf(x)<0;}));}
-  var row=function(x,i){return '<button type="button" class="sprowbtn" data-aoe="spPick" data-n="'+esc(x.n)+'"><span class="spn"><b>'+esc(x.n)+'</b>'+((!q&&lv===''&&i<rec.length&&rec.indexOf(x.n)>=0)?'<em class="sprec">recent</em>':'')+'</span><small>'+esc(spLv(x))+' \u00b7 '+esc(spEffect(x)||(SP_SCHOOL[x.s]||x.s))+'</small></button>';};
-  return list.length?list.slice(0,80).map(row).join('')+(list.length>80?'<p class="help">Showing 80 of '+list.length+'. Type to narrow it down.</p>':''):'<p class="help">No spell matches. Spells are chosen for combat in the Library, under Spells.</p>';
+  var tag=A.sptag||'all';
+  var list=spellsAll().filter(function(x){return spHasTag(x,tag)&&(lv===''||String(x.l)===String(lv))&&(!q||x.n.toLowerCase().indexOf(q)>=0||(x.cd||[]).join(' ').toLowerCase().indexOf(q)>=0||(x.dt||[]).join(' ').indexOf(q)>=0);});
+  if(!q&&lv===''){var r=rec.map(function(n){return spellGet(n);}).filter(function(x){return x&&spHasTag(x,tag);}); list=r.concat(list.filter(function(x){return r.indexOf(x)<0;}));}
+  var row=function(x,i){return '<button type="button" class="sprowbtn" data-aoe="spPick" data-n="'+esc(x.n)+'"><span class="spn"><b>'+esc(x.n)+'</b>'+((!q&&lv===''&&i<rec.length&&rec.indexOf(x.n)>=0)?'<em class="sprec">recent</em>':'')+'</span><small>'+esc(spLv(x))+' \u00b7 '+esc(spEffect(x)||(SP_SCHOOL[x.s]||x.s))+'</small>'+(x.custom?'<em class="sprec yours">yours</em>':'')+'</button>';};
+  return list.length?list.slice(0,80).map(row).join('')+(list.length>80?'<p class="help">Showing 80 of '+list.length+'. Type to narrow it down.</p>':''):'<p class="help">No spell matches. Try another tag, or make your own in the Library, under Spells.</p>';
 }
 function spellPaneHTML(A){
   var q=A.sp, opt=function(v,on,l){return '<option value="'+esc(v)+'"'+(on?' selected':'')+'>'+esc(l)+'</option>';};
   if(!q){
-    return '<div class="sppane"><div class="spsearch"><input type="search" data-spin="q" placeholder="Search spells\u2026" value="'+esc(A.spq||'')+'" aria-label="Search spells" autocomplete="off"><select data-spin="lv" aria-label="Spell level">'+opt('',(A.splv==null||A.splv==='') ,'All levels')+opt('0',A.splv==='0','Cantrips')+[1,2,3,4,5,6,7,8,9].map(function(l){return opt(String(l),A.splv===String(l),'Level '+l);}).join('')+'</select></div><div class="splist" id="splist">'+spellPickList(A)+'</div></div>';
+    var tg=A.sptag||'all';
+    return '<div class="sppane"><div class="seg sm sptagseg" role="radiogroup" aria-label="Show spells that">'+[['all','All'],['damage','Damage'],['heal','Healing'],['condition','Conditions']].map(function(o){return '<button type="button" role="radio" aria-checked="'+(tg===o[0])+'" data-aoe="sptag" data-v="'+o[0]+'">'+o[1]+'</button>';}).join('')+'</div><div class="spsearch"><input type="search" data-spin="q" placeholder="Search spells\u2026" value="'+esc(A.spq||'')+'" aria-label="Search spells" autocomplete="off"><select data-spin="lv" aria-label="Spell level">'+opt('',(A.splv==null||A.splv==='') ,'All levels')+opt('0',A.splv==='0','Cantrips')+[1,2,3,4,5,6,7,8,9].map(function(l){return opt(String(l),A.splv===String(l),'Level '+l);}).join('')+'</select></div><div class="splist" id="splist">'+spellPickList(A)+'</div></div>';
   }
-  var x=SPELL_BY[q.n], parts=spParts(x,q), hasUp=x.l>0&&((x.up&&Object.keys(x.up).length)||x.x||(x.hu&&Object.keys(x.hu).length)), hasTier=x.l===0&&((x.cu&&x.cu.length)||x.xt);
+  var x=spellGet(q.n), parts=spParts(x,q), hasUp=x.l>0&&((x.up&&Object.keys(x.up).length)||x.x||(x.hu&&Object.keys(x.hu).length)), hasTier=x.l===0&&((x.cu&&x.cu.length)||x.xt);
   var casters='<option value="">No caster</option>'+state.combatants.map(function(c){return opt(c.id,q.caster===c.id,c.name);}).join('');
   var diceTxt=parts.map(function(p){return p.dice+(p.type!=='untyped'?' '+p.type:'');}).join(' + ')+(q.cnt>1?' \u00d7 '+q.cnt:'');
   var tiers=hasTier?[1,5,11,17].map(function(l,i){return [String(i),'Level '+l+(i<3?'\u2013'+([4,10,16][i]):'+')];}):[];
@@ -8811,7 +8844,7 @@ function spellPaneHTML(A){
     (x.cd&&x.cd.length&&x.dm?'<p class="help spwhy">Anyone who fails the save also gets '+esc(A.cond.name)+'.</p>':'')+'</div></div>';
 }
 function spellAfter(A,fails){
-  var x=A.spellTab&&A.sp?SPELL_BY[A.sp.n]:null; if(!x)return;
+  var x=A.spellTab&&A.sp?spellGet(A.sp.n):null; if(!x)return;
   if(x.cd&&x.cd.length&&A.kind==='dmg'&&A.cond&&A.cond.name){
     (fails||[]).forEach(function(t){var cd=makeCond(t.c,A.cond,A.cond.name); t.c.conditions=t.c.conditions.filter(function(y){return y.name!==A.cond.name;}); t.c.conditions.push(cd); notes.push(t.name+' is '+A.cond.name);});
   }
@@ -8820,22 +8853,6 @@ function spellAfter(A,fails){
       c.conditions=c.conditions.filter(function(y){return y.name!=='Concentrating';}); var cd2=makeCond(c,{dur:'manual'},'Concentrating'); cd2.note=x.n; c.conditions.push(cd2);
       notes.push(c.name+' concentrates on '+x.n+(had&&had.note&&had.note!==x.n?' (no longer on '+had.note+')':''));}
   }
-}
-function renderSpellsTab(el,head){
-  var L=ui.lib, q=(L.spq||'').trim().toLowerCase(), show=L.spshow||'all', lv=L.splv==null?'':L.splv, cl=L.spcl||'';
-  var list=SPELLS.filter(function(x){
-    if(q&&x.n.toLowerCase().indexOf(q)<0)return false; if(lv!==''&&String(x.l)!==String(lv))return false; if(cl&&(x.cl||[]).indexOf(cl)<0)return false;
-    var inc=spellIncluded(x); return show==='all'||(show==='in'?inc:!inc);});
-  var inAll=SPELLS.filter(spellIncluded).length, opt=function(v,on,l){return '<option value="'+esc(v)+'"'+(on?' selected':'')+'>'+esc(l)+'</option>';};
-  var rows=list.map(function(x){var inc=spellIncluded(x);
-    return '<label class="mmrow sprow2" data-spn="'+esc(x.n)+'"><input type="checkbox" data-spinc="'+esc(x.n)+'"'+(inc?' checked':'')+' aria-label="Include '+esc(x.n)+' in combat"><span class="mmname static"><span class="mmtitle"><b>'+esc(x.n)+'</b>'+(x.co?'<em class="sprec">concentration</em>':'')+'</span><small>'+esc(spLv(x))+' \u00b7 '+esc(SP_SCHOOL[x.s]||x.s)+' \u00b7 '+esc((x.cl||[]).map(function(k){return SP_CLASS[k];}).join(', '))+'</small></span><span class="spsum">'+esc(spEffect(x)||'No damage or condition')+'</span></label>';}).join('');
-  el.innerHTML=head+'<div class="mmctl"><input type="search" class="mmsearch" data-spf="q" placeholder="Search spells\u2026" value="'+esc(L.spq||'')+'" aria-label="Search spells" autocomplete="off">'+
-    '<div class="mmbar"><div class="mmisland spisl" role="group" aria-label="Show"><span class="mmilab">Show</span><div class="seg sm" role="radiogroup" aria-label="Which spells">'+[['all','All'],['in','In combat'],['out','Not in combat']].map(function(o){return '<button type="button" role="radio" aria-checked="'+(show===o[0])+'" data-mm="spshow" data-v="'+o[0]+'">'+o[1]+'</button>';}).join('')+'</div></div>'+
-    '<div class="mmisland spisl" role="group" aria-label="Filter"><span class="mmilab">Filter</span><select data-spf="lv" aria-label="Level">'+opt('',lv==='','All levels')+opt('0',lv==='0','Cantrips')+[1,2,3,4,5,6,7,8,9].map(function(l){return opt(String(l),lv===String(l),'Level '+l);}).join('')+'</select><select data-spf="cl" aria-label="Class">'+opt('',cl==='','All classes')+Object.keys(SP_CLASS).map(function(k){return opt(k,cl===k,SP_CLASS[k]);}).join('')+'</select></div>'+
-    '<div class="mmisland spisl" role="group" aria-label="Choose in bulk"><span class="mmilab">In combat</span><button type="button" class="btn small" data-mm="spinc">Include these</button><button type="button" class="btn small" data-mm="spexc">Remove these</button><button type="button" class="btn small ghost" data-mm="sprst">Reset to default</button></div></div></div>'+
-    '<p class="help spintro"><b id="spcount">'+inAll+'</b> of '+SPELLS.length+' spells are in combat. Tick the spells you want in the Target window\u2019s Spells tab. By default that\u2019s the ones that do damage, heal, or put a condition on a creature.</p>'+
-    '<div class="mmlist" id="splibList">'+(rows||'<p class="help">No spell matches.</p>')+'</div>'+
-    '<p class="mmfoot">Spell data from the System Reference Document 5.2 \u00a9 Wizards of the Coast LLC, licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>. Not affiliated with or endorsed by Wizards of the Coast.</p></div></div>';
 }
 
 function aoeNew(){return {amt:'',kind:'dmg',sel:{},eff:{},res:{},lr:{},dc:'',ab:'dex',adv:'n',onSave:'half',sv:false,
@@ -9066,7 +9083,7 @@ function aoeApply(){
 /* After applying: keep the options, clear the selection and numbers, and close the window. */
 function aoeReset(){
   var A=ui.aoe;
-  ui.aoe=Object.assign(aoeNew(),{kind:A.kind,spellTab:A.spellTab,sp:A.sp?Object.assign({},A.sp,{conc:false,info:''}):null,lastCaster:A.lastCaster,dc:A.sp?A.dc:'',spq:A.spq,splv:A.splv,lastHeal:A.lastHeal,ab:A.ab,adv:A.adv,onSave:A.onSave,sv:A.sv,cond:A.cond,condOp:A.condOp,
+  ui.aoe=Object.assign(aoeNew(),{kind:A.kind,spellTab:A.spellTab,sptag:A.sptag,sp:A.sp?Object.assign({},A.sp,{conc:false,info:''}):null,lastCaster:A.lastCaster,dc:A.sp?A.dc:'',spq:A.spq,splv:A.splv,lastHeal:A.lastHeal,ab:A.ab,adv:A.adv,onSave:A.onSave,sv:A.sv,cond:A.cond,condOp:A.condOp,
     att:{use:A.att.use,roll:'',mod:A.att.mod,adv:A.att.adv,info:'',lines:A.att.lines.map(function(l){return {amt:'',type:l.type,sv:l.sv};}),res:A.att.res,hit:{}}});
   ui.aoeOpen=false; renderAoe();
 }
@@ -9145,6 +9162,7 @@ document.addEventListener('click',function(e){
       if((A.kind==='cond')!==(nk==='cond'))aoeConvertSel(nk==='cond');
       A.kind=nk;break;
     case 'healmode':A.kind=v;A.lastHeal=v;break;
+    case 'sptag':A.sptag=v; break;
     case 'spPick':spellSelect(t.dataset.n); break;
     case 'spChange':A.lastCaster=A.sp?A.sp.caster:''; A.sp=null; A.spq=''; A.splv=''; A.sel=A.sel||{}; break;
     case 'spRoll':spellRoll(); break;
@@ -9216,6 +9234,176 @@ document.addEventListener('keydown',function(e){
   if(e.key==='Enter'&&(t.dataset.aoein==='amt'||t.dataset.aoein==='aroll'||t.dataset.aoein==='amod'||t.dataset.aoein==='aamt')){e.preventDefault();aoeApply();}
 });
 
+/* ================================================================
+   26b. Spell library
+   The Library's Spells tab: tags to filter by, your own spells, and the form that makes or edits one
+   (an SRD spell is never changed: "Edit a copy" makes your own version). Your spells live in
+   state.customSpells in the same shape as spells.json, so the Target window uses them as they are.
+   Clicks use data-spl="name".
+   ================================================================ */
+
+var SPL_TAGS=[['all','All'],['damage','Damage'],['heal','Healing'],['condition','Condition'],['utility','Utility'],['yours','Yours']];
+var SPL_TIMES=[['A','Action'],['BA','Bonus action'],['R','Reaction'],['1min','1 minute'],['10min','10 minutes'],['1h','1 hour']];
+var SPL_DICE=/^\d+(d\d+)?([+-]\d+(d\d+)?)*$/;
+
+function splEsc(v){return esc(v==null?'':String(v));}
+function splFiltered(){
+  var L=ui.lib, q=(L.spq||'').trim().toLowerCase(), lv=L.splv==null?'':L.splv, cl=L.spcl||'', tag=L.sptag||'all';
+  return spellsAll().filter(function(x){
+    if(q&&x.n.toLowerCase().indexOf(q)<0)return false;
+    if(lv!==''&&String(x.l)!==String(lv))return false;
+    if(cl&&(x.cl||[]).indexOf(cl)<0)return false;
+    if(tag==='yours')return !!x.custom;
+    return tag==='all'||spTags(x).indexOf(tag)>=0;
+  }).sort(function(a,b){return a.n.localeCompare(b.n);});
+}
+function renderSpellsTab(el,head){
+  var L=ui.lib;
+  if(L.spform){el.innerHTML=head+splFormHTML(L.spform); var nf=el.querySelector('[data-spff=n]'); if(nf&&!L.spform.focused){L.spform.focused=true; nf.focus(); nf.select();} return;}
+  var tag=L.sptag||'all', lv=L.splv==null?'':L.splv, cl=L.spcl||'', list=splFiltered(), mine=(state.customSpells||[]).length;
+  var opt=function(v,on,l){return '<option value="'+splEsc(v)+'"'+(on?' selected':'')+'>'+splEsc(l)+'</option>';};
+  var rows=list.map(function(x){
+    var meta=spLv(x)+' · '+(SP_SCHOOL[x.s]||x.s||'')+((x.cl&&x.cl.length)?' · '+x.cl.map(function(k){return SP_CLASS[k];}).join(', '):'');
+    var acts=x.custom?
+      '<button type="button" class="btn small iconbtn" data-spl="edit" data-n="'+splEsc(x.n)+'" aria-label="Edit '+splEsc(x.n)+'" title="Edit">'+ICONS.pencil+'</button>'+
+      '<button type="button" class="btn small iconbtn" data-spl="del" data-n="'+splEsc(x.n)+'" aria-label="Delete '+splEsc(x.n)+'" title="Delete">×</button>':
+      '<button type="button" class="btn small iconbtn" data-spl="copy" data-n="'+splEsc(x.n)+'" aria-label="Edit a copy of '+splEsc(x.n)+'" title="Edit a copy: make your own version">'+ICONS.pencil+'</button>';
+    return '<div class="mmrow sprow2" data-spn="'+splEsc(x.n)+'"><span class="mmname static"><span class="mmtitle"><b>'+splEsc(x.n)+'</b>'+(x.custom?'<em class="sprec yours">yours</em>':'')+(x.co?'<em class="sprec">concentration</em>':'')+'</span>'+
+      '<small>'+splEsc(meta)+'</small>'+spTagChips(x)+'</span><span class="spsum">'+splEsc(spEffect(x)||'No damage, healing or condition')+'</span><span class="spacts">'+acts+'</span></div>';
+  }).join('');
+  el.innerHTML=head+'<div class="mmctl"><input type="search" class="mmsearch" data-spf="q" placeholder="Search spells…" value="'+splEsc(L.spq||'')+'" aria-label="Search spells" autocomplete="off">'+
+    '<button type="button" class="btn small mmnew" data-spl="new" aria-label="New spell">+ New<span class="mmnewx">\u00a0spell</span></button>'+
+    '<div class="mmbar"><div class="mmisland spisl" role="group" aria-label="Tags"><div class="seg sm sptagseg" role="radiogroup" aria-label="Show spells tagged">'+
+      SPL_TAGS.map(function(o){return '<button type="button" role="radio" aria-checked="'+(tag===o[0])+'" data-spl="tag" data-v="'+o[0]+'">'+o[1]+(o[0]==='yours'&&mine?' <span class="mmcnt">'+mine+'</span>':'')+'</button>';}).join('')+'</div></div>'+
+    '<div class="mmisland spisl" role="group" aria-label="Filter"><select data-spf="lv" aria-label="Level">'+opt('',lv==='','All levels')+opt('0',lv==='0','Cantrips')+[1,2,3,4,5,6,7,8,9].map(function(l){return opt(String(l),lv===String(l),'Level '+l);}).join('')+'</select>'+
+      '<select data-spf="cl" aria-label="Class">'+opt('',cl==='','All classes')+Object.keys(SP_CLASS).map(function(k){return opt(k,cl===k,SP_CLASS[k]);}).join('')+'</select></div></div></div>'+
+    '<p class="help spintro"><b id="spcount">'+list.length+'</b> spell'+(list.length===1?'':'s')+'. Tags come from what a spell does. The Target window’s Spells tab filters by the same tags. Make your own with + New, or edit a copy of any spell.</p>'+
+    '<div class="mmlist" id="splibList">'+(rows||'<p class="help">No spell matches.'+(tag==='yours'?' Make one with + New.':'')+'</p>')+'</div>'+
+    '<p class="mmfoot">Spell data from the System Reference Document 5.2 © Wizards of the Coast LLC, licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>. Not affiliated with or endorsed by Wizards of the Coast.</p></div></div>';
+}
+
+/* ---------- the form ---------- */
+function splPer(base,up,l){
+  /* "per slot level above": the difference between the base dice and one level up, when it is simple */
+  var u=up&&up[String(l+1)]; if(!base||!u)return '';
+  var a=/^(\d+)d(\d+)$/.exec(base), b=/^(\d+)d(\d+)$/.exec(u);
+  if(a&&b&&a[2]===b[2]&&+b[1]>+a[1])return (b[1]-a[1])+'d'+a[2];
+  if(/^\d+$/.test(base)&&/^\d+$/.test(u)&&+u>+base)return String(u-base);
+  return '';
+}
+function splDraft(x,mode){
+  x=x||{};
+  return {mode:mode, orig:mode==='edit'?x.n:null, base:mode==='copy'?x.n:(x.base||null),
+    n:mode==='copy'?x.n+' (custom)':(x.n||''), l:x.l==null?1:x.l, s:x.s||'Evo', t:x.t||'A', r:x.r||'', du:x.du||'Instant', co:!!x.co, cl:(x.cl||[]).slice(),
+    at:x.at||'', sv:x.sv||'', ok:x.ok||'half', dm:(x.dp&&x.dp[0])?x.dp[0][0]:(x.dm||''), dt:(x.dp&&x.dp[0])?x.dp[0][1]:((x.dt&&x.dt[0])||'fire'), dper:splPer(x.dm,x.up,x.l),
+    cd:(x.cd&&x.cd[0])||'', hl:x.hf==='full'?'':(x.hl||''), hm:!!x.hm, hper:splPer(x.hl,x.hu,x.l), hf:x.hf==='full', dp:mode==='copy'&&x.dp?x.dp:null, err:''};
+}
+function splFormHTML(F){
+  var opt=function(v,cur,l){return '<option value="'+splEsc(v)+'"'+(String(cur)===String(v)?' selected':'')+'>'+splEsc(l)+'</option>';};
+  var fld=function(k,label,html,cls){return '<label class="spf'+(cls?' '+cls:'')+'"><span>'+label+'</span>'+html+'</label>';};
+  var txt=function(k,v,ph){return '<input type="text" data-spff="'+k+'" name="'+k+'" value="'+splEsc(v)+'" autocomplete="off"'+(ph?' placeholder="'+splEsc(ph)+'"':'')+'>';};
+  var title=F.mode==='edit'?'Edit '+F.orig:(F.mode==='copy'?'Your copy of '+F.base:'New spell');
+  return '<form class="spform" data-spform novalidate><div class="spfhead"><h3>'+splEsc(title)+'</h3>'+(F.mode==='copy'?'<p class="help">The original stays as it is. Your copy is saved as your own spell.</p>':'')+'</div>'+
+    (F.err?'<p class="sperr" role="alert">'+splEsc(F.err)+'</p>':'')+
+    '<fieldset><legend>About</legend><div class="spfgrid">'+
+      fld('n','Name',txt('n',F.n,''),'wide')+
+      fld('l','Level','<select data-spff="l" name="l">'+opt(0,F.l,'Cantrip')+[1,2,3,4,5,6,7,8,9].map(function(l){return opt(l,F.l,'Level '+l);}).join('')+'</select>')+
+      fld('s','School','<select data-spff="s" name="s">'+Object.keys(SP_SCHOOL).map(function(k){return opt(k,F.s,SP_SCHOOL[k]);}).join('')+'</select>')+
+      fld('t','Casting time','<select data-spff="t" name="t">'+SPL_TIMES.map(function(o){return opt(o[0],F.t,o[1]);}).join('')+'</select>')+
+      fld('r','Range',txt('r',F.r,'Example: 60 feet'))+
+      fld('du','Duration',txt('du',F.du,'Example: 1 minute'))+
+      '<label class="spf spck"><input type="checkbox" data-spff="co" name="co"'+(F.co?' checked':'')+'><span>Concentration</span></label>'+
+    '</div><div class="spcls" role="group" aria-label="Classes"><span class="spcl-lab">Classes</span>'+Object.keys(SP_CLASS).map(function(k){return '<label class="spck"><input type="checkbox" name="cl" value="'+k+'"'+(F.cl.indexOf(k)>=0?' checked':'')+'><span>'+SP_CLASS[k]+'</span></label>';}).join('')+'</div></fieldset>'+
+    '<fieldset><legend>To hit or save</legend><div class="spfgrid">'+
+      fld('at','Attack roll','<select data-spff="at" name="at">'+opt('',F.at,'None')+opt('r',F.at,'Ranged spell attack')+opt('m',F.at,'Melee spell attack')+'</select>')+
+      fld('sv','Saving throw','<select data-spff="sv" name="sv">'+opt('',F.sv,'None')+ABIL.map(function(a){return opt(a[0],F.sv,a[1]);}).join('')+'</select>')+
+      fld('ok','On a successful save','<select data-spff="ok" name="ok">'+opt('half',F.ok,'Half damage')+opt('none',F.ok,'No damage')+'</select>')+
+    '</div></fieldset>'+
+    '<fieldset><legend>What it does</legend><p class="help">Fill in any that apply. The tags follow from these: damage, healing, a condition, or none of them (utility).</p><div class="spfgrid">'+
+      fld('dm','Damage dice',txt('dm',F.dm,'Example: 8d6'))+
+      fld('dt','Damage type','<select data-spff="dt" name="dt">'+DMG_TYPES.filter(function(t){return t!=='untyped';}).map(function(t){return opt(t,F.dt,dmgTypeLabel(t));}).join('')+'</select>')+
+      fld('dper','More damage per slot level above',txt('dper',F.dper,'Example: 1d6'))+
+      fld('cd','Condition','<select data-spff="cd" name="cd">'+opt('',F.cd,'None')+CONDITIONS.map(function(c){return opt(c,F.cd,c);}).join('')+'</select>')+
+      fld('hl','Healing dice or amount',txt('hl',F.hl,'Example: 2d8'))+
+      fld('hper','More healing per slot level above',txt('hper',F.hper,'Example: 2d8'))+
+      '<label class="spf spck"><input type="checkbox" data-spff="hm" name="hm"'+(F.hm?' checked':'')+'><span>Add the caster’s spellcasting modifier to healing</span></label>'+
+      '<label class="spf spck"><input type="checkbox" data-spff="hf" name="hf"'+(F.hf?' checked':'')+'><span>Heals to full hit points</span></label>'+
+    '</div></fieldset>'+
+    '<div class="spfbtns"><button type="submit" class="btn primary">Save spell</button><button type="button" class="btn" data-spl="cancel">Cancel</button></div></form>';
+}
+function splUp(base,per,l){
+  /* dice at each higher slot: 8d6 with 1d6 per level -> 9d6, 10d6... */
+  if(!base||!per||l<1)return null;
+  var a=/^(\d+)d(\d+)$/.exec(base), p=/^(\d+)d(\d+)$/.exec(per), out={};
+  for(var s=l+1;s<=9;s++){var k=s-l;
+    if(a&&p&&a[2]===p[2])out[s]=(+a[1]+k*p[1])+'d'+a[2];
+    else if(/^\d+$/.test(base)&&/^\d+$/.test(per))out[s]=String(+base+k*per);
+    else if(p)out[s]=base+'+'+(k*p[1])+'d'+p[2];
+    else if(/^\d+$/.test(per))out[s]=base+'+'+(k*per);
+  }
+  return out;
+}
+function splBuild(f,F){
+  var g=function(k){var v=f.querySelector('[name="'+k+'"]'); return v?v.value.trim():'';};
+  var ck=function(k){var v=f.querySelector('[name="'+k+'"]'); return !!(v&&v.checked);};
+  var clean=function(v){return v.replace(/\s+/g,'').toLowerCase();};
+  var n=g('n'), l=parseInt(g('l'),10)||0, dm=clean(g('dm')), dper=clean(g('dper')), hl=clean(g('hl')), hper=clean(g('hper')), hf=ck('hf');
+  if(!n)return {err:'Give the spell a name.'};
+  var lc=n.toLowerCase(), clash=SPELLS.some(function(x){return x.n.toLowerCase()===lc;})||(state.customSpells||[]).some(function(x){return x.n.toLowerCase()===lc&&x.n!==F.orig;});
+  if(clash)return {err:'There’s already a spell called “'+n+'”. Pick another name.'};
+  var bad=[['Damage dice',dm],['More damage per slot level',dper],['Healing',hl],['More healing per slot level',hper]].filter(function(p){return p[1]&&!SPL_DICE.test(p[1]);})[0];
+  if(bad)return {err:bad[0]+': use dice like 2d8 or a number like 10.'};
+  var x={id:F.id||uid(),custom:true,n:n,l:l,s:g('s'),cl:Array.prototype.map.call(f.querySelectorAll('[name=cl]:checked'),function(i){return i.value;}),t:g('t'),r:g('r'),du:g('du')||'Instant',co:ck('co')};
+  if(F.base)x.base=F.base;
+  var at=g('at'), sv=g('sv'); if(at)x.at=at; if(sv)x.sv=sv;
+  if(dm){
+    x.dm=dm; x.dt=[g('dt')||'fire']; if(sv)x.ok=g('ok')||'half';
+    if(F.dp&&clean(F.dp[0][0])===dm&&F.dp[0][1]===x.dt[0])x.dp=F.dp;   /* a copied two-part spell keeps its second part */
+    var up=splUp(dm,dper,l); if(up&&!x.dp)x.up=up;
+    if(l===0){var c=/^(\d+)d(\d+)$/.exec(dm); if(c)x.cu=[2,3,4].map(function(k){return (k*c[1])+'d'+c[2];});}   /* cantrips grow at levels 5, 11 and 17 */
+  }
+  var cd=g('cd'); if(cd)x.cd=[cd];
+  if(hf)x.hf='full';
+  else if(hl){x.hl=hl; if(ck('hm'))x.hm=1; var hu=splUp(hl,hper,l); if(hu)x.hu=hu;}
+  return {spell:x};
+}
+
+{
+  document.addEventListener('click',function(e){
+    var b=e.target.closest&&e.target.closest('[data-spl]'); if(!b||!ui.lib)return;
+    var L=ui.lib, n=b.dataset.n;
+    switch(b.dataset.spl){
+      case 'tag':L.sptag=b.dataset.v; renderLib(); break;
+      case 'new':L.spform=splDraft({l:1},'new'); renderLib(); break;
+      case 'copy':L.spform=splDraft(spellGet(n),'copy'); renderLib(); break;
+      case 'edit':{var x=spellGet(n); if(x&&x.custom){L.spform=splDraft(x,'edit'); L.spform.id=x.id;} renderLib(); break;}
+      case 'cancel':L.spform=null; renderLib(); break;
+      case 'del':{var gone=spellGet(n); if(!gone||!gone.custom)break;
+        toast('Deleted “'+n+'”',true);
+        mutate(function(){state.customSpells=state.customSpells.filter(function(x){return x.n!==n;}); state.spellRecent=(state.spellRecent||[]).filter(function(y){return y!==n;});});
+        renderLib(); break;}
+    }
+  });
+  document.addEventListener('submit',function(e){
+    var f=e.target; if(!f.hasAttribute||!f.hasAttribute('data-spform')||!ui.lib||!ui.lib.spform)return;
+    e.preventDefault();
+    var F=ui.lib.spform, r=splBuild(f,F);
+    if(r.err){
+      /* keep what was typed, show the message */
+      Array.prototype.forEach.call(f.querySelectorAll('[data-spff]'),function(i){F[i.dataset.spff]=i.type==='checkbox'?i.checked:i.value;});
+      F.cl=Array.prototype.map.call(f.querySelectorAll('[name=cl]:checked'),function(i){return i.value;});
+      F.err=r.err; renderLib(); var er=document.querySelector('.sperr'); if(er)er.scrollIntoView({block:'nearest'}); return;
+    }
+    var x=r.spell, old=F.orig;
+    mutate(function(){
+      state.customSpells=(state.customSpells||[]).filter(function(y){return !(old&&y.n===old);});
+      state.customSpells.push(x);
+      if(old&&old!==x.n)state.spellRecent=(state.spellRecent||[]).map(function(y){return y===old?x.n:y;});
+      notes.push('Saved spell “'+x.n+'”');
+    });
+    ui.lib.spform=null; ui.lib.sptag='yours'; ui.lib.spq=''; ui.lib.splv=''; ui.lib.spcl=''; renderLib(); toast('Saved “'+x.n+'” to your spells');
+  });
+}
 /* ================================================================
    27. Cloud save
    Keeps the DM's whole session in the page's database so it follows the owner between
